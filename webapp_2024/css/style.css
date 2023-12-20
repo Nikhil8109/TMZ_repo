@@ -1,0 +1,213 @@
+.sapMShellBrandingBar {
+    height: 0px;
+}
+
+.sapMPageHeader::before {
+    border-top-width: 0rem;
+}
+
+.obererAbstand{
+	margin-top: 100px;
+}
+
+.timer{
+    font-size: 7rem!important;
+    font-weight: 1000;
+    color: white;
+    padding: 25px;
+    text-shadow: -4px 0 black, 0 4px black, 4px 0 black, 0 -4px black;
+}
+
+.penTimer{
+    font-size: 2rem!important;
+    font-weight: 1000;
+    color: white;
+}
+
+.logo{
+
+}
+
+.spielstand{
+	padding-right: 40px;
+    padding-left: 40px;
+    font-size: 10rem!important;
+    font-weight: 1000;
+    color: white;
+    text-shadow: -4px 0 black, 0 4px black, 4px 0 black, 0 -4px black;
+}
+
+.kopaarung{
+	padding-right: 40px;
+    padding-left: 40px;
+    font-size: 6rem!important;
+    font-weight: 1000;
+    color: white;
+    text-shadow: -4px 0 black, 0 4px black, 4px 0 black, 0 -4px black;
+}
+
+.timePenalty{
+	padding-right: 40px;
+    padding-left: 40px;
+    font-size: 1rem!important;
+    font-weight: 1000;
+    color: white;
+}
+
+.schrift{
+	padding-right: 100px;
+    padding-left: 100px;
+    font-size: 6rem!important;
+    font-weight: 200!important;
+    text-align: center!important;
+    color: white;
+    text-shadow: -5px 0 black, 0 5px black, 5px 0 black, 0 -5px black;
+}
+
+.schrifttp{
+	padding-right: 100px;
+    padding-left: 100px;
+    font-size: 4rem!important;
+    font-weight: 200!important;
+    text-align: center!important;
+    color: white;
+    text-shadow: -5px 0 black, 0 5px black, 5px 0 black, 0 -5px black;
+}
+
+.koschrift{
+	padding-right: 40px;
+    padding-left: 40px;
+    font-size: 4rem!important;
+    font-weight: 1000;
+    color: white;
+    text-shadow: -4px 0 black, 0 4px black, 4px 0 black, 0 -4px black;
+}
+
+.schrift4{
+	padding-right: 100px;
+    padding-left: 100px;
+    font-size: 1rem!important;
+    font-weight: 200!important;
+    text-align: center!important;
+    color: white;
+    text-shadow: -5px 0 black, 0 5px black, 5px 0 black, 0 -5px black;
+}
+
+.schriftTable{
+    font-size: 1rem!important;
+    text-align: center!important;
+    color: white!important;
+}
+
+
+.headerTable{
+    font-size: 1rem!important;
+    text-align: center!important;
+    color: white!important;
+	background-color: rgba(0,0,0,.5)!important;
+
+}
+
+
+.background{
+	background-color: white;
+	background-image: url("../pics/hintergrund.png");
+}
+
+.linksSchrift{
+	font-size: 3rem!important;
+	padding-left: 100px;
+}
+
+.colorWhite{
+	color: white!important;
+}
+
+.colorWhitear{
+	color: white;
+	text-align: right!important;
+	padding-top:16px;
+}
+
+.TableHeader{
+	font-size: 2.4rem!important;
+	padding-bottom: 20px!important;
+	font-weight: 900!important;
+    color: white!important;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black!important;
+}
+
+.sapMListTblCell {
+	
+	border: 0!important;
+
+}
+
+.sapMListTbl  {
+	background-color: rgba(0,0,0,0)!important;
+	line-height: 5px !important;
+	row-height: 5px !important;
+}
+
+.sapMListTblHeader {
+	border: 0 !important;
+}
+
+.tblHeader {
+	border: 0 !important;
+}
+
+.sapMListTblCell {
+    border: 0!important;
+    padding-top: 5px;
+}
+
+.tabelleSchrift{
+	font-size: 1.8rem!important;
+	font-weight: 700!important;
+    color: white!important;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black!important;
+	padding:0;
+}
+
+.sapMListTblHeader>.sapMTableTH {
+	background: rgba(0,0,0,0)!important;
+    background-clip: 0!important;
+}
+
+.sapMListBGTransparent    {
+	background-color: rgba(0,0,0,0)!important;
+	border: 0 !important;
+
+}
+
+.sapMListTblHeaderCell  {
+	background-color: rgba(0,0,0,0)!important;
+	border-bottom:0.2px solid white!important;
+}
+
+.transparent{
+	background-color: transparent!important;
+	border: 0 !important;
+}
+
+.columnStyle0 {
+  background-color: rgba(0, 0, 255, 0.5) !important;
+}
+
+.columnStyle1 {
+  background-color: rgba(255, 0, 0, 0.5) !important;
+}
+
+.highlight {
+  color: orange!important;
+}
+
+#__item18-__xmlview0--table-3_cell0,#__item18-__xmlview0--table-3_cell1,#__item18-__xmlview0--table-3_cell2,
+#__item18-__xmlview0--table-3_cell3,#__item18-__xmlview0--table-3_cell4 {
+ 	border-bottom: 0.2px solid white!important; 
+}
+
+
+
+#nav-bar {display:none !important}

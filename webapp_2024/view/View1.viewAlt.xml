@@ -1,0 +1,262 @@
+<mvc:View xmlns:html="http://www.w3.org/1999/xhtml" xmlns:core="sap.ui.core" xmlns:c="sap.ui.commons" xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:u="sap.ui.unified" controllerName="com.vflmunderkingen.Anzeigetafel.controller.View1"
+	displayBlock="true">
+	<App id="idAppControl">
+		<pages>
+			<Page title="{i18n>title}" showFooter="false" showHeader="false" class="background">
+				<content>
+					<l:Splitter height="100%">
+						<l:VerticalLayout width="100%" id="layout0">
+							<l:layoutData><l:SplitterLayoutData size="300px"/></l:layoutData>
+							<Panel width="auto" class="sapUiResponsiveMargin" expandable="true">
+								<headerToolbar>
+									<Toolbar height="3rem">
+										<Title text="Uhr" class="colorWhite"/>
+									</Toolbar>
+								</headerToolbar>
+								<content>
+									<HBox>
+										<Button text="Start" id="button1" press="startTimer" enabled="{= ${/isTimerAktive} === false ? true : false }"/>
+										<Button text="{= ${/stop} === false?'Stop':'Start' }" id="stopTimer" press="stopTimer"
+											enabled="{= ${/isTimerAktive} &amp;&amp; ${/isResetet}}"/>
+										<Button text="Reset" id="button3" press="resetTimer" enabled="{/isTimerAktive}"/>
+										<Text text="{/clock}" id="tjhkmxt0" class="colorWhite"/>
+									</HBox>
+									<VBox>
+										<sap.ui.layout.form:Form xmlns:sap.ui.layout.form="sap.ui.layout.form" editable="true" id="form0">
+											<sap.ui.layout.form:formContainers>
+												<sap.ui.layout.form:FormContainer id="container0">
+													<sap.ui.layout.form:formElements>
+														<sap.ui.layout.form:FormElement label="Spielzeit in Sekunden" id="element0" class="colorWhite">
+															<sap.ui.layout.form:fields>
+																<Input width="100%" id="input1" value="{/timerDuration}"/>
+																<Button id="btNeunMin" text="9 min" press="setSpielzeit"/>
+																<Button id="btFuenfMin" text="5 min" press="setSpielzeit"/>
+															</sap.ui.layout.form:fields>
+														</sap.ui.layout.form:FormElement>
+													</sap.ui.layout.form:formElements>
+												</sap.ui.layout.form:FormContainer>
+											</sap.ui.layout.form:formContainers>
+											<sap.ui.layout.form:layout>
+												<sap.ui.layout.form:ResponsiveGridLayout id="layout0_1546257117664"/>
+											</sap.ui.layout.form:layout>
+										</sap.ui.layout.form:Form>
+									</VBox>
+									<html:audio id="audio_with_controls" controls="" src="mp3/horn.mp3" type="audio/mp3"></html:audio>
+								</content>
+							</Panel>
+							<Panel width="auto" class="sapUiResponsiveMargin" expandable="true">
+								<headerToolbar>
+									<Toolbar height="3rem">
+										<Title text="Ergebnis" class="colorWhite"/>
+									</Toolbar>
+								</headerToolbar>
+								<content>
+									<sap.ui.layout.form:SimpleForm editable="true" layout="ResponsiveGridLayout" xmlns:sap.ui.layout.form="sap.ui.layout.form"
+										id="form0_1546259712696">
+										<sap.ui.layout.form:content>
+											<Label text="Heim" id="lbheim" class="colorWhite"/>
+											<StepInput id="heim" value="{/heim}" min="0" max="99" step="1" change="showTor"/>
+											<Label text="Gast" id="lbgast" class="colorWhite"/>
+											<StepInput id="gast" value="{/gast}" min="0" max="99" step="1" change="showTor"/>
+										</sap.ui.layout.form:content>
+									</sap.ui.layout.form:SimpleForm>
+									<Button text="Reset" id="RestetSpiestand" press="resetSpielstand"/>
+								</content>
+							</Panel>
+							<Panel width="auto" class="sapUiResponsiveMargin" expandable="true">
+								<headerToolbar>
+									<Toolbar height="3rem">
+										<Title text="Spielpaarung" class="colorWhite"/>
+									</Toolbar>
+								</headerToolbar>
+								<content>
+									<sap.ui.layout.form:SimpleForm editable="true" layout="ResponsiveGridLayout" xmlns:sap.ui.layout.form="sap.ui.layout.form"
+										id="form0_154625971269444">
+										<sap.ui.layout.form:content>
+											<Label text="Heim" id="slheim" class="colorWhite"/>
+											<Select forceSelection="false" selectedKey="{/Heimteam}" items="{ path: '/teams', sorter: { path: 'name' } }">
+												<core:Item key="{url}" text="{name}"/>
+											</Select>
+											<Label text="Gast" id="slgast" class="colorWhite"/>
+											<Select forceSelection="false" selectedKey="{/Gastteam}" items="{ path: '/teams', sorter: { path: 'name' } }">
+												<core:Item key="{url}" text="{name}"/>
+											</Select>
+										</sap.ui.layout.form:content>
+										<Button text="Spielpaarung anzeigen" press="setPaarung"/>
+									</sap.ui.layout.form:SimpleForm>
+								</content>
+							</Panel>
+							<Panel width="auto" class="sapUiResponsiveMargin" expandable="true">
+								<headerToolbar>
+									<Toolbar height="3rem">
+										<Title text="Tabelle" class="colorWhite"/>
+									</Toolbar>
+								</headerToolbar>
+								<content>
+									<sap.ui.layout.form:SimpleForm editable="true" layout="ResponsiveGridLayout" xmlns:sap.ui.layout.form="sap.ui.layout.form"
+										id="form0_154625971244469444">
+										<sap.ui.layout.form:content>
+											<Label text="Gruppe" class="colorWhite"/>
+											<Input value="{/Gruppe}"/>
+											<Label text="Platz 1" class="colorWhite"/>
+											<Select forceSelection="false" selectedKey="{/tabelle/0/team}" items="{ path: '/teams', sorter: { path: 'name' } }">
+												<core:Item key="{name}" text="{name}"/>
+											</Select>
+											<Label text="Tore und Punkte" class="colorWhite"/>
+											<Input value="{/tabelle/0/Tore}"></Input>
+											<Input value="{/tabelle/0/Pkt}"></Input>
+											<Label text="Platz 2" class="colorWhite"/>
+											<Select forceSelection="false" selectedKey="{/tabelle/1/team}" items="{ path: '/teams', sorter: { path: 'name' } }">
+												<core:Item key="{name}" text="{name}"/>
+											</Select>
+											<Label text="Tore und Punkte" class="colorWhite"/>
+											<Input value="{/tabelle/1/Tore}"></Input>
+											<Input value="{/tabelle/1/Pkt}"></Input>
+											<Label text="Platz 3" class="colorWhite"/>
+											<Select forceSelection="false" selectedKey="{/tabelle/2/team}" items="{ path: '/teams', sorter: { path: 'name' } }">
+												<core:Item key="{name}" text="{name}"/>
+											</Select>
+											<Label text="Tore und Punkte" class="colorWhite"/>
+											<Input value="{/tabelle/2/Tore}"></Input>
+											<Input value="{/tabelle/2/Pkt}"></Input>
+											<Label text="Platz 4" class="colorWhite"/>
+											<Select forceSelection="false" selectedKey="{/tabelle/3/team}" items="{ path: '/teams', sorter: { path: 'name' } }">
+												<core:Item key="{name}" text="{name}"/>
+											</Select>
+											<Label text="Tore und Punkte" class="colorWhite"/>
+											<Input value="{/tabelle/3/Tore}"></Input>
+											<Input value="{/tabelle/3/Pkt}"></Input>
+											<Label text="Platz 5" class="colorWhite"/>
+											<Select forceSelection="false" selectedKey="{/tabelle/4/team}" items="{ path: '/teams', sorter: { path: 'name' } }">
+												<core:Item key="{name}" text="{name}"/>
+											</Select>
+											<Label text="Tore und Punkte" class="colorWhite"/>
+											<Input value="{/tabelle/4/Tore}"></Input>
+											<Input value="{/tabelle/4/Pkt}"></Input>
+										</sap.ui.layout.form:content>
+									</sap.ui.layout.form:SimpleForm>
+									<List headerText="{/Gruppe}" items="{ path: '/tabelle' }">
+										<StandardListItem title="{team}" description="{Tore} {Pkt}" icon="{url}" iconDensityAware="false" iconInset="false"/>
+									</List>
+									<Button text="Tabelle anzeigen" press="showTabelle"/>
+									<Button text="Tabelle ausblenden" press="showResult"/>
+								</content>
+							</Panel>
+							<Panel width="auto" class="sapUiResponsiveMargin" expandable="true">
+								<headerToolbar>
+									<Toolbar height="3rem">
+										<Title text="Werbung" class="colorWhite"/>
+									</Toolbar>
+								</headerToolbar>
+								<content>
+									<sap.ui.layout.form:SimpleForm editable="true" layout="ResponsiveGridLayout" xmlns:sap.ui.layout.form="sap.ui.layout.form"
+										id="form0_154625971ff269444">
+										<sap.ui.layout.form:content>
+											<Label text="Werbung" id="slads" class="colorWhite"/>
+											<Select forceSelection="false" selectedKey="{/ad}" items="{ path: '/ads', sorter: { path: 'name' } }">
+												<core:Item key="{url}" text="{name}"/>
+											</Select>
+										</sap.ui.layout.form:content>
+										<Button text="Werbung anzeigen" press="showWerbung"/>
+										<Button text="Werbung ausblenden" press="showResult"/>
+									</sap.ui.layout.form:SimpleForm>
+								</content>
+							</Panel>
+							<Panel width="auto" class="sapUiResponsiveMargin" expandable="true">
+								<headerToolbar>
+									<Toolbar height="3rem">
+										<Title text="Text" class="colorWhite"/>
+									</Toolbar>
+								</headerToolbar>
+								<content>
+									<sap.ui.layout.form:SimpleForm editable="true" layout="ResponsiveGridLayout" xmlns:sap.ui.layout.form="sap.ui.layout.form"
+										id="form0_15444625971ff269444">
+										<sap.ui.layout.form:content>
+											<Label text="Text" id="sltext" class="colorWhite"/>
+											<Input value="{/textnachricht}"></Input>
+										</sap.ui.layout.form:content>
+										<Button text="Text anzeigen" press="showText"/>
+										<Button text="Text ausblenden" press="showResult"/>
+									</sap.ui.layout.form:SimpleForm>
+								</content>
+							</Panel>
+						</l:VerticalLayout>
+						<l:VerticalLayout width="100%" id="layout1">
+							<l:layoutData><l:SplitterLayoutData size="auto"/></l:layoutData>
+							<l:Grid id="grid0" defaultSpan="XL4 L4 M4 S4" position="Center">
+								<l:content>
+									<HBox width="90%" alignItems="Center" alignContent="Center" justifyContent="Center" class="sapUiSmallMargin sapUiLargeMarginTop">
+										<!--Text text="Vereins Service Cup Munderkingen" id="ooo" class="linksSchrift"/-->
+										<Image src="pics/loewe.png" height="150px" id="imiiii5ge0"/>
+									</HBox>
+									<HBox width="100%" alignItems="Center" alignContent="Center" justifyContent="Center" class="sapUiSmallMargin sapUiLargeMarginTop">
+										<Text text="{/clock}" id="text0" class="timer"/>
+									</HBox>
+									<HBox width="100%" alignItems="Center" alignContent="Center" justifyContent="Center" class="sapUiSmallMargin sapUiLargeMarginTop">
+										<Image src="pics/u13_weiss.png" height="150px" id="ima4565ge0"/>
+									</HBox>
+								</l:content>
+							</l:Grid>
+							<l:Grid id="grid10" defaultSpan="XL12 L12 M12 S12" position="Center" 
+								visible="{= ${/showTabelle} === false &amp;&amp; ${/tor} === false &amp;&amp; ${/showWerbung} === false &amp;&amp; ${/showText} === false ? true : false }">
+								<l:content>
+									<HBox width="100%" alignItems="Center" alignContent="Center" justifyContent="Center" class="obererAbstand">
+										<Image src="{/heimURL}" height="300px" id="image20"/>
+										<Text text="{/heim}:{/gast}" id="tex55t22" class="spielstand "/>
+										<Image src="{/gastURL}" height="300px" id="etrerte"/>
+									</HBox>
+								</l:content>
+							</l:Grid>
+							<l:Grid id="grid11" defaultSpan="XL12 L12 M12 S12" position="Center" visible="{/showTabelle}">
+								<l:content>
+									<List headerText="{/Gruppe}" items="{ path: '/tabelle' }" showSeparators="None">
+										<CustomListItem class="transparent">
+											<l:Grid id="grid40" defaultSpan="XL3 L3 M3 S3" position="Center">
+												<l:content>
+													<HBox width="90%" alignItems="End" alignContent="End" justifyContent="End" class="sapUiTinyMargin">
+														<Label text="{Platz}" class="sapUiLargeMarginEnd tabelleSchrift"/>
+													</HBox>
+													<HBox width="90%" alignItems="Start" alignContent="Start" justifyContent="Start" class="sapUiTinyMargin">
+														<Label text="{team}" class="tabelleSchrift"/>
+													</HBox>
+													<HBox width="100%" alignItems="End" alignContent="End" justifyContent="End" class="sapUiTinyMargin">
+														<Label text="{Tore}" class="sapUiLargeMarginStart tabelleSchrift"/>
+													</HBox>
+													<HBox width="100%" alignItems="Center" alignContent="Center" justifyContent="Center" class="sapUiTinyMargin">
+														<Label text="{Pkt}" class="sapUiLargeMarginEnd tabelleSchrift"/>
+													</HBox>
+												</l:content>
+											</l:Grid>
+										</CustomListItem>
+									</List>
+								</l:content>
+							</l:Grid>
+							<l:Grid id="grid13" defaultSpan="XL12 L12 M12 S12" position="Center" visible="{/tor}">
+								<l:content>
+									<HBox width="100%" alignItems="Center" alignContent="Center" justifyContent="Center">
+										<Text text="Toooorr!!!" class="spielstand "/>
+									</HBox>
+								</l:content>
+							</l:Grid>
+							<l:Grid id="griddd13" defaultSpan="XL12 L12 M12 S12" position="Center" visible="{/showWerbung}">
+								<l:content>
+									<HBox width="100%" alignItems="Center" alignContent="Center" justifyContent="Center">
+										<Image src="{/ad}" height="400px" id="hh"/>
+									</HBox>
+								</l:content>
+							</l:Grid>
+							<l:Grid id="gri99ddd13" defaultSpan="XL12 L12 M12 S12" position="Center" visible="{/showText}">
+								<l:content>
+									<HBox width="100%" alignItems="Center" alignContent="Center" justifyContent="Center">
+										<Text text="{/textnachricht}" id="mm" class="schrift "/>
+									</HBox>
+								</l:content>
+							</l:Grid>
+						</l:VerticalLayout>
+					</l:Splitter>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>
