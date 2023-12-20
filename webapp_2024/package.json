@@ -1,0 +1,17 @@
+{
+  "name": "com.vflmunderkingen.Anzeigetafel",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Component.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "http-proxy": "^1.18.1"
+  }
+}
