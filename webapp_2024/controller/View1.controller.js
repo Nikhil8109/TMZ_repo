@@ -602,7 +602,16 @@ sap.ui.define([
 			//Reset Live Table
 			this.getView().getController().liveTableUpdate();
 		},
-		
+		onSelectHome:function(oEvent){
+			var oPicurl = "pics/"+oEvent.getSource().getSelectedKey();
+			var oHomeImg = this.getView().byId("imiiii5ge0");
+			var oHomeTxt = this.getView().byId("homeTxt");
+			oHomeTxt.setVisible(false);
+			oHomeImg.setSrc(oPicurl);
+		},
+		onSelectGuest:function(oEvent){
+
+		},
 		setKOPaarung: function(){
 			var oModel = this.getView().getModel();
 			
@@ -866,7 +875,7 @@ sap.ui.define([
 			var liveMode = oModel.getProperty("/liveMode");
 
 			if(liveMode === true) {
-				sap.m.MessageToast.show("Fehler: Korrektur kann nicht im LiveMode durchgeführt werden.", {
+				sap.m.MessageToast.show("Fehler: Korrektur kann nicht im LiveMode durchgefï¿½hrt werden.", {
 						duration: 8000,
 						my: "left center",         
 						at: "left center",
@@ -1327,7 +1336,7 @@ sap.ui.define([
 				oModel.setProperty("/tableTitle","Tabelle Gruppe " + group);
 			}
 			
-/* 			//Wenn Korrektur während eines Spiels durchgeführt wird, muss liveTableUpdate nochmal neu gestartet werden
+/* 			//Wenn Korrektur wï¿½hrend eines Spiels durchgefï¿½hrt wird, muss liveTableUpdate nochmal neu gestartet werden
 			if(korrekturMode === true && liveMode === true) {
 				sap.m.MessageToast.show("Korrektur abgeschlossen. Reset weil livemode!", {
 					duration: 9000,

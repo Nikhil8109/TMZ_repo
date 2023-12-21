@@ -13,9 +13,13 @@ sap.ui.define([
 		},
 
 		createModel: function () {
-			var excelData = {};
+			var me = this;
+			var oModel = new JSONModel();
+			oModel.setDefaultBindingMode("TwoWay");
+			var excelData = [];
+		    var oFinalSheetsData = [];
 			var xhr = new XMLHttpRequest();
-            xhr.open("GET", "/model/Teams.xlsx", true);
+            xhr.open("GET", "./DataFiles/DataModel.xlsx", true);
             xhr.responseType = "blob";
 			xhr.onload = function (e) {
                 var file = this.response;
@@ -29,14 +33,17 @@ sap.ui.define([
 					workbook.SheetNames.forEach(function (sheetName) {
 						// Here is your object for every sheet in workbook
 						excelData = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
-
+						var obJ = {};
+						Object.defineProperty(obJ, sheetName, {
+							value: excelData,
+							writable: true,
+							enumerable: true,
+							configurable: true,
+						  });
+						oFinalSheetsData.push(obJ);
 					});
-					// Setting the data to the local model 
-					// that.localModel.setData({
-					// 	items: excelData
-					// });
-					// that.localModel.refresh(true);
-		// 			console.log(excelData);
+					var oTeamsData = oFinalSheetsData.filter((oData)=>{ return oData.Teams});
+					var oCompetitionsData = oFinalSheetsData.filter((oData)=>{ return oData.Competitions});
 					var data = {
 						"testinput":"",
 						"tableStatus": "Paarung noch nicht gesetzt",
@@ -192,7 +199,7 @@ sap.ui.define([
 								"pkt":""
 							}
 						],
-						"teams": excelData,
+						"teams": oTeamsData[0].Teams,
 						"ads": [
 							{
 								"url": "auto",
@@ -246,6 +253,7 @@ sap.ui.define([
 								"name": "Tafel 14"
 							}
 						],
+						"competitions": me.removeDuplicates(oCompetitionsData[0].Competitions,"Competition"),
 						"gifs": [
 							{
 								"url": "auto",
@@ -667,10 +675,7 @@ sap.ui.define([
 							}
 						] */
 					};
-					var oModel = new JSONModel(data);
-					oModel.setDefaultBindingMode("TwoWay");
-					return oModel;
-		console.log(excelData);
+					oModel.setData(data);
 				};
 				reader.onerror = function (ex) {
 					console.log(ex);
@@ -1346,7 +1351,23 @@ sap.ui.define([
 // 			};
 // 			var oModel = new JSONModel(data);
 // 			oModel.setDefaultBindingMode("TwoWay");
-// 			return oModel;
+			return oModel;
 		},
+		removeDuplicates: function (originalArray, prop) {
+			var newArray = [];
+			// var lookupObject = [];
+			// for (var i in originalArray) {
+			//   // if (i === "__proto__" || i === "constructor" || i === "prototype") {
+			//   //   continue;
+			//   //   }
+			//   lookupObject[originalArray[i][prop]] = originalArray[i];
+			// }
+			// for (i in lookupObject) {
+			//   newArray.push(lookupObject[i]);
+			// }
+			// return newArray;
+			newArray = [...new Map(originalArray.map(item => [item[prop], item])).values()];
+			return newArray;
+		  },
 	};
 });

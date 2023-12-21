@@ -88,22 +88,22 @@
 										id="form0_154625971269444">
 										<sap.ui.layout.form:content>
 											<Label text="Heim" id="slheim" class="colorWhite"/>
-											<Select id ="selectHeimTeam" forceSelection="true" selectedKey="{/heimURL}" items="{ path: '/teams', sorter: { path: 'name' } }">
-												<core:Item key="{url}" text="{name}"/>
-											</Select>
+											<ComboBox id ="selectHeimTeam"  items="{ path: '/teams', sorter: { path: 'Team' } }" change="onSelectHome">
+												<core:Item key="{Logo}" text="{Team}"/>
+											</ComboBox>
 											<Label text="Gast" id="slgast" class="colorWhite"/>
-											<Select id ="selectGastTeam" forceSelection="true" selectedKey="{/gastURL}" items="{ path: '/teams', sorter: { path: 'name' } }">
-												<core:Item key="{url}" text="{name}"/>
-											</Select>
+											<ComboBox id ="selectGastTeam" items="{ path: '/teams', sorter: { path: 'Team' } }" change="onSelectGuest">
+												<core:Item key="{Logo}" text="{Team}"/>
+											</ComboBox>
 											<Label text="Toranimation Heim" id="slgifheim" class="colorWhite"/>
 	
-											<Select id ="selectGifHeim" forceSelection="true" selectedKey="{/gifNameHeim}"  items="{ path: '/gifs' }">
+											<ComboBox id ="selectGifHeim"   items="{ path: '/gifs' }">
 												<core:Item key="{url}" text="{name}"/>
-											</Select>
+											</ComboBox>
 											<Label text="Toranimation Gast" id="slgifgast" class="colorWhite"/>
-											<Select id ="selectGifGast" forceSelection="true" selectedKey="{/gifNameGast}" items="{ path: '/gifs' }">
+											<ComboBox id ="selectGifGast"   items="{ path: '/gifs' }">
 												<core:Item key="{url}" text="{name}"/>
-											</Select>
+											</ComboBox>
 										</sap.ui.layout.form:content>
 										<Input width="100%" id="tablestatus" editable="false" value="{/tableStatus}"/>
 										<Button text="Spielpaarung anzeigen" press="setPaarung"/>
@@ -243,6 +243,24 @@
 							<Panel width="auto" class="sapUiResponsiveMargin" expandable="true">
 								<headerToolbar>
 									<Toolbar height="3rem">
+										<Title text="Wettbewerb" class="colorWhite"/>
+									</Toolbar>
+								</headerToolbar>
+								<content>
+									<sap.ui.layout.form:SimpleForm editable="true" layout="ResponsiveGridLayout" xmlns:sap.ui.layout.form="sap.ui.layout.form"
+										id="competitionPanel">
+										<sap.ui.layout.form:content>
+											<Label text="Select Wettbewerb" id="comptId" class="colorWhite"/>
+												<ComboBox id="selectCompetition" items="{ path: '/competitions' }">
+													<core:Item key="{Competition}" text="{Competition}"/>
+												</ComboBox>
+										</sap.ui.layout.form:content>
+									</sap.ui.layout.form:SimpleForm>
+								</content>
+							</Panel>
+							<Panel width="auto" class="sapUiResponsiveMargin" expandable="true">
+								<headerToolbar>
+									<Toolbar height="3rem">
 										<Title text="Text" class="colorWhite"/>
 									</Toolbar>
 								</headerToolbar>
@@ -362,11 +380,11 @@
 									<HBox width="90%" alignItems="Center" alignContent="Center" justifyContent="Center" class="sapUiSmallMargin sapUiLargeMarginTop">
 										<!--Text text="Vereins Service Cup Munderkingen" id="ooo" class="linksSchrift"/-->
 										<Image src="pics/loewe.png" height="150px" id="imiiii5ge0"/>
-									</HBox>
+																			</HBox>
 									<HBox width="100%" alignItems="Center" alignContent="Center" justifyContent="Center" class="sapUiSmallMargin sapUiLargeMarginTop">
 										<Text text="{/clock}" id="text0" class="timer" visible="{/showClock}"/>
 									</HBox>
-									<HBox width="100%" alignItems="Center" alignContent="Center" justifyContent="Center" class="sapUiSmallMargin sapUiLargeMarginTop">
+																		<HBox width="100%" alignItems="Center" alignContent="Center" justifyContent="Center" class="sapUiSmallMargin sapUiLargeMarginTop">
 										<Image src="pics/u13_weiss.png" height="150px" id="ima4565ge0"/>
 									</HBox>
 								</l:content>
