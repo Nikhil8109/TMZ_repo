@@ -4,6 +4,10 @@ sap.ui.define([
 	"use strict";
 
 	return Controller.extend("com.vflmunderkingen.Anzeigetafel.controller.View1", {
+		onInit:function(){
+			this._oHomeCount = 0;
+			this._oGuestCount = 0;
+		},
 	
 		closeWindow: function(){
 			window.close();
@@ -236,69 +240,101 @@ sap.ui.define([
 		},
 		
 		showTorHeim: function(oEvent){
-			var oModel = this.getView().getModel();
-			var penTimer3Aktive = oModel.getProperty("/isPenTimer3Aktive");
-			var penTimer4Aktive = oModel.getProperty("/isPenTimer4Aktive");
-			var animationControl = this.getView().byId("animationControl1").getSelected();
-			var controller = this.getView().getController();
-						
-			//controller.playTormusik();
-			
-			oModel.setProperty("/showTabelle", false);
-			
-			if(animationControl === true) {
-				//show Animation
-				oModel.setProperty("/heimtor", true);
-				//Hide Animation
-				setTimeout(function(){
-					oModel.setProperty("/heimtor", false);
-				}, 4000);
-			}
-			
-			//Reset Zeitstrafen Gastteam
-			if(penTimer3Aktive == true) {
-				clearInterval(this.z3);
-				oModel.setProperty("/showPenTimer3",false);
-				oModel.setProperty("/isPenTimer3Aktive", false);
-				oModel.setProperty("/penaltyClock3", "02:00");
-			}
-			if(penTimer4Aktive == true) {
-				clearInterval(this.z4);
-				oModel.setProperty("/showPenTimer4",false);
-				oModel.setProperty("/isPenTimer4Aktive", false);
-				oModel.setProperty("/penaltyClock4", "02:00");
-			}
-			
-			//Call function for gif selection if auto-selection is active
-			var gifSelection = this.getView().byId("selectGifHeim").getSelectedItem().getText();
-			
-			if(gifSelection === "Automatisch"){
-				var matchingGifs = oModel.getProperty("/matchingGifsHeim");
-				var randomNr = Math.floor(Math.random() * matchingGifs.length);
-				oModel.setProperty("/gifSrcHeim",matchingGifs[randomNr]);
+			var oSourceParam = oEvent.getParameters().value;
+			if(this._oHomeCount === 0 || this._oHomeCount < oSourceParam){
+				var oModel = this.getView().getModel();
+				var penTimer3Aktive = oModel.getProperty("/isPenTimer3Aktive");
+				var penTimer4Aktive = oModel.getProperty("/isPenTimer4Aktive");
+				var animationControl = this.getView().byId("animationControl1").getSelected();
+				var controller = this.getView().getController();
+							
+				//controller.playTormusik();
 				
-			}
-			
-			//Update Live Score
-			controller.liveTableUpdate();
-			//Highlight current teams in table
-			controller.highlightCurrentTeams();
-			
-			//Anzeige Live Tabelle 
-			var liveTableControl = this.getView().byId("liveTableControl1").getSelected();						
-			setTimeout(function(){
-				if (liveTableControl == true){
-					controller.showTabelle();
-
-					this.timer2Table = setTimeout(function(){ 
-						oModel.setProperty("/showTabelle", false);
-						this.timer2Table = null;
-					}, 14000);
+				oModel.setProperty("/showTabelle", false);
+				
+				if(animationControl === true) {
+					//show Animation
+					oModel.setProperty("/heimtor", true);
+					//Hide Animation
+					setTimeout(function(){
+						oModel.setProperty("/heimtor", false);
+					}, 4000);
 				}
-			}, 8000);
+				
+				//Reset Zeitstrafen Gastteam
+				if(penTimer3Aktive == true) {
+					clearInterval(this.z3);
+					oModel.setProperty("/showPenTimer3",false);
+					oModel.setProperty("/isPenTimer3Aktive", false);
+					oModel.setProperty("/penaltyClock3", "02:00");
+				}
+				if(penTimer4Aktive == true) {
+					clearInterval(this.z4);
+					oModel.setProperty("/showPenTimer4",false);
+					oModel.setProperty("/isPenTimer4Aktive", false);
+					oModel.setProperty("/penaltyClock4", "02:00");
+				}
+				
+				//Call function for gif selection if auto-selection is active
+				var gifSelection = this.getView().byId("selectGifHeim").getSelectedItem().getText();
+				
+				if(gifSelection === "Automatisch"){
+					var oHomeTeam = this.getView().byId("selectHeimTeam").getSelectedItem().getText();
+					var oHomeGifs = oModel.getProperty("/gifsHome");
+					// var matchingGifs = oModel.getProperty("/matchingGifsHeim");
+					// var randomNr = Math.floor(Math.random() * matchingGifs.length);
+					var matchingGifs = oHomeGifs.filter((oItem)=>{return oItem.GifName.startsWith(oHomeTeam)});
+					var otherGifs = oHomeGifs.filter((oItem)=>{return (oItem.GifName.startsWith("goal"))});
+					if(matchingGifs.length > 0){
+						var matchedGif = [];
+					   matchingGifs.forEach((oItem)=>{
+							var obJ = {};
+							Object.defineProperty(obJ, "GifName", {
+								value: oItem.GifName.replaceAll(' ', ''),
+								writable: true,
+								enumerable: true,
+								configurable: true,
+							  });
+							matchedGif.push(obJ);
+						});
+						var randomNr = Math.floor(Math.random() * matchedGif.length);
+						var oHomeUrl = "/DataFiles/gifs/"+matchedGif[randomNr].GifName+".gif";
+						oModel.setProperty("/gifSrcHeim",oHomeUrl);
+					}
+					else{
+						var randomNr = Math.floor(Math.random() * otherGifs.length);
+						var oOtherUrl = "/DataFiles/gifs/"+otherGifs[randomNr].GifName+".gif";
+						oModel.setProperty("/gifSrcHeim",oOtherUrl);
+					}	
+				}
+				else{
+					oModel.setProperty("/gifSrcHeim","/DataFiles/gifs/"+gifSelection+".gif");
+				}
+				
+				//Update Live Score
+				controller.liveTableUpdate();
+				//Highlight current teams in table
+				controller.highlightCurrentTeams();
+				
+				//Anzeige Live Tabelle 
+				var liveTableControl = this.getView().byId("liveTableControl1").getSelected();						
+				setTimeout(function(){
+					if (liveTableControl == true){
+						controller.showTabelle();
+	
+						this.timer2Table = setTimeout(function(){ 
+							oModel.setProperty("/showTabelle", false);
+							this.timer2Table = null;
+						}, 14000);
+					}
+				}, 8000);
+			}
+			this._oHomeCount = oSourceParam;
 		},
 		
 		showTorGast: function(oEvent){
+			var oSourceParam = oEvent.getParameters().value;
+		if(this._oGuestCount === 0 || this._oGuestCount < oSourceParam){
 			var oModel = this.getView().getModel();
 			var penTimer1Aktive = oModel.getProperty("/isPenTimer1Aktive");
 			var penTimer2Aktive = oModel.getProperty("/isPenTimer2Aktive");
@@ -337,9 +373,34 @@ sap.ui.define([
 			var gifSelection = this.getView().byId("selectGifGast").getSelectedItem().getText();
 
 			if(gifSelection === "Automatisch"){
-				var matchingGifs = oModel.getProperty("/matchingGifsGast");
-				var randomNr = Math.floor(Math.random() * matchingGifs.length);
-				oModel.setProperty("/gifSrcGast",matchingGifs[randomNr]);
+				var oGuestTeam = this.getView().byId("selectGastTeam").getSelectedItem().getText();
+				var oGuestGifs = oModel.getProperty("/gifsGuest");
+				// var matchingGifs = oModel.getProperty("/matchingGifsHeim");
+				// var randomNr = Math.floor(Math.random() * matchingGifs.length);
+				var matchingGifs = oGuestGifs.filter((oItem)=>{return oItem.GifName.startsWith(oGuestTeam)});
+				var otherGifs = oGuestGifs.filter((oItem)=>{return (oItem.GifName.startsWith("goal"))});
+				if(matchingGifs.length > 0){
+					var matchedGif = [];
+			       matchingGifs.forEach((oItem)=>{
+						var obJ = {};
+						Object.defineProperty(obJ, "GifName", {
+							value: oItem.GifName.replaceAll(' ', ''),
+							writable: true,
+							enumerable: true,
+							configurable: true,
+						  });
+						matchedGif.push(obJ);
+					});
+					var randomNr = Math.floor(Math.random() * matchedGif.length);
+					oModel.setProperty("/gifSrcGast","/DataFiles/gifs/"+matchedGif[randomNr].GifName+".gif");
+				}
+				else{
+					var randomNr = Math.floor(Math.random() * otherGifs.length);
+					oModel.setProperty("/gifSrcGast","/DataFiles/gifs/"+otherGifs[randomNr].GifName+".gif");
+				}	
+			}
+			else{
+				oModel.setProperty("/gifSrcGast","/DataFiles/gifs/"+gifSelection+".gif");
 			}
 			
 			//Update Live Score
@@ -359,7 +420,8 @@ sap.ui.define([
 					}, 14000);
 				}
 			}, 8000);
-			
+			}
+			this._oGuestCount = oSourceParam;
 		},
 		
 		findMatchingGifHeim: function(){
@@ -603,14 +665,31 @@ sap.ui.define([
 			this.getView().getController().liveTableUpdate();
 		},
 		onSelectHome:function(oEvent){
-			var oPicurl = "pics/"+oEvent.getSource().getSelectedKey();
-			var oHomeImg = this.getView().byId("imiiii5ge0");
-			var oHomeTxt = this.getView().byId("homeTxt");
-			oHomeTxt.setVisible(false);
-			oHomeImg.setSrc(oPicurl);
+			// var oPicurl = "pics/"+oEvent.getSource().getSelectedKey();
+			// var oHomeImg = this.getView().byId("imiiii5ge0");
+			// var oHomeTxt = this.getView().byId("homeTxt");
+			// oHomeTxt.setVisible(false);
+			// oHomeImg.setSrc(oPicurl);
+			var oHomeGifCtrl = this.getView().byId("selectGifHeim");
+			var oModel = this.getView().getModel();
+			var oteamName = oEvent.getSource().getSelectedItem().getText();
+			var oGifsData = oModel.getProperty("/gifs");
+			var oHomeGifs = oGifsData.filter((oItem)=>{
+				return (oItem.GifName.startsWith(oteamName) || oItem.GifName.startsWith("goal") || oItem.GifName.startsWith("Automatisch"));
+			});
+			oHomeGifCtrl.setEnabled(true);
+			oModel.setProperty("/gifsHome",oHomeGifs);
 		},
 		onSelectGuest:function(oEvent){
-
+			var oGuestGifCtrl = this.getView().byId("selectGifGast");
+			var oModel = this.getView().getModel();
+			var oteamName = oEvent.getSource().getSelectedItem().getText();
+			var oGifsData = oModel.getProperty("/gifs");
+			var oGuestGifs = oGifsData.filter((oItem)=>{
+				return (oItem.GifName.startsWith(oteamName) || oItem.GifName.startsWith("goal") || oItem.GifName.startsWith("Automatisch"));
+			});
+			oGuestGifCtrl.setEnabled(true);
+			oModel.setProperty("/gifsGuest",oGuestGifs);
 		},
 		setKOPaarung: function(){
 			var oModel = this.getView().getModel();

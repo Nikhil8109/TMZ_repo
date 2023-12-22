@@ -44,6 +44,8 @@ sap.ui.define([
 					});
 					var oTeamsData = oFinalSheetsData.filter((oData)=>{ return oData.Teams});
 					var oCompetitionsData = oFinalSheetsData.filter((oData)=>{ return oData.Competitions});
+					var oGifsData = oFinalSheetsData.filter((oData)=>{ return oData.Gifs});
+					var oaudioData = oFinalSheetsData.filter((oData)=>{ return oData.Audios});
 					var data = {
 						"testinput":"",
 						"tableStatus": "Paarung noch nicht gesetzt",
@@ -114,6 +116,8 @@ sap.ui.define([
 						"adName":"Automatisch",
 						"adSrc":"",
 						"adList":"",
+						"gifsHome": [],
+						"gifsGuest": [],
 						"tormusikName":"Automatisch",
 						"tormusikSrc":"",
 						"tormusikList":"",
@@ -254,412 +258,413 @@ sap.ui.define([
 							}
 						],
 						"competitions": me.removeDuplicates(oCompetitionsData[0].Competitions,"Competition"),
-						"gifs": [
-							{
-								"url": "auto",
-								"name": "Automatisch"
-							},{
-								"url": "pics/gifs/lude1.gif",
-								"name": "Lude"
-							},{
-								"url": "pics/gifs/lude2.gif",
-								"name": "Lude"
-							},{
-								"url": "pics/gifs/lude3.gif",
-								"name": "Lude"
-							},{
-								"url": "pics/gifs/darmstadt2.gif",
-								"name": "SV Darmstadt"
-							}, {
-								"url": "pics/gifs/darmstadt3.gif",
-								"name": "SV Darmstadt"
-							}, {
-								"url": "pics/gifs/darmstadt4.gif",
-								"name": "SV Darmstadt"
-							}, {
-								"url": "pics/gifs/dettingen1.gif",
-								"name": "SG Dettingen"
-							}, {
-								"url": "pics/gifs/gladbach1.gif",
-								"name": "Borussia Mönchengladbach"
-							}, {
-								"url": "pics/gifs/gladbach2.gif",
-								"name": "Borussia Mönchengladbach"
-							}, {
-								"url": "pics/gifs/gladbach3.gif",
-								"name": "Borussia Mönchengladbach"
-							}, {
-								"url": "pics/gifs/gladbach4.gif",
-								"name": "Borussia Mönchengladbach"
-							}, {
-								"url": "pics/gifs/gladbach5.gif",
-								"name": "Borussia Mönchengladbach"
-							}, {
-								"url": "pics/gifs/gladbach6.gif",
-								"name": "Borussia Mönchengladbach"
-							}, {
-								"url": "pics/gifs/gladbach7.gif",
-								"name": "Borussia Mönchengladbach"
-							}, {
-								"url": "pics/gifs/gladbach8.gif",
-								"name": "Borussia Mönchengladbach"
-							}, {
-								"url": "pics/gifs/gladbach9.gif",
-								"name": "Borussia Mönchengladbach"
-							}, {
-								"url": "pics/gifs/gladbach10.gif",
-								"name": "Borussia Mönchengladbach"
-							}, {
-								"url": "pics/gifs/gladbach11.gif",
-								"name": "Borussia Mönchengladbach"
-							}, {
-								"url": "pics/gifs/cluj1.gif",
-								"name": "CFR Cluj"
-							}, {
-								"url": "pics/gifs/cluj2.gif",
-								"name": "CFR Cluj"
-							}, {
-								"url": "pics/gifs/cluj3.gif",
-								"name": "CFR Cluj"
-							}, {
-								"url": "pics/gifs/dortmund1.gif",
-								"name": "Borussia Dortmund"
-							}, {
-								"url": "pics/gifs/dortmund2.gif",
-								"name": "Borussia Dortmund"
-							}, {
-								"url": "pics/gifs/dortmund3.gif",
-								"name": "Borussia Dortmund"
-							}, {
-								"url": "pics/gifs/dortmund4.gif",
-								"name": "Borussia Dortmund"
-							}, {
-								"url": "pics/gifs/dortmund5.gif",
-								"name": "Borussia Dortmund"
-							}, {
-								"url": "pics/gifs/dortmund6.gif",
-								"name": "Borussia Dortmund"
-							}, {
-								"url": "pics/gifs/dortmund7.gif",
-								"name": "Borussia Dortmund"
-							}, {
-								"url": "pics/gifs/dortmund8.gif",
-								"name": "Borussia Dortmund"
-							}, {
-								"url": "pics/gifs/dortmund9.gif",
-								"name": "Borussia Dortmund"
-							}, {
-								"url": "pics/gifs/dortmund10.gif",
-								"name": "Borussia Dortmund"
-							}, {
-								"url": "pics/gifs/augsburg1.gif",
-								"name": "FC Augsburg"
-							}, {
-								"url": "pics/gifs/augsburg2.gif",
-								"name": "FC Augsburg"
-							}, {
-								"url": "pics/gifs/augsburg3.gif",
-								"name": "FC Augsburg"
-							}, {
-								"url": "pics/gifs/augsburg4.gif",
-								"name": "FC Augsburg"
-							}, {
-								"url": "pics/gifs/augsburg5.gif",
-								"name": "FC Augsburg"
-							}, {
-								"url": "pics/gifs/augsburg6.gif",
-								"name": "FC Augsburg"
-							}, {
-								"url": "pics/gifs/augsburg7.gif",
-								"name": "FC Augsburg"
-							}, {
-								"url": "pics/gifs/augsburg8.gif",
-								"name": "FC Augsburg"
-							}, {
-								"url": "pics/gifs/heidenheim1.gif",
-								"name": "1. FC Heidenheim"
-							}, {
-								"url": "pics/gifs/heidenheim2.gif",
-								"name": "1. FC Heidenheim"
-							}, {
-								"url": "pics/gifs/heidenheim3.gif",
-								"name": "1. FC Heidenheim"
-							}, {
-								"url": "pics/gifs/heidenheim4.gif",
-								"name": "1. FC Heidenheim"
-							}, {
-								"url": "pics/gifs/heidenheim5.gif",
-								"name": "1. FC Heidenheim"
-							}, {
-								"url": "pics/gifs/innsbruck1.gif",
-								"name": "FC Wacker Innsbruck"
-							}, {
-								"url": "pics/gifs/innsbruck2.gif",
-								"name": "FC Wacker Innsbruck"
-							}, {
-								"url": "pics/gifs/innsbruck3.gif",
-								"name": "FC Wacker Innsbruck"
-							}, {
-								"url": "pics/gifs/innsbruck4.gif",
-								"name": "FC Wacker Innsbruck"
-							}, {
-								"url": "pics/gifs/innsbruck5.gif",
-								"name": "FC Wacker Innsbruck"
-							}, {
-								"url": "pics/gifs/kickers1.gif",
-								"name": "Stuttgarter Kickers"
-							}, {
-								"url": "pics/gifs/kickers2.gif",
-								"name": "Stuttgarter Kickers"
-							}, {
-								"url": "pics/gifs/nurnberg1.gif",
-								"name": "1. FC Nürnberg"
-							}, {
-								"url": "pics/gifs/nurnberg2.gif",
-								"name": "1. FC Nürnberg"
-							}, {
-								"url": "pics/gifs/nurnberg3.gif",
-								"name": "1. FC Nürnberg"
-							}, {
-								"url": "pics/gifs/nurnberg4.gif",
-								"name": "1. FC Nürnberg"
-							}, {
-								"url": "pics/gifs/nurnberg5.gif",
-								"name": "1. FC Nürnberg"
-							}, {
-								"url": "pics/gifs/nurnberg6.gif",
-								"name": "1. FC Nürnberg"
-							}, {
-								"url": "pics/gifs/nurnberg7.gif",
-								"name": "1. FC Nürnberg"
-							}, {
-								"url": "pics/gifs/oberdischingen1.gif",
-								"name": "SGM Oberdischingen"
-							}, {
-								"url": "pics/gifs/opfingen1.gif",
-								"name": "SG Öpfingen"
-							}, {
-								"url": "pics/gifs/regensburg1.gif",
-								"name": "SSV Jahn Regensburg"
-							}, {
-								"url": "pics/gifs/regensburg2.gif",
-								"name": "SSV Jahn Regensburg"
-							}, {
-								"url": "pics/gifs/ssvulm1.gif",
-								"name": "SSV Ulm"
-							}, {
-								"url": "pics/gifs/ksc1.gif",
-								"name": "Karlsruher SC"
-							}, {
-								"url": "pics/gifs/ksc2.gif",
-								"name": "Karlsruher SC"
-							}, {
-								"url": "pics/gifs/ksc3.gif",
-								"name": "Karlsruher SC"
-							}, {
-								"url": "pics/gifs/ksc4.gif",
-								"name": "Karlsruher SC"
-							}, {
-								"url": "pics/gifs/ksc5.gif",
-								"name": "Karlsruher SC"
-							}, {
-								"url": "pics/gifs/ksc6.gif",
-								"name": "Karlsruher SC"
-							}, {
-								"url": "pics/gifs/ksc7.gif",
-								"name": "Karlsruher SC"
-							}, {
-								"url": "pics/gifs/ksc8.gif",
-								"name": "Karlsruher SC"
-							}, {
-								"url": "pics/gifs/riedisheim1.gif",
-								"name": "FC Riedisheim"
-							}, {
-								"url": "pics/gifs/ringingen1.gif",
-								"name": "SV Ringingen"
-							}, {
-								"url": "pics/gifs/unterstadion1.gif",
-								"name": "SV Unterstadion"
-							}, {
-								"url": "pics/gifs/alb1.gif",
-								"name": "SGM Alb-Hochsträß"
-							}, {
-								"url": "pics/gifs/mainz_051.gif",
-								"name": "1. FSV Mainz 05"
-							}, {
-								"url": "pics/gifs/mainz_052.gif",
-								"name": "1. FSV Mainz 05"
-							}, {
-								"url": "pics/gifs/mainz_053.gif",
-								"name": "1. FSV Mainz 05"
-							}, {
-								"url": "pics/gifs/mainz_054.gif",
-								"name": "1. FSV Mainz 05"
-							}, {
-								"url": "pics/gifs/mainz_055.gif",
-								"name": "1. FSV Mainz 05"
-							}, {
-								"url": "pics/gifs/mainz_056.gif",
-								"name": "1. FSV Mainz 05"
-							}, {
-								"url": "pics/gifs/mainz_057.gif",
-								"name": "1. FSV Mainz 05"
-							}, {
-								"url": "pics/gifs/mainz_058.gif",
-								"name": "1. FSV Mainz 05"
-							}, {
-								"url": "pics/gifs/maribor1.gif",
-								"name": "NK Maribor"
-							}, {
-								"url": "pics/gifs/maribor2.gif",
-								"name": "NK Maribor"
-							}, {
-								"url": "pics/gifs/maribor3.gif",
-								"name": "NK Maribor"
-							}, {
-								"url": "pics/gifs/freiburg1.gif",
-								"name": "SC Freiburg"
-							}, {
-								"url": "pics/gifs/freiburg2.gif",
-								"name": "SC Freiburg"
-							}, {
-								"url": "pics/gifs/freiburg3.gif",
-								"name": "SC Freiburg"
-							}, {
-								"url": "pics/gifs/freiburg4.gif",
-								"name": "SC Freiburg"
-							}, {
-								"url": "pics/gifs/freiburg5.gif",
-								"name": "SC Freiburg"
-							}, {
-								"url": "pics/gifs/freiburg6.gif",
-								"name": "SC Freiburg"
-							}, {
-								"url": "pics/gifs/freiburg7.gif",
-								"name": "SC Freiburg"
-							}, {
-								"url": "pics/gifs/freiburg8.gif",
-								"name": "SC Freiburg"
-							}, {
-								"url": "pics/gifs/freiburg9.gif",
-								"name": "SC Freiburg"
-							}, {
-								"url": "pics/gifs/schalke1.gif",
-								"name": "FC Schalke"
-							}, {
-								"url": "pics/gifs/schalke2.gif",
-								"name": "FC Schalke"
-							}, {
-								"url": "pics/gifs/schalke3.gif",
-								"name": "FC Schalke"
-							}, {
-								"url": "pics/gifs/schalke4.gif",
-								"name": "FC Schalke"
-							}, {
-								"url": "pics/gifs/schalke5.gif",
-								"name": "FC Schalke"
-							}, {
-								"url": "pics/gifs/schalke6.gif",
-								"name": "FC Schalke"
-							}, {
-								"url": "pics/gifs/schalke7.gif",
-								"name": "FC Schalke"
-							}, {
-								"url": "pics/gifs/schalke8.gif",
-								"name": "FC Schalke"
-							}, {
-								"url": "pics/gifs/slavia01.gif",
-								"name": "SK Slavia Prag"
-							}, {
-								"url": "pics/gifs/slavia02.gif",
-								"name": "SK Slavia Prag"
-							}, {
-								"url": "pics/gifs/slavia03.gif",
-								"name": "SK Slavia Prag"
-							}, {
-								"url": "pics/gifs/slavia04.gif",
-								"name": "SK Slavia Prag"
-							}, {
-								"url": "pics/gifs/slavia05.gif",
-								"name": "SK Slavia Prag"
-							}, {
-								"url": "pics/gifs/slavia06.gif",
-								"name": "SK Slavia Prag"
-							}, {
-								"url": "pics/gifs/stuttgart1.gif",
-								"name": "VfB Stuttgart"
-							}, {
-								"url": "pics/gifs/stuttgart2.gif",
-								"name": "VfB Stuttgart"
-							}, {
-								"url": "pics/gifs/stuttgart3.gif",
-								"name": "VfB Stuttgart"
-							}, {
-								"url": "pics/gifs/stuttgart4.gif",
-								"name": "VfB Stuttgart"
-							}, {
-								"url": "pics/gifs/stuttgart5.gif",
-								"name": "VfB Stuttgart"
-							}, {
-								"url": "pics/gifs/stuttgart6.gif",
-								"name": "VfB Stuttgart"
-							}, {
-								"url": "pics/gifs/stuttgart7.gif",
-								"name": "VfB Stuttgart"
-							}, {
-								"url": "pics/gifs/stuttgart8.gif",
-								"name": "VfB Stuttgart"
-							}, {
-								"url": "pics/gifs/schlins1.gif",
-								"name": "FC Schlins"
-							}, {
-								"url": "pics/gifs/sonnenhof1.gif",
-								"name": "SG Sonnenhof Großaspach"
-							}, {
-								"url": "pics/gifs/sonnenhof2.gif",
-								"name": "SG Sonnenhof Großaspach"
-							}, {
-								"url": "pics/gifs/sonnenhof3.gif",
-								"name": "SG Sonnenhof Großaspach"
-							}, {
-								"url": "pics/gifs/sonnenhof4.gif",
-								"name": "SG Sonnenhof Großaspach"
-							}, {
-								"url": "pics/gifs/sonnenhof5.gif",
-								"name": "SG Sonnenhof Großaspach"
-							}, {
-								"url": "pics/gifs/vaihingen1.gif",
-								"name": "SV Vaihingen"
-							}, {
-								"url": "pics/gifs/swd1.gif",
-								"name": "SW Donau I"
-							}, {
-								"url": "pics/gifs/swd2.gif",
-								"name": "SW Donau I"
-							}, {
-								"url": "pics/gifs/swd3.gif",
-								"name": "SW Donau I"
-							}, {
-								"url": "pics/gifs/swd1.gif",
-								"name": "SW Donau II"
-							}, {
-								"url": "pics/gifs/swd2.gif",
-								"name": "SW Donau II"
-							}, {
-								"url": "pics/gifs/swd3.gif",
-								"name": "SW Donau II"
-							}, {
-								"url": "pics/gifs/swd1.gif",
-								"name": "SW Donau U14"
-							}, {
-								"url": "pics/gifs/swd2.gif",
-								"name": "SW Donau U14"
-							}, {
-								"url": "pics/gifs/swd3.gif",
-								"name": "SW Donau U14"
-							}
-						]
-						,
+						// "gifs": [
+						// 	{
+						// 		"url": "auto",
+						// 		"name": "Automatisch"
+						// 	},{
+						// 		"url": "pics/gifs/lude1.gif",
+						// 		"name": "Lude"
+						// 	},{
+						// 		"url": "pics/gifs/lude2.gif",
+						// 		"name": "Lude"
+						// 	},{
+						// 		"url": "pics/gifs/lude3.gif",
+						// 		"name": "Lude"
+						// 	},{
+						// 		"url": "pics/gifs/darmstadt2.gif",
+						// 		"name": "SV Darmstadt"
+						// 	}, {
+						// 		"url": "pics/gifs/darmstadt3.gif",
+						// 		"name": "SV Darmstadt"
+						// 	}, {
+						// 		"url": "pics/gifs/darmstadt4.gif",
+						// 		"name": "SV Darmstadt"
+						// 	}, {
+						// 		"url": "pics/gifs/dettingen1.gif",
+						// 		"name": "SG Dettingen"
+						// 	}, {
+						// 		"url": "pics/gifs/gladbach1.gif",
+						// 		"name": "Borussia Mönchengladbach"
+						// 	}, {
+						// 		"url": "pics/gifs/gladbach2.gif",
+						// 		"name": "Borussia Mönchengladbach"
+						// 	}, {
+						// 		"url": "pics/gifs/gladbach3.gif",
+						// 		"name": "Borussia Mönchengladbach"
+						// 	}, {
+						// 		"url": "pics/gifs/gladbach4.gif",
+						// 		"name": "Borussia Mönchengladbach"
+						// 	}, {
+						// 		"url": "pics/gifs/gladbach5.gif",
+						// 		"name": "Borussia Mönchengladbach"
+						// 	}, {
+						// 		"url": "pics/gifs/gladbach6.gif",
+						// 		"name": "Borussia Mönchengladbach"
+						// 	}, {
+						// 		"url": "pics/gifs/gladbach7.gif",
+						// 		"name": "Borussia Mönchengladbach"
+						// 	}, {
+						// 		"url": "pics/gifs/gladbach8.gif",
+						// 		"name": "Borussia Mönchengladbach"
+						// 	}, {
+						// 		"url": "pics/gifs/gladbach9.gif",
+						// 		"name": "Borussia Mönchengladbach"
+						// 	}, {
+						// 		"url": "pics/gifs/gladbach10.gif",
+						// 		"name": "Borussia Mönchengladbach"
+						// 	}, {
+						// 		"url": "pics/gifs/gladbach11.gif",
+						// 		"name": "Borussia Mönchengladbach"
+						// 	}, {
+						// 		"url": "pics/gifs/cluj1.gif",
+						// 		"name": "CFR Cluj"
+						// 	}, {
+						// 		"url": "pics/gifs/cluj2.gif",
+						// 		"name": "CFR Cluj"
+						// 	}, {
+						// 		"url": "pics/gifs/cluj3.gif",
+						// 		"name": "CFR Cluj"
+						// 	}, {
+						// 		"url": "pics/gifs/dortmund1.gif",
+						// 		"name": "Borussia Dortmund"
+						// 	}, {
+						// 		"url": "pics/gifs/dortmund2.gif",
+						// 		"name": "Borussia Dortmund"
+						// 	}, {
+						// 		"url": "pics/gifs/dortmund3.gif",
+						// 		"name": "Borussia Dortmund"
+						// 	}, {
+						// 		"url": "pics/gifs/dortmund4.gif",
+						// 		"name": "Borussia Dortmund"
+						// 	}, {
+						// 		"url": "pics/gifs/dortmund5.gif",
+						// 		"name": "Borussia Dortmund"
+						// 	}, {
+						// 		"url": "pics/gifs/dortmund6.gif",
+						// 		"name": "Borussia Dortmund"
+						// 	}, {
+						// 		"url": "pics/gifs/dortmund7.gif",
+						// 		"name": "Borussia Dortmund"
+						// 	}, {
+						// 		"url": "pics/gifs/dortmund8.gif",
+						// 		"name": "Borussia Dortmund"
+						// 	}, {
+						// 		"url": "pics/gifs/dortmund9.gif",
+						// 		"name": "Borussia Dortmund"
+						// 	}, {
+						// 		"url": "pics/gifs/dortmund10.gif",
+						// 		"name": "Borussia Dortmund"
+						// 	}, {
+						// 		"url": "pics/gifs/augsburg1.gif",
+						// 		"name": "FC Augsburg"
+						// 	}, {
+						// 		"url": "pics/gifs/augsburg2.gif",
+						// 		"name": "FC Augsburg"
+						// 	}, {
+						// 		"url": "pics/gifs/augsburg3.gif",
+						// 		"name": "FC Augsburg"
+						// 	}, {
+						// 		"url": "pics/gifs/augsburg4.gif",
+						// 		"name": "FC Augsburg"
+						// 	}, {
+						// 		"url": "pics/gifs/augsburg5.gif",
+						// 		"name": "FC Augsburg"
+						// 	}, {
+						// 		"url": "pics/gifs/augsburg6.gif",
+						// 		"name": "FC Augsburg"
+						// 	}, {
+						// 		"url": "pics/gifs/augsburg7.gif",
+						// 		"name": "FC Augsburg"
+						// 	}, {
+						// 		"url": "pics/gifs/augsburg8.gif",
+						// 		"name": "FC Augsburg"
+						// 	}, {
+						// 		"url": "pics/gifs/heidenheim1.gif",
+						// 		"name": "1. FC Heidenheim"
+						// 	}, {
+						// 		"url": "pics/gifs/heidenheim2.gif",
+						// 		"name": "1. FC Heidenheim"
+						// 	}, {
+						// 		"url": "pics/gifs/heidenheim3.gif",
+						// 		"name": "1. FC Heidenheim"
+						// 	}, {
+						// 		"url": "pics/gifs/heidenheim4.gif",
+						// 		"name": "1. FC Heidenheim"
+						// 	}, {
+						// 		"url": "pics/gifs/heidenheim5.gif",
+						// 		"name": "1. FC Heidenheim"
+						// 	}, {
+						// 		"url": "pics/gifs/innsbruck1.gif",
+						// 		"name": "FC Wacker Innsbruck"
+						// 	}, {
+						// 		"url": "pics/gifs/innsbruck2.gif",
+						// 		"name": "FC Wacker Innsbruck"
+						// 	}, {
+						// 		"url": "pics/gifs/innsbruck3.gif",
+						// 		"name": "FC Wacker Innsbruck"
+						// 	}, {
+						// 		"url": "pics/gifs/innsbruck4.gif",
+						// 		"name": "FC Wacker Innsbruck"
+						// 	}, {
+						// 		"url": "pics/gifs/innsbruck5.gif",
+						// 		"name": "FC Wacker Innsbruck"
+						// 	}, {
+						// 		"url": "pics/gifs/kickers1.gif",
+						// 		"name": "Stuttgarter Kickers"
+						// 	}, {
+						// 		"url": "pics/gifs/kickers2.gif",
+						// 		"name": "Stuttgarter Kickers"
+						// 	}, {
+						// 		"url": "pics/gifs/nurnberg1.gif",
+						// 		"name": "1. FC Nürnberg"
+						// 	}, {
+						// 		"url": "pics/gifs/nurnberg2.gif",
+						// 		"name": "1. FC Nürnberg"
+						// 	}, {
+						// 		"url": "pics/gifs/nurnberg3.gif",
+						// 		"name": "1. FC Nürnberg"
+						// 	}, {
+						// 		"url": "pics/gifs/nurnberg4.gif",
+						// 		"name": "1. FC Nürnberg"
+						// 	}, {
+						// 		"url": "pics/gifs/nurnberg5.gif",
+						// 		"name": "1. FC Nürnberg"
+						// 	}, {
+						// 		"url": "pics/gifs/nurnberg6.gif",
+						// 		"name": "1. FC Nürnberg"
+						// 	}, {
+						// 		"url": "pics/gifs/nurnberg7.gif",
+						// 		"name": "1. FC Nürnberg"
+						// 	}, {
+						// 		"url": "pics/gifs/oberdischingen1.gif",
+						// 		"name": "SGM Oberdischingen"
+						// 	}, {
+						// 		"url": "pics/gifs/opfingen1.gif",
+						// 		"name": "SG Öpfingen"
+						// 	}, {
+						// 		"url": "pics/gifs/regensburg1.gif",
+						// 		"name": "SSV Jahn Regensburg"
+						// 	}, {
+						// 		"url": "pics/gifs/regensburg2.gif",
+						// 		"name": "SSV Jahn Regensburg"
+						// 	}, {
+						// 		"url": "pics/gifs/ssvulm1.gif",
+						// 		"name": "SSV Ulm"
+						// 	}, {
+						// 		"url": "pics/gifs/ksc1.gif",
+						// 		"name": "Karlsruher SC"
+						// 	}, {
+						// 		"url": "pics/gifs/ksc2.gif",
+						// 		"name": "Karlsruher SC"
+						// 	}, {
+						// 		"url": "pics/gifs/ksc3.gif",
+						// 		"name": "Karlsruher SC"
+						// 	}, {
+						// 		"url": "pics/gifs/ksc4.gif",
+						// 		"name": "Karlsruher SC"
+						// 	}, {
+						// 		"url": "pics/gifs/ksc5.gif",
+						// 		"name": "Karlsruher SC"
+						// 	}, {
+						// 		"url": "pics/gifs/ksc6.gif",
+						// 		"name": "Karlsruher SC"
+						// 	}, {
+						// 		"url": "pics/gifs/ksc7.gif",
+						// 		"name": "Karlsruher SC"
+						// 	}, {
+						// 		"url": "pics/gifs/ksc8.gif",
+						// 		"name": "Karlsruher SC"
+						// 	}, {
+						// 		"url": "pics/gifs/riedisheim1.gif",
+						// 		"name": "FC Riedisheim"
+						// 	}, {
+						// 		"url": "pics/gifs/ringingen1.gif",
+						// 		"name": "SV Ringingen"
+						// 	}, {
+						// 		"url": "pics/gifs/unterstadion1.gif",
+						// 		"name": "SV Unterstadion"
+						// 	}, {
+						// 		"url": "pics/gifs/alb1.gif",
+						// 		"name": "SGM Alb-Hochsträß"
+						// 	}, {
+						// 		"url": "pics/gifs/mainz_051.gif",
+						// 		"name": "1. FSV Mainz 05"
+						// 	}, {
+						// 		"url": "pics/gifs/mainz_052.gif",
+						// 		"name": "1. FSV Mainz 05"
+						// 	}, {
+						// 		"url": "pics/gifs/mainz_053.gif",
+						// 		"name": "1. FSV Mainz 05"
+						// 	}, {
+						// 		"url": "pics/gifs/mainz_054.gif",
+						// 		"name": "1. FSV Mainz 05"
+						// 	}, {
+						// 		"url": "pics/gifs/mainz_055.gif",
+						// 		"name": "1. FSV Mainz 05"
+						// 	}, {
+						// 		"url": "pics/gifs/mainz_056.gif",
+						// 		"name": "1. FSV Mainz 05"
+						// 	}, {
+						// 		"url": "pics/gifs/mainz_057.gif",
+						// 		"name": "1. FSV Mainz 05"
+						// 	}, {
+						// 		"url": "pics/gifs/mainz_058.gif",
+						// 		"name": "1. FSV Mainz 05"
+						// 	}, {
+						// 		"url": "pics/gifs/maribor1.gif",
+						// 		"name": "NK Maribor"
+						// 	}, {
+						// 		"url": "pics/gifs/maribor2.gif",
+						// 		"name": "NK Maribor"
+						// 	}, {
+						// 		"url": "pics/gifs/maribor3.gif",
+						// 		"name": "NK Maribor"
+						// 	}, {
+						// 		"url": "pics/gifs/freiburg1.gif",
+						// 		"name": "SC Freiburg"
+						// 	}, {
+						// 		"url": "pics/gifs/freiburg2.gif",
+						// 		"name": "SC Freiburg"
+						// 	}, {
+						// 		"url": "pics/gifs/freiburg3.gif",
+						// 		"name": "SC Freiburg"
+						// 	}, {
+						// 		"url": "pics/gifs/freiburg4.gif",
+						// 		"name": "SC Freiburg"
+						// 	}, {
+						// 		"url": "pics/gifs/freiburg5.gif",
+						// 		"name": "SC Freiburg"
+						// 	}, {
+						// 		"url": "pics/gifs/freiburg6.gif",
+						// 		"name": "SC Freiburg"
+						// 	}, {
+						// 		"url": "pics/gifs/freiburg7.gif",
+						// 		"name": "SC Freiburg"
+						// 	}, {
+						// 		"url": "pics/gifs/freiburg8.gif",
+						// 		"name": "SC Freiburg"
+						// 	}, {
+						// 		"url": "pics/gifs/freiburg9.gif",
+						// 		"name": "SC Freiburg"
+						// 	}, {
+						// 		"url": "pics/gifs/schalke1.gif",
+						// 		"name": "FC Schalke"
+						// 	}, {
+						// 		"url": "pics/gifs/schalke2.gif",
+						// 		"name": "FC Schalke"
+						// 	}, {
+						// 		"url": "pics/gifs/schalke3.gif",
+						// 		"name": "FC Schalke"
+						// 	}, {
+						// 		"url": "pics/gifs/schalke4.gif",
+						// 		"name": "FC Schalke"
+						// 	}, {
+						// 		"url": "pics/gifs/schalke5.gif",
+						// 		"name": "FC Schalke"
+						// 	}, {
+						// 		"url": "pics/gifs/schalke6.gif",
+						// 		"name": "FC Schalke"
+						// 	}, {
+						// 		"url": "pics/gifs/schalke7.gif",
+						// 		"name": "FC Schalke"
+						// 	}, {
+						// 		"url": "pics/gifs/schalke8.gif",
+						// 		"name": "FC Schalke"
+						// 	}, {
+						// 		"url": "pics/gifs/slavia01.gif",
+						// 		"name": "SK Slavia Prag"
+						// 	}, {
+						// 		"url": "pics/gifs/slavia02.gif",
+						// 		"name": "SK Slavia Prag"
+						// 	}, {
+						// 		"url": "pics/gifs/slavia03.gif",
+						// 		"name": "SK Slavia Prag"
+						// 	}, {
+						// 		"url": "pics/gifs/slavia04.gif",
+						// 		"name": "SK Slavia Prag"
+						// 	}, {
+						// 		"url": "pics/gifs/slavia05.gif",
+						// 		"name": "SK Slavia Prag"
+						// 	}, {
+						// 		"url": "pics/gifs/slavia06.gif",
+						// 		"name": "SK Slavia Prag"
+						// 	}, {
+						// 		"url": "pics/gifs/stuttgart1.gif",
+						// 		"name": "VfB Stuttgart"
+						// 	}, {
+						// 		"url": "pics/gifs/stuttgart2.gif",
+						// 		"name": "VfB Stuttgart"
+						// 	}, {
+						// 		"url": "pics/gifs/stuttgart3.gif",
+						// 		"name": "VfB Stuttgart"
+						// 	}, {
+						// 		"url": "pics/gifs/stuttgart4.gif",
+						// 		"name": "VfB Stuttgart"
+						// 	}, {
+						// 		"url": "pics/gifs/stuttgart5.gif",
+						// 		"name": "VfB Stuttgart"
+						// 	}, {
+						// 		"url": "pics/gifs/stuttgart6.gif",
+						// 		"name": "VfB Stuttgart"
+						// 	}, {
+						// 		"url": "pics/gifs/stuttgart7.gif",
+						// 		"name": "VfB Stuttgart"
+						// 	}, {
+						// 		"url": "pics/gifs/stuttgart8.gif",
+						// 		"name": "VfB Stuttgart"
+						// 	}, {
+						// 		"url": "pics/gifs/schlins1.gif",
+						// 		"name": "FC Schlins"
+						// 	}, {
+						// 		"url": "pics/gifs/sonnenhof1.gif",
+						// 		"name": "SG Sonnenhof Großaspach"
+						// 	}, {
+						// 		"url": "pics/gifs/sonnenhof2.gif",
+						// 		"name": "SG Sonnenhof Großaspach"
+						// 	}, {
+						// 		"url": "pics/gifs/sonnenhof3.gif",
+						// 		"name": "SG Sonnenhof Großaspach"
+						// 	}, {
+						// 		"url": "pics/gifs/sonnenhof4.gif",
+						// 		"name": "SG Sonnenhof Großaspach"
+						// 	}, {
+						// 		"url": "pics/gifs/sonnenhof5.gif",
+						// 		"name": "SG Sonnenhof Großaspach"
+						// 	}, {
+						// 		"url": "pics/gifs/vaihingen1.gif",
+						// 		"name": "SV Vaihingen"
+						// 	}, {
+						// 		"url": "pics/gifs/swd1.gif",
+						// 		"name": "SW Donau I"
+						// 	}, {
+						// 		"url": "pics/gifs/swd2.gif",
+						// 		"name": "SW Donau I"
+						// 	}, {
+						// 		"url": "pics/gifs/swd3.gif",
+						// 		"name": "SW Donau I"
+						// 	}, {
+						// 		"url": "pics/gifs/swd1.gif",
+						// 		"name": "SW Donau II"
+						// 	}, {
+						// 		"url": "pics/gifs/swd2.gif",
+						// 		"name": "SW Donau II"
+						// 	}, {
+						// 		"url": "pics/gifs/swd3.gif",
+						// 		"name": "SW Donau II"
+						// 	}, {
+						// 		"url": "pics/gifs/swd1.gif",
+						// 		"name": "SW Donau U14"
+						// 	}, {
+						// 		"url": "pics/gifs/swd2.gif",
+						// 		"name": "SW Donau U14"
+						// 	}, {
+						// 		"url": "pics/gifs/swd3.gif",
+						// 		"name": "SW Donau U14"
+						// 	}
+						// ]
+						"gifs": oGifsData[0].Gifs,
+						"audio": oaudioData[0].Audios
 		/* 				"tormusik": [
 							{
 								"url": "auto",

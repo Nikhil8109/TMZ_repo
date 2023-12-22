@@ -97,12 +97,12 @@
 											</ComboBox>
 											<Label text="Toranimation Heim" id="slgifheim" class="colorWhite"/>
 	
-											<ComboBox id ="selectGifHeim"   items="{ path: '/gifs' }">
-												<core:Item key="{url}" text="{name}"/>
+											<ComboBox id ="selectGifHeim" selectedKey="Automatisch"  items="{ path: '/gifsHome' }" enabled="false">
+												<core:Item key="{GifName}" text="{GifName}"/>
 											</ComboBox>
 											<Label text="Toranimation Gast" id="slgifgast" class="colorWhite"/>
-											<ComboBox id ="selectGifGast"   items="{ path: '/gifs' }">
-												<core:Item key="{url}" text="{name}"/>
+											<ComboBox id ="selectGifGast"  selectedKey="Automatisch"  items="{ path: '/gifsGuest' }" enabled="false">
+												<core:Item key="{GifName}" text="{GifName}"/>
 											</ComboBox>
 										</sap.ui.layout.form:content>
 										<Input width="100%" id="tablestatus" editable="false" value="{/tableStatus}"/>
