@@ -664,7 +664,9 @@ sap.ui.define([
 						// 	}
 						// ]
 						"gifs": oGifsData[0].Gifs,
-						"audio": oaudioData[0].Audios
+						"audio": oaudioData[0].Audios,
+						"audiosHome": [],
+						"audiosGuest": []
 		/* 				"tormusik": [
 							{
 								"url": "auto",

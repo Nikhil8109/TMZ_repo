@@ -8,7 +8,7 @@
 					<l:Splitter height="100%">
 						<l:VerticalLayout width="100%" id="layout0">
 							<!-- <l:layoutData><l:SplitterLayoutData size="1298px"/></l:layoutData> -->
-							<l:layoutData><l:SplitterLayoutData size="300px"/></l:layoutData>
+							<l:layoutData><l:SplitterLayoutData size="500px"/></l:layoutData>
 							<Panel width="auto" class="sapUiResponsiveMargin" expandable="true">
 								<headerToolbar>
 									<Toolbar height="3rem">
@@ -64,10 +64,34 @@
 									<sap.ui.layout.form:SimpleForm editable="true" layout="ResponsiveGridLayout" xmlns:sap.ui.layout.form="sap.ui.layout.form"
 										id="form0_1546259712696">
 										<sap.ui.layout.form:content>
+										<HBox >
+										<CheckBox id="selectAutoMusic" text="Auto Music" selected="true" />
+										<CheckBox id="selectTeamAnthem" text="Team Anthems"  class="spacingMarg"/>
+										</HBox>
+										<HBox alignItems="Center" >
+										<Label text="Song Last Minute:" class="colorWhite" />
+											<ComboBox id ="selectAudLastMin" selectedKey="Automatisch"  items="{ path: '/audio' }"  class="spacingMarg">
+												<core:Item key="{AudioName}" text="{AudioName}"/>
+											</ComboBox>
+										</HBox>
+										<HBox alignItems="Center">
+										<HBox alignItems="Center" >
+										<Label text="Song T1:"  class="colorWhite"/>
+											<ComboBox id ="selectAudTeam1" class="spacingMarg"  selectedKey="Automatisch" enabled="false"  items="{ path: '/audiosHome' }" >
+												<core:Item key="{AudioName}" text="{AudioName}"/>
+											</ComboBox>
+										</HBox>
+										<HBox alignItems="Center" >
+										<Label text="Song T2:"  class="colorWhite spacingMarg"/>
+											<ComboBox id ="selectAudTeam2" class="spacingMarg"  selectedKey="Automatisch" enabled="false"  items="{ path: '/audiosGuest' }" >
+												<core:Item key="{AudioName}" text="{AudioName}"/>
+											</ComboBox>
+										</HBox>
+										</HBox>
 											<Label text="Heim" id="lbheim" class="colorWhite"/>
-											<StepInput id="heimtore" value="{/anzahlToreHeim}" min="0" max="99" step="1" change="showTorHeim"/>
+											<StepInput id="heimtore" value="{/anzahlToreHeim}" min="0" max="99" width="100px" step="1" change="showTorHeim" enabled="false"/>
 											<Label text="Gast" id="lbgast" class="colorWhite"/>
-											<StepInput id="gasttore" value="{/anzahlToreGast}" min="0" max="99" step="1" change="showTorGast"/>
+											<StepInput id="gasttore" value="{/anzahlToreGast}" min="0" max="99" width="100px"  step="1" change="showTorGast" enabled="false"/>
 										</sap.ui.layout.form:content>
 									</sap.ui.layout.form:SimpleForm>
 									<Button text="Reset" id="RestetSpiestand" press="resetSpielstand"/>
