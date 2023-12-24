@@ -30,7 +30,7 @@
 													<sap.ui.layout.form:formElements>
 														<sap.ui.layout.form:FormElement label="" id="element0" class="colorWhite">
 															<sap.ui.layout.form:fields>
-																<Label text="Spielzeit:" id="labelSpielzeit" align="right" class="colorWhitear"/>
+																<Label text="Spielzeit:" id="labelSpielzeit"  class="colorWhitear"/>
 																<Input width="600px" id="inputtdm" value="{/timerDurationMinutes}"/>
 																<Input width="600px" id="inputtds" value="{/timerDurationSeconds}"/>
 																<Button id="btNeunMin" text="12 min" press="setSpielzeit"/>
@@ -66,7 +66,7 @@
 										<sap.ui.layout.form:content>
 										<HBox >
 										<CheckBox id="selectAutoMusic" text="Auto Music" selected="true" />
-										<CheckBox id="selectTeamAnthem" text="Team Anthems"  class="spacingMarg"/>
+										<CheckBox id="selectTeamAnthem" text="Team Anthems"  class="spacingMarg" select="onSelectTeamAnthem"/>
 										</HBox>
 										<HBox alignItems="Center" >
 										<Label text="Song Last Minute:" class="colorWhite" />

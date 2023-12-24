@@ -243,7 +243,6 @@ sap.ui.define([
 			var oSourceParam = oEvent.getParameters().value;
 			if(this._oHomeCount === 0 || this._oHomeCount < oSourceParam){
 				var oModel = this.getView().getModel();
-				var isTeamAnthemSelected = this.getView().byId("selectTeamAnthem").getSelected();
 				var penTimer3Aktive = oModel.getProperty("/isPenTimer3Aktive");
 				var penTimer4Aktive = oModel.getProperty("/isPenTimer4Aktive");
 				var animationControl = this.getView().byId("animationControl1").getSelected();
@@ -300,56 +299,56 @@ sap.ui.define([
 							matchedGif.push(obJ);
 						});
 						var randomNr = Math.floor(Math.random() * matchedGif.length);
-						var oHomeUrl = "/DataFiles/gifs/"+matchedGif[randomNr].GifName+".gif";
+						var oHomeUrl = "./DataFiles/gifs/"+matchedGif[randomNr].GifName+".gif";
 						oModel.setProperty("/gifSrcHeim",oHomeUrl);
 					}
 					else{
 						var randomNr = Math.floor(Math.random() * otherGifs.length);
-						var oOtherUrl = "/DataFiles/gifs/"+otherGifs[randomNr].GifName+".gif";
+						var oOtherUrl = "./DataFiles/gifs/"+otherGifs[randomNr].GifName+".gif";
 						oModel.setProperty("/gifSrcHeim",oOtherUrl);
 					}	
 				}
 				else{
-					oModel.setProperty("/gifSrcHeim","/DataFiles/gifs/"+gifSelection.replaceAll(' ', '')+".gif");
+					oModel.setProperty("/gifSrcHeim","./DataFiles/gifs/"+gifSelection.replaceAll(' ', '')+".gif");
 				}
-				if(isTeamAnthemSelected){
-					var oHomeTeam = this.getView().byId("selectHeimTeam").getSelectedItem().getText();
-					var oHomeAudios = oModel.getProperty("/audiosHome");
-					var matchingaudios = oHomeAudios.filter((oItem)=>{return oItem.AudioName.startsWith(oHomeTeam + " Anthem")});
-					var otheraudios = oHomeAudios.filter((oItem)=>{return (oItem.AudioName.startsWith("general"))});
-					if(matchingaudios.length > 0){
-						var matchedAudio = [];
-					   matchingaudios.forEach((oItem)=>{
-							var obJ = {};
-							Object.defineProperty(obJ, "AudioName", {
-								value: oItem.AudioName.replaceAll(' ', ''),
-								writable: true,
-								enumerable: true,
-								configurable: true,
-							  });
-							matchedAudio.push(obJ);
-						});
-						var randomNr = Math.floor(Math.random() * matchedAudio.length);
-						var oHomeUrl = "/DataFiles/audios/"+matchedAudio[randomNr].AudioName+".mp3";
-						// oModel.setProperty("/gifSrcHeim",oHomeUrl);
-						var audioElement = document.createElement('audio');
-						audioElement.setAttribute('src', oHomeUrl);
-						audioElement.play();
-				}
-				else{
-					var randomNr = Math.floor(Math.random() * otheraudios.length);
-					var oOtherUrl = "/DataFiles/audios/"+otheraudios[randomNr].AudioName+".mp3";
-					// oModel.setProperty("/gifSrcHeim",oOtherUrl);
-					var audioElement = document.createElement('audio');
-					audioElement.setAttribute('src', oOtherUrl);
-					audioElement.play();
-				}	
-			}
-				else{
+			// 	if(isTeamAnthemSelected){
+			// 		var oHomeTeam = this.getView().byId("selectHeimTeam").getSelectedItem().getText();
+			// 		var oHomeAudios = oModel.getProperty("/audiosHome");
+			// 		var matchingaudios = oHomeAudios.filter((oItem)=>{return oItem.AudioName.startsWith(oHomeTeam + " Anthem")});
+			// 		var otheraudios = oHomeAudios.filter((oItem)=>{return (oItem.AudioName.startsWith("general"))});
+			// 		if(matchingaudios.length > 0){
+			// 			var matchedAudio = [];
+			// 		   matchingaudios.forEach((oItem)=>{
+			// 				var obJ = {};
+			// 				Object.defineProperty(obJ, "AudioName", {
+			// 					value: oItem.AudioName.replaceAll(' ', ''),
+			// 					writable: true,
+			// 					enumerable: true,
+			// 					configurable: true,
+			// 				  });
+			// 				matchedAudio.push(obJ);
+			// 			});
+			// 			var randomNr = Math.floor(Math.random() * matchedAudio.length);
+			// 			var oHomeUrl = "./DataFiles/audios/"+matchedAudio[randomNr].AudioName+".mp3";
+			// 			// oModel.setProperty("/gifSrcHeim",oHomeUrl);
+			// 			var audioElement = document.createElement('audio');
+			// 			audioElement.setAttribute('src', oHomeUrl);
+			// 			audioElement.play();
+			// 	}
+			// 	else{
+			// 		var randomNr = Math.floor(Math.random() * otheraudios.length);
+			// 		var oOtherUrl = "./DataFiles/audios/"+otheraudios[randomNr].AudioName+".mp3";
+			// 		// oModel.setProperty("/gifSrcHeim",oOtherUrl);
+			// 		var audioElement = document.createElement('audio');
+			// 		audioElement.setAttribute('src', oOtherUrl);
+			// 		audioElement.play();
+			// 	}	
+			// }
+			// 	else{
 					if(audioSelection === "Automatisch"){
 						var oHomeTeam = this.getView().byId("selectHeimTeam").getSelectedItem().getText();
 						var oHomeAudios = oModel.getProperty("/audiosHome");
-						var matchingaudios = oHomeAudios.filter((oItem)=>{return oItem.AudioName.startsWith(oHomeTeam) && !oItem.AudioName.startsWith(oHomeTeam + " Anthem")});
+						var matchingaudios = oHomeAudios.filter((oItem)=>{return oItem.AudioName.startsWith(oHomeTeam)});
 						var otheraudios = oHomeAudios.filter((oItem)=>{return (oItem.AudioName.startsWith("general"))});
 						if(matchingaudios.length > 0){
 							var matchedAudio = [];
@@ -364,7 +363,7 @@ sap.ui.define([
 								matchedAudio.push(obJ);
 							});
 							var randomNr = Math.floor(Math.random() * matchedAudio.length);
-							var oHomeUrl = "/DataFiles/audios/"+matchedAudio[randomNr].AudioName+".mp3";
+							var oHomeUrl = "./DataFiles/audios/"+matchedAudio[randomNr].AudioName+".mp3";
 							// oModel.setProperty("/gifSrcHeim",oHomeUrl);
 							var audioElement = document.createElement('audio');
 							audioElement.setAttribute('src', oHomeUrl);
@@ -372,7 +371,7 @@ sap.ui.define([
 						}
 						else{
 							var randomNr = Math.floor(Math.random() * otheraudios.length);
-							var oOtherUrl = "/DataFiles/audios/"+otheraudios[randomNr].AudioName+".mp3";
+							var oOtherUrl = "./DataFiles/audios/"+otheraudios[randomNr].AudioName+".mp3";
 							// oModel.setProperty("/gifSrcHeim",oOtherUrl);
 							var audioElement = document.createElement('audio');
 							audioElement.setAttribute('src', oOtherUrl);
@@ -380,12 +379,12 @@ sap.ui.define([
 						}	
 					}
 					else{
-						// oModel.setProperty("/gifSrcHeim","/DataFiles/gifs/"+gifSelection+".gif");
+						// oModel.setProperty("/gifSrcHeim","./DataFiles/gifs/"+gifSelection+".gif");
 						var audioElement = document.createElement('audio');
-							audioElement.setAttribute('src', "/DataFiles/audios/"+audioSelection.replaceAll(' ', '')+".mp3");
+							audioElement.setAttribute('src', "./DataFiles/audios/"+audioSelection.replaceAll(' ', '')+".mp3");
 							audioElement.play();
 					}
-				} 
+				// } 
 				//Update Live Score
 				controller.liveTableUpdate();
 				//Highlight current teams in table
@@ -406,12 +405,38 @@ sap.ui.define([
 			}
 			this._oHomeCount = oSourceParam;
 		},
-		
+		onSelectTeamAnthem:function(oEvent){
+			var oTeamAnthemchck = oEvent.getSource().getSelected();
+			var oModel = this.getView().getModel();
+			var oAudiosAll = oModel.getProperty("/audio");
+			var oHomeAudios = oModel.getProperty("/audiosHome");
+			var oGuestAudios = oModel.getProperty("/audiosGuest");
+			var oHome = this.getView().byId("selectHeimTeam");
+			var oGuest = this.getView().byId("selectGastTeam");
+			var oHomeTeam = oHome.getSelectedItem().getText();
+			var oGuestTeam = oGuest.getSelectedItem().getText();
+			if(oTeamAnthemchck){
+				if(oHome !== undefined && oGuest !== undefined){
+					var oHomeAnthems = oAudiosAll.filter((oData)=>{ return oData.AudioName.startsWith(oHomeTeam + " Anthem")});
+					var oGuestAnthems = oAudiosAll.filter((oData)=>{ return oData.AudioName.startsWith(oGuestTeam + " Anthem")});
+					oHomeAudios =  oHomeAudios.concat(oHomeAnthems);
+					oGuestAudios =  oGuestAudios.concat(oGuestAnthems);
+					oModel.setProperty("/audiosHome",oHomeAudios);
+					oModel.setProperty("/audiosGuest",oGuestAudios);
+				}
+				}
+				else{
+					oHomeAudios = oHomeAudios.filter((oItem)=>{return !oItem.AudioName.startsWith(oHomeTeam + " Anthem")});
+					oGuestAudios = oGuestAudios.filter((oItem)=>{return !oItem.AudioName.startsWith(oGuestTeam + " Anthem")});
+					oModel.setProperty("/audiosHome",oHomeAudios);
+					oModel.setProperty("/audiosGuest",oGuestAudios);
+				}
+			},
 		showTorGast: function(oEvent){
 			var oSourceParam = oEvent.getParameters().value;
 		if(this._oGuestCount === 0 || this._oGuestCount < oSourceParam){
 			var oModel = this.getView().getModel();
-			var isTeamAnthemSelected = this.getView().byId("selectTeamAnthem").getSelected();
+			// var isTeamAnthemSelected = this.getView().byId("selectTeamAnthem").getSelected();
 			var penTimer1Aktive = oModel.getProperty("/isPenTimer1Aktive");
 			var penTimer2Aktive = oModel.getProperty("/isPenTimer2Aktive");
 			var animationControl = this.getView().byId("animationControl1").getSelected();
@@ -469,54 +494,54 @@ sap.ui.define([
 						matchedGif.push(obJ);
 					});
 					var randomNr = Math.floor(Math.random() * matchedGif.length);
-					oModel.setProperty("/gifSrcGast","/DataFiles/gifs/"+matchedGif[randomNr].GifName+".gif");
+					oModel.setProperty("/gifSrcGast","./DataFiles/gifs/"+matchedGif[randomNr].GifName+".gif");
 				}
 				else{
 					var randomNr = Math.floor(Math.random() * otherGifs.length);
-					oModel.setProperty("/gifSrcGast","/DataFiles/gifs/"+otherGifs[randomNr].GifName+".gif");
+					oModel.setProperty("/gifSrcGast","./DataFiles/gifs/"+otherGifs[randomNr].GifName+".gif");
 				}	
 			}
 			else{
-				oModel.setProperty("/gifSrcGast","/DataFiles/gifs/"+gifSelection.replaceAll(' ', '')+".gif");
+				oModel.setProperty("/gifSrcGast","./DataFiles/gifs/"+gifSelection.replaceAll(' ', '')+".gif");
 			}
-			if(isTeamAnthemSelected){
-				var oGuestTeam = this.getView().byId("selectGastTeam").getSelectedItem().getText();
-				var oGuestAudios = oModel.getProperty("/audiosGuest");
-				var matchingaudios = oGuestAudios.filter((oItem)=>{return oItem.AudioName.startsWith(oGuestTeam + " Anthem")});
-				var otheraudios = oGuestAudios.filter((oItem)=>{return (oItem.AudioName.startsWith("general"))});
-				if(matchingaudios.length > 0){
-					var matchedAudio = [];
-				   matchingaudios.forEach((oItem)=>{
-						var obJ = {};
-						Object.defineProperty(obJ, "AudioName", {
-							value: oItem.AudioName.replaceAll(' ', ''),
-							writable: true,
-							enumerable: true,
-							configurable: true,
-						  });
-						matchedAudio.push(obJ);
-					});
-					var randomNr = Math.floor(Math.random() * matchedAudio.length);
-					var oGuestUrl = "/DataFiles/audios/"+matchedAudio[randomNr].AudioName+".mp3";
-					// oModel.setProperty("/gifSrcHeim",oHomeUrl);
-					var audioElement = document.createElement('audio');
-					audioElement.setAttribute('src', oGuestUrl);
-					audioElement.play();
-			}
-			else{
-				var randomNr = Math.floor(Math.random() * otheraudios.length);
-				var oOtherUrl = "/DataFiles/audios/"+otheraudios[randomNr].AudioName+".mp3";
-				// oModel.setProperty("/gifSrcHeim",oOtherUrl);
-				var audioElement = document.createElement('audio');
-				audioElement.setAttribute('src', oOtherUrl);
-				audioElement.play();
-			}	
-		}
-			else{
+		// 	if(isTeamAnthemSelected){
+		// 		var oGuestTeam = this.getView().byId("selectGastTeam").getSelectedItem().getText();
+		// 		var oGuestAudios = oModel.getProperty("/audiosGuest");
+		// 		var matchingaudios = oGuestAudios.filter((oItem)=>{return oItem.AudioName.startsWith(oGuestTeam + " Anthem")});
+		// 		var otheraudios = oGuestAudios.filter((oItem)=>{return (oItem.AudioName.startsWith("general"))});
+		// 		if(matchingaudios.length > 0){
+		// 			var matchedAudio = [];
+		// 		   matchingaudios.forEach((oItem)=>{
+		// 				var obJ = {};
+		// 				Object.defineProperty(obJ, "AudioName", {
+		// 					value: oItem.AudioName.replaceAll(' ', ''),
+		// 					writable: true,
+		// 					enumerable: true,
+		// 					configurable: true,
+		// 				  });
+		// 				matchedAudio.push(obJ);
+		// 			});
+		// 			var randomNr = Math.floor(Math.random() * matchedAudio.length);
+		// 			var oGuestUrl = "./DataFiles/audios/"+matchedAudio[randomNr].AudioName+".mp3";
+		// 			// oModel.setProperty("/gifSrcHeim",oHomeUrl);
+		// 			var audioElement = document.createElement('audio');
+		// 			audioElement.setAttribute('src', oGuestUrl);
+		// 			audioElement.play();
+		// 	}
+		// 	else{
+		// 		var randomNr = Math.floor(Math.random() * otheraudios.length);
+		// 		var oOtherUrl = "./DataFiles/audios/"+otheraudios[randomNr].AudioName+".mp3";
+		// 		// oModel.setProperty("/gifSrcHeim",oOtherUrl);
+		// 		var audioElement = document.createElement('audio');
+		// 		audioElement.setAttribute('src', oOtherUrl);
+		// 		audioElement.play();
+		// 	}	
+		// }
+		// 	else{
 				if(audioSelection === "Automatisch"){
 					var oGuestTeam = this.getView().byId("selectGastTeam").getSelectedItem().getText();
 					var oGuestAudios = oModel.getProperty("/audiosGuest");
-					var matchingaudios = oGuestAudios.filter((oItem)=>{return oItem.AudioName.startsWith(oGuestTeam) && !oItem.AudioName.startsWith(oGuestTeam + " Anthem")});
+					var matchingaudios = oGuestAudios.filter((oItem)=>{return oItem.AudioName.startsWith(oGuestTeam)});
 					var otheraudios = oGuestAudios.filter((oItem)=>{return (oItem.AudioName.startsWith("general"))});
 					if(matchingaudios.length > 0){
 						var matchedAudio = [];
@@ -531,7 +556,7 @@ sap.ui.define([
 							matchedAudio.push(obJ);
 						});
 						var randomNr = Math.floor(Math.random() * matchedAudio.length);
-						var oGuestUrl = "/DataFiles/audios/"+matchedAudio[randomNr].AudioName+".mp3";
+						var oGuestUrl = "./DataFiles/audios/"+matchedAudio[randomNr].AudioName+".mp3";
 						// oModel.setProperty("/gifSrcHeim",oHomeUrl);
 						var audioElement = document.createElement('audio');
 						audioElement.setAttribute('src', oGuestUrl);
@@ -539,7 +564,7 @@ sap.ui.define([
 					}
 					else{
 						var randomNr = Math.floor(Math.random() * otheraudios.length);
-						var oOtherUrl = "/DataFiles/audios/"+otheraudios[randomNr].AudioName+".mp3";
+						var oOtherUrl = "./DataFiles/audios/"+otheraudios[randomNr].AudioName+".mp3";
 						// oModel.setProperty("/gifSrcHeim",oOtherUrl);
 						var audioElement = document.createElement('audio');
 						audioElement.setAttribute('src', oOtherUrl);
@@ -547,12 +572,12 @@ sap.ui.define([
 					}	
 				}
 				else{
-					// oModel.setProperty("/gifSrcHeim","/DataFiles/gifs/"+gifSelection+".gif");
+					// oModel.setProperty("/gifSrcHeim","./DataFiles/gifs/"+gifSelection+".gif");
 					var audioElement = document.createElement('audio');
-						audioElement.setAttribute('src', "/DataFiles/audios/"+audioSelection.replaceAll(' ', '')+".mp3");
+						audioElement.setAttribute('src', "./DataFiles/audios/"+audioSelection.replaceAll(' ', '')+".mp3");
 						audioElement.play();
 				}
-			} 
+			// } 
 			//Update Live Score
 			controller.liveTableUpdate();
 			//Highlight current teams in table
@@ -828,10 +853,10 @@ sap.ui.define([
 			var oGifsData = oModel.getProperty("/gifs");
 			var oaudioData = oModel.getProperty("/audio");
 			var oT1Audios = oaudioData.filter((oItem)=>{
-				return (oItem.AudioName.startsWith(oteamName) || oItem.AudioName.startsWith("general") || oItem.AudioName.startsWith("Automatisch"));
+				return ((oItem.AudioName.startsWith(oteamName)  && !oItem.AudioName.startsWith(oteamName + " Anthem")) || oItem.AudioName.startsWith("general") || oItem.AudioName.startsWith("Automatisch"));
 			});
 			var oHomeGifs = oGifsData.filter((oItem)=>{
-				return (oItem.GifName.startsWith(oteamName) || oItem.GifName.startsWith("goal") || oItem.GifName.startsWith("Automatisch"));
+				return ((oItem.GifName.startsWith(oteamName) || oItem.GifName.startsWith("goal") || oItem.GifName.startsWith("Automatisch")));
 			});
 			oHomeGifCtrl.setEnabled(true);
 			oHomeAudCtrl.setEnabled(true);
@@ -848,7 +873,7 @@ sap.ui.define([
 			var oGifsData = oModel.getProperty("/gifs");
 			var oaudioData = oModel.getProperty("/audio");
 			var oT2Audios = oaudioData.filter((oItem)=>{
-				return (oItem.AudioName.startsWith(oteamName) || oItem.AudioName.startsWith("general") || oItem.AudioName.startsWith("Automatisch"));
+				return ((oItem.AudioName.startsWith(oteamName)  && !oItem.AudioName.startsWith(oteamName + " Anthem")) || oItem.AudioName.startsWith("general") || oItem.AudioName.startsWith("Automatisch"));
 			});
 			var oGuestGifs = oGifsData.filter((oItem)=>{
 				return (oItem.GifName.startsWith(oteamName) || oItem.GifName.startsWith("goal") || oItem.GifName.startsWith("Automatisch"));
@@ -1752,7 +1777,7 @@ sap.ui.define([
 										matchedAudio.push(obJ);
 									});
 									var randomNr = Math.floor(Math.random() * matchedAudio.length);
-									var oUrl = "/DataFiles/audios/"+matchedAudio[randomNr].AudioName+".mp3";
+									var oUrl = "./DataFiles/audios/"+matchedAudio[randomNr].AudioName+".mp3";
 									// oModel.setProperty("/gifSrcHeim",oHomeUrl);
 									var audioElement = document.createElement('audio');
 									audioElement.setAttribute('src', oUrl);
@@ -1760,7 +1785,7 @@ sap.ui.define([
 								}
 								else{
 									var randomNr = Math.floor(Math.random() * otheraudios.length);
-									var oOtherUrl = "/DataFiles/audios/"+otheraudios[randomNr].AudioName+".mp3";
+									var oOtherUrl = "./DataFiles/audios/"+otheraudios[randomNr].AudioName+".mp3";
 									// oModel.setProperty("/gifSrcHeim",oOtherUrl);
 									var audioElement = document.createElement('audio');
 									audioElement.setAttribute('src', oOtherUrl);
@@ -1768,9 +1793,9 @@ sap.ui.define([
 								}	
 							}
 							else{
-								// oModel.setProperty("/gifSrcHeim","/DataFiles/gifs/"+gifSelection+".gif");
+								// oModel.setProperty("/gifSrcHeim","./DataFiles/gifs/"+gifSelection+".gif");
 								var audioElement = document.createElement('audio');
-									audioElement.setAttribute('src', "/DataFiles/audios/"+audioSelection.replaceAll(' ', '')+".mp3");
+									audioElement.setAttribute('src', "./DataFiles/audios/"+audioSelection.replaceAll(' ', '')+".mp3");
 									audioElement.play();
 							}
 						kOneMin = true;
