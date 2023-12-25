@@ -112,11 +112,11 @@
 										id="form0_154625971269444">
 										<sap.ui.layout.form:content>
 											<Label text="Heim" id="slheim" class="colorWhite"/>
-											<ComboBox id ="selectHeimTeam"  items="{ path: '/teams', sorter: { path: 'Team' } }" change="onSelectHome">
+											<ComboBox id ="selectHeimTeam"  items="{ path: '/teamsComp', sorter: { path: 'Team' } }" change="onSelectHome">
 												<core:Item key="{Logo}" text="{Team}"/>
 											</ComboBox>
 											<Label text="Gast" id="slgast" class="colorWhite"/>
-											<ComboBox id ="selectGastTeam" items="{ path: '/teams', sorter: { path: 'Team' } }" change="onSelectGuest">
+											<ComboBox id ="selectGastTeam" items="{ path: '/teamsComp', sorter: { path: 'Team' } }" change="onSelectGuest">
 												<core:Item key="{Logo}" text="{Team}"/>
 											</ComboBox>
 											<Label text="Toranimation Heim" id="slgifheim" class="colorWhite"/>
@@ -184,53 +184,53 @@
 										id="form0_154625971244469444">
 										<sap.ui.layout.form:content>
 											<Label text="Gruppe" class="colorWhite"/>
-											<Select id="selectGroup" forceSelection="false" editable="false" change="sortTable" selectedKey="{/Gruppe}" items="{ path: '/gruppen', sorter: { path: 'name' } }">
+											<ComboBox id="selectGroup"  change="sortTable" selectedKey="{/Gruppe}" items="{ path: '/gruppen', sorter: { path: 'name' } }">
 												<core:Item key="{name}" text="{name}"/>
-											</Select>
+											</ComboBox>
 											<Label text="Platz 1" class="colorWhite"/>
-											<Select forceSelection="false" selectedKey="{/tabelle/0/team}" items="{ path: '/teams', sorter: { path: 'name' } }">
-												<core:Item key="{name}" text="{name}"/>
-											</Select>
+											<ComboBox  selectedKey="{/tabelle/0/team}" items="{ path: '/teamsComp', sorter: { path: 'Team' } }">
+												<core:Item key="{Logo}" text="{Team}"/>
+											</ComboBox>
 											<Label text="Spiele, Tore, Punkte" class="colorWhite"/>
 											<Input value="{/tabelle/0/spiele}"></Input>
 											<Input value="{/tabelle/0/torDiff}"></Input>
 											<Input value="{/tabelle/0/pkt}"></Input>
 											<Label text="Platz 2" class="colorWhite"/>
-											<Select forceSelection="false" selectedKey="{/tabelle/1/team}" items="{ path: '/teams', sorter: { path: 'name' } }">
-												<core:Item key="{name}" text="{name}"/>
-											</Select>
+											<ComboBox selectedKey="{/tabelle/1/team}" items="{ path: '/teamsComp', sorter: { path: 'Team' } }">
+												<core:Item key="{Logo}" text="{Team}"/>
+											</ComboBox>
 											<Label text="Spiele, Tore, Punkte" class="colorWhite"/>
 											<Input value="{/tabelle/1/spiele}"></Input>
 											<Input value="{/tabelle/1/torDiff}"></Input>
 											<Input value="{/tabelle/1/pkt}"></Input>
 											<Label text="Platz 3" class="colorWhite"/>
-											<Select forceSelection="false" selectedKey="{/tabelle/2/team}" items="{ path: '/teams', sorter: { path: 'name' } }">
-												<core:Item key="{name}" text="{name}"/>
-											</Select>
+											<ComboBox  selectedKey="{/tabelle/2/team}" items="{ path: '/teamsComp', sorter: { path: 'Team' } }">
+												<core:Item key="{Logo}" text="{Team}"/>
+											</ComboBox>
 											<Label text="Spiele, Tore, Punkte" class="colorWhite"/>
 											<Input value="{/tabelle/2/spiele}"></Input>
 											<Input value="{/tabelle/2/torDiff}"></Input>
 											<Input value="{/tabelle/2/pkt}"></Input>
 											<Label text="Platz 4" class="colorWhite"/>
-											<Select forceSelection="false" selectedKey="{/tabelle/3/team}" items="{ path: '/teams', sorter: { path: 'name' } }">
-												<core:Item key="{name}" text="{name}"/>
-											</Select>
+											<ComboBox selectedKey="{/tabelle/3/team}" items="{ path: '/teamsComp', sorter: { path: 'Team' } }">
+												<core:Item key="{Logo}" text="{Team}"/>
+											</ComboBox>
 											<Label text="Spiele, Tore, Punkte" class="colorWhite"/>
 											<Input value="{/tabelle/3/spiele}"></Input>
 											<Input value="{/tabelle/3/torDiff}"></Input>
 											<Input value="{/tabelle/3/pkt}"></Input>
 											<Label text="Platz 5" class="colorWhite"/>
-											<Select forceSelection="false" selectedKey="{/tabelle/4/team}" items="{ path: '/teams', sorter: { path: 'name' } }">
-												<core:Item key="{name}" text="{name}"/>
-											</Select>
+											<ComboBox  selectedKey="{/tabelle/4/team}" items="{ path: '/teamsComp', sorter: { path: 'Team' } }">
+												<core:Item key="{Logo}" text="{Team}"/>
+											</ComboBox>
 											<Label text="Spiele, Tore, Punkte" class="colorWhite"/>
 											<Input value="{/tabelle/4/spiele}"></Input>
 											<Input value="{/tabelle/4/torDiff}"></Input>
 											<Input value="{/tabelle/4/pkt}"></Input>
 											<Label text="Platz 6" class="colorWhite"/>
-											<Select forceSelection="false" selectedKey="{/tabelle/5/team}" items="{ path: '/teams', sorter: { path: 'name' } }">
-												<core:Item key="{name}" text="{name}"/>
-											</Select>
+											<ComboBox  selectedKey="{/tabelle/5/team}" items="{ path: '/teamsComp', sorter: { path: 'Team' } }">
+												<core:Item key="{Logo}" text="{Team}"/>
+											</ComboBox>
 											<Label text="Spiele, Tore, Punkte" class="colorWhite"/>
 											<Input value="{/tabelle/5/spiele}"></Input>
 											<Input value="{/tabelle/5/torDiff}"></Input>
@@ -275,7 +275,7 @@
 										id="competitionPanel">
 										<sap.ui.layout.form:content>
 											<Label text="Select Wettbewerb" id="comptId" class="colorWhite"/>
-												<ComboBox id="selectCompetition" items="{ path: '/competitions' }">
+												<ComboBox id="selectCompetition" items="{ path: '/competitions' }" change="onCompetitionSelect" >
 													<core:Item key="{Competition}" text="{Competition}"/>
 												</ComboBox>
 										</sap.ui.layout.form:content>
@@ -313,8 +313,8 @@
 											<Label text="Text" id="slbtext" class="colorWhite"/>
 											<Input value="{/textnachricht2}"></Input>
 											<Label text="Bild" id="picx" class="colorWhite"/>
-											<Select forceSelection="false" selectedKey="{/textPic}" items="{ path: '/teams', sorter: { path: 'name' } }">
-												<core:Item key="{url}" text="{name}"/>
+											<Select forceSelection="false" selectedKey="{/textPic}" items="{ path: 'teamsComp', sorter: { path: 'Team' } }">
+												<core:Item key="{Logo}" text="{Team}"/>
 											</Select>
 										</sap.ui.layout.form:content>
 										<Button text="Text + Bild anzeigen" press="showTextPic"/>
@@ -335,18 +335,18 @@
 											<Label text="Text" id="slkotext" class="colorWhite"/>
 											<Input value="{/textnachricht}"></Input>
 											<Label text="Match1" id="slkoteam1" class="colorWhite"/>
-											<Select id ="selectKOTeam1" forceSelection="true" selectedKey="{/koteam1URL}" items="{ path: '/teams', sorter: { path: 'name' } }">
-												<core:Item key="{url}" text="{name}"/>
+											<Select id ="selectKOTeam1" forceSelection="true" selectedKey="{/koteam1URL}" items="{ path: 'teamsComp', sorter: { path: 'Team' } }">
+												<core:Item key="{Logo}" text="{Team}"/>
 											</Select>
-											<Select id ="selectKOTeam2" forceSelection="true" selectedKey="{/koteam2URL}" items="{ path: '/teams', sorter: { path: 'name' } }">
-												<core:Item key="{url}" text="{name}"/>
+											<Select id ="selectKOTeam2" forceSelection="true" selectedKey="{/koteam2URL}" items="{ path: 'teamsComp', sorter: { path: 'Team' } }">
+												<core:Item key="{Logo}" text="{Team}"/>
 											</Select>
 											<Label text="Match2" id="slkoteam2" class="colorWhite"/>
-											<Select id ="selectKOTeam3" forceSelection="true" selectedKey="{/koteam3URL}" items="{ path: '/teams', sorter: { path: 'name' } }">
-												<core:Item key="{url}" text="{name}"/>
+											<Select id ="selectKOTeam3" forceSelection="true" selectedKey="{/koteam3URL}" items="{ path: 'teamsComp', sorter: { path: 'Team' } }">
+												<core:Item key="{Logo}" text="{Team}"/>
 											</Select>
-											<Select id ="selectKOTeam4" forceSelection="true" selectedKey="{/koteam4URL}" items="{ path: '/teams', sorter: { path: 'name' } }">
-												<core:Item key="{url}" text="{name}"/>
+											<Select id ="selectKOTeam4" forceSelection="true" selectedKey="{/koteam4URL}" items="{ path: 'teamsComp', sorter: { path: 'Team' } }">
+												<core:Item key="{Logo}" text="{Team}"/>
 											</Select>
 										</sap.ui.layout.form:content>
 										<Button text="Paarungen anzeigen" press="setKOPaarung"/>

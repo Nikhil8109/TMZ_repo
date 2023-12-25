@@ -44,6 +44,7 @@ sap.ui.define([
 					});
 					var oTeamsData = oFinalSheetsData.filter((oData)=>{ return oData.Teams});
 					var oCompetitionsData = oFinalSheetsData.filter((oData)=>{ return oData.Competitions});
+					// var oCompetitionsGroupsData = oCompetitionsData
 					var oGifsData = oFinalSheetsData.filter((oData)=>{ return oData.Gifs});
 					var oaudioData = oFinalSheetsData.filter((oData)=>{ return oData.Audios});
 					var data = {
@@ -128,10 +129,10 @@ sap.ui.define([
 						"tableClass":"sapUiTinyMargin",
 						"gruppe": "",
 						"noOfTeamsQualified":4,
-						"allGroupsAndTeams":["teamsGruppeE","teamsGruppeF"],
-						"allGroupsAndGames":["spieleGruppeE","spieleGruppeF"],
-						"allGroupsAndPoints":["pktGruppeE","pktGruppeF"],
-						"allGroupsAndGoalDiffs":["torDiffGruppeE","torDiffGruppeF"],
+						"allGroupsAndTeams":[],
+						"allGroupsAndGames":[],
+						"allGroupsAndPoints":[],
+						"allGroupsAndGoalDiffs":[],
 						"allGroupsAndGoals":["toreGruppeE","toreGruppeF"],
 						"teamsGruppeE":["VfB Stuttgart", "Borussia Mönchengladbach","SK Slavia Prag","Karlsruher SC", "1. FC Nürnberg","1. FSV Mainz 05"],
 						"spieleGruppeE":[0,0,0,0,0,0],
@@ -155,14 +156,7 @@ sap.ui.define([
 						"liveTblPkt":[],
 						"liveTblTorDiff":[],
 						"liveTblTore":[],
-						"gruppen": [{
-								"url": "E",
-								"name": "E"
-							}, {
-								"url": "F",
-								"name": "F"
-							}
-						],
+						"gruppen": [],
 						"matches": [],
 						"tabelle": [
 							{
@@ -204,6 +198,7 @@ sap.ui.define([
 							}
 						],
 						"teams": oTeamsData[0].Teams,
+						"teamsComp": oTeamsData[0].Teams,
 						"ads": [
 							{
 								"url": "auto",
@@ -258,6 +253,7 @@ sap.ui.define([
 							}
 						],
 						"competitions": me.removeDuplicates(oCompetitionsData[0].Competitions,"Competition"),
+						"competitionsAll":oCompetitionsData[0].Competitions,
 						// "gifs": [
 						// 	{
 						// 		"url": "auto",
