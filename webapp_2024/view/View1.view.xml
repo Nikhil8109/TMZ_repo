@@ -70,7 +70,7 @@
 										</HBox>
 										<HBox alignItems="Center" >
 										<Label text="Song Last Minute:" class="colorWhite" />
-											<ComboBox id ="selectAudLastMin" selectedKey="Automatisch"  items="{ path: '/audio' }"  class="spacingMarg">
+											<ComboBox id ="selectAudLastMin" selectedKey="Automatisch"  items="{ path: '/audiosLastMin' }"  class="spacingMarg">
 												<core:Item key="{AudioName}" text="{AudioName}"/>
 											</ComboBox>
 										</HBox>
@@ -464,7 +464,7 @@
 							<l:Grid id="grid11" defaultSpan="XL12 L12 M12 S12" position="Center" visible="{/showTabelle}">
 								<l:content>
 								<HBox alignItems="Center" alignContent="Center" justifyContent="Center">
-								  <Table id="table" items="{/tabelle}" width="auto" backgroundDesign = "Transparent" class="sapUiResponsiveMargin">
+								  <Table id="table" items="{/tabelle}" width="auto" backgroundDesign = "Transparent" class="sapUiResponsiveMargin ResultTable">
 								      <headerToolbar>
 											<Toolbar>
 												<Title text="{/tableTitle}" level="H2" class="TableHeader"/>

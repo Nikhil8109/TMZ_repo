@@ -147,6 +147,7 @@
 	background-color: rgba(0,0,0,0)!important;
 	line-height: 5px !important;
 	row-height: 5px !important;
+    border-collapse: collapse;
 }
 
 .sapMListTblHeader {
@@ -190,7 +191,7 @@
 	background-color: transparent!important;
 	border: 0 !important;
 }
-
+.DynamicLine { border-bottom: 0.2px solid white !important; }
 .columnStyle0 {
   background-color: rgba(0, 0, 255, 0.5) !important;
 }
@@ -203,8 +204,8 @@
   color: orange!important;
 }
 
-#__item18-__xmlview0--table-3_cell0,#__item18-__xmlview0--table-3_cell1,#__item18-__xmlview0--table-3_cell2,
-#__item18-__xmlview0--table-3_cell3,#__item18-__xmlview0--table-3_cell4 {
+#__item18-__xmlview0--table-1_cell0,#__item18-__xmlview0--table-1_cell1,#__item18-__xmlview0--table-1_cell2,
+#__item18-__xmlview0--table-1_cell3,#__item18-__xmlview0--table-1_cell4 {
  	border-bottom: 0.2px solid white!important; 
 }
 

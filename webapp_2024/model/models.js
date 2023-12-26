@@ -47,6 +47,8 @@ sap.ui.define([
 					// var oCompetitionsGroupsData = oCompetitionsData
 					var oGifsData = oFinalSheetsData.filter((oData)=>{ return oData.Gifs});
 					var oaudioData = oFinalSheetsData.filter((oData)=>{ return oData.Audios});
+					var oLastMinAudios = oaudioData[0].Audios.filter((oItem)=>{return oItem.AudioName.startsWith("lastminute")});
+				 oLastMinAudios = 	[{AudioName: "Automatisch"}].concat(oLastMinAudios);
 					var data = {
 						"testinput":"",
 						"tableStatus": "Paarung noch nicht gesetzt",
@@ -128,12 +130,12 @@ sap.ui.define([
 						"currentGroupIndex":"",
 						"tableClass":"sapUiTinyMargin",
 						"gruppe": "",
-						"noOfTeamsQualified":4,
+						"noOfTeamsQualified":[],
 						"allGroupsAndTeams":[],
 						"allGroupsAndGames":[],
 						"allGroupsAndPoints":[],
 						"allGroupsAndGoalDiffs":[],
-						"allGroupsAndGoals":["toreGruppeE","toreGruppeF"],
+						"allGroupsAndGoals":[],
 						"teamsGruppeE":["VfB Stuttgart", "Borussia Mönchengladbach","SK Slavia Prag","Karlsruher SC", "1. FC Nürnberg","1. FSV Mainz 05"],
 						"spieleGruppeE":[0,0,0,0,0,0],
 						"pktGruppeE":[0,0,0,0,0,0],
@@ -662,7 +664,8 @@ sap.ui.define([
 						"gifs": oGifsData[0].Gifs,
 						"audio": oaudioData[0].Audios,
 						"audiosHome": [],
-						"audiosGuest": []
+						"audiosGuest": [],
+						"audiosLastMin": oLastMinAudios
 		/* 				"tormusik": [
 							{
 								"url": "auto",
@@ -686,7 +689,6 @@ sap.ui.define([
 				reader.readAsBinaryString(file);
 				}
 		 xhr.send();
-
 // 			var data = {
 // 				"testinput":"",
 // 				"tableStatus": "Paarung noch nicht gesetzt",
