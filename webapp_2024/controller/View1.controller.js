@@ -2023,6 +2023,7 @@ sap.ui.define([
 										audioElement.setAttribute('src', oUrl);
 										audioElement.play();
 										me._isLastMinPlaying = true;
+										me._oLastAudio = audioElement;
 								}
 								// else{
 								// 	var randomNr = Math.floor(Math.random() * otheraudios.length);
@@ -2039,6 +2040,7 @@ sap.ui.define([
 									audioElement.setAttribute('src', "./DataFiles/audios/lastminute/"+audioSelection.replaceAll(' ', '')+".mp3");
 									audioElement.play();
 									me._isLastMinPlaying = true;
+									me._oLastAudio = audioElement;
 							}
 						kOneMin = true;
 						}
@@ -2070,7 +2072,7 @@ sap.ui.define([
 						if (minutes === 0 && seconds === 0) {
 							mp3.play(); 
 							oModel.setProperty("/liveMode", false);
-
+							me._oLastAudio.pause();
 							setTimeout(function(){ 
 								controller.saveMatchData(); //save match in matchlist
 							}, 500);
