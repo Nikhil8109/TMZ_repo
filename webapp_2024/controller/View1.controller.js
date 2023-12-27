@@ -8,6 +8,7 @@ sap.ui.define([
 			this._oHomeCount = 0;
 			this._oGuestCount = 0;
 			this._oLastAudio = null;
+			this._isLastMinPlaying = false;
 		},
 	
 		closeWindow: function(){
@@ -383,53 +384,58 @@ sap.ui.define([
 								var randomNr = Math.floor(Math.random() * matchedAudio.length);
 								var oHomeUrl = "./DataFiles/audios/goalmusic/"+matchedAudio[randomNr].AudioName+".mp3";
 								// oModel.setProperty("/gifSrcHeim",oHomeUrl);
-								if(this._oLastAudio === null){
-									var audioElement = document.createElement('audio');
-									audioElement.setAttribute('src', oHomeUrl);
-									audioElement.play();
-									this._oLastAudio = audioElement;
-								}
-								else{
-									this._oLastAudio.pause();
-									var audioElement = document.createElement('audio');
-									audioElement.setAttribute('src', oHomeUrl);
-									audioElement.play();
-									this._oLastAudio = audioElement;
-								}
-								
+								if(!this._isLastMinPlaying){
+									if(this._oLastAudio === null){
+										var audioElement = document.createElement('audio');
+										audioElement.setAttribute('src', oHomeUrl);
+										audioElement.play();
+										this._oLastAudio = audioElement;
+									}
+									else{
+										this._oLastAudio.pause();
+										var audioElement = document.createElement('audio');
+										audioElement.setAttribute('src', oHomeUrl);
+										audioElement.play();
+										this._oLastAudio = audioElement;
+									}
+								}	
 							}
 							else{
 								var randomNr = Math.floor(Math.random() * otheraudios.length);
 								var oOtherUrl = "./DataFiles/audios/goalmusic/"+otheraudios[randomNr].AudioName+".mp3";
 								// oModel.setProperty("/gifSrcHeim",oOtherUrl);
+								if(!this._isLastMinPlaying){
+									if(this._oLastAudio === null){
+										var audioElement = document.createElement('audio');
+										audioElement.setAttribute('src', oOtherUrl);
+										audioElement.play();
+										this._oLastAudio = audioElement;
+									}
+									else{
+										this._oLastAudio.pause();
+										var audioElement = document.createElement('audio');
+										audioElement.setAttribute('src', oOtherUrl);
+										audioElement.play();
+										this._oLastAudio = audioElement;
+									}
+								}
+							}	
+						}
+						else{
+							// oModel.setProperty("/gifSrcHeim","./DataFiles/gifs/"+gifSelection+".gif");
+							if(!this._isLastMinPlaying){
 								if(this._oLastAudio === null){
 									var audioElement = document.createElement('audio');
-									audioElement.setAttribute('src', oOtherUrl);
+									audioElement.setAttribute('src', "./DataFiles/audios/goalmusic/"+audioSelection.replaceAll(' ', '')+".mp3");
 									audioElement.play();
 									this._oLastAudio = audioElement;
 								}
 								else{
 									this._oLastAudio.pause();
 									var audioElement = document.createElement('audio');
-									audioElement.setAttribute('src', oOtherUrl);
+									audioElement.setAttribute('src', "./DataFiles/audios/goalmusic/"+audioSelection.replaceAll(' ', '')+".mp3");
 									audioElement.play();
-									this._oLastAudio = audioElement;
 								}
-							}	
-						}
-						else{
-							// oModel.setProperty("/gifSrcHeim","./DataFiles/gifs/"+gifSelection+".gif");
-							if(this._oLastAudio === null){
-								var audioElement = document.createElement('audio');
-								audioElement.setAttribute('src', "./DataFiles/audios/goalmusic/"+audioSelection.replaceAll(' ', '')+".mp3");
-								audioElement.play();
-								this._oLastAudio = audioElement;
-							}
-							else{
-								this._oLastAudio.pause();
-								var audioElement = document.createElement('audio');
-								audioElement.setAttribute('src', "./DataFiles/audios/goalmusic/"+audioSelection.replaceAll(' ', '')+".mp3");
-								audioElement.play();
 							}
 							
 						}				
@@ -613,56 +619,65 @@ sap.ui.define([
 							var randomNr = Math.floor(Math.random() * matchedAudio.length);
 							var oGuestUrl = "./DataFiles/audios/goalmusic/"+matchedAudio[randomNr].AudioName+".mp3";
 							// oModel.setProperty("/gifSrcHeim",oHomeUrl);
-							if(this._oLastAudio === null){
-								var audioElement = document.createElement('audio');
-								audioElement.setAttribute('src', oGuestUrl);
-								audioElement.play();
-								this._oLastAudio = audioElement;
+							if(!this._isLastMinPlaying){
+								if(this._oLastAudio === null){
+									var audioElement = document.createElement('audio');
+									audioElement.setAttribute('src', oGuestUrl);
+									audioElement.play();
+									this._oLastAudio = audioElement;
+								}
+								else {
+									this._oLastAudio.pause();
+									var audioElement = document.createElement('audio');
+									audioElement.setAttribute('src', oGuestUrl);
+									audioElement.play();
+									this._oLastAudio = audioElement;
+								}
 							}
-							else {
-								this._oLastAudio.pause();
-								var audioElement = document.createElement('audio');
-								audioElement.setAttribute('src', oGuestUrl);
-								audioElement.play();
-								this._oLastAudio = audioElement;
-							}
+							
 							
 						}
 						else{
 							var randomNr = Math.floor(Math.random() * otheraudios.length);
 							var oOtherUrl = "./DataFiles/audios/goalmusic/"+otheraudios[randomNr].AudioName+".mp3";
 							// oModel.setProperty("/gifSrcHeim",oOtherUrl);
-							if(this._oLastAudio === null){
-								var audioElement = document.createElement('audio');
-								audioElement.setAttribute('src', oOtherUrl);
-								audioElement.play();
-								this._oLastAudio = audioElement;
+							if(!this._isLastMinPlaying){
+								if(this._oLastAudio === null){
+									var audioElement = document.createElement('audio');
+									audioElement.setAttribute('src', oOtherUrl);
+									audioElement.play();
+									this._oLastAudio = audioElement;
+								}
+								else {
+									this._oLastAudio.pause();
+									var audioElement = document.createElement('audio');
+									audioElement.setAttribute('src', oOtherUrl);
+									audioElement.play();
+									this._oLastAudio = audioElement;
+								}
 							}
-							else {
-								this._oLastAudio.pause();
-								var audioElement = document.createElement('audio');
-								audioElement.setAttribute('src', oOtherUrl);
-								audioElement.play();
-								this._oLastAudio = audioElement;
-							}
+							
 							
 						}	
 					}
 					else{
 						// oModel.setProperty("/gifSrcHeim","./DataFiles/gifs/"+gifSelection+".gif");
-						if(this._oLastAudio === null){
-							var audioElement = document.createElement('audio');
-							audioElement.setAttribute('src', "./DataFiles/audios/goalmusic/"+audioSelection.replaceAll(' ', '')+".mp3");
-							audioElement.play();
-							this._oLastAudio = audioElement;
+						if(!this._isLastMinPlaying){
+							if(this._oLastAudio === null){
+								var audioElement = document.createElement('audio');
+								audioElement.setAttribute('src', "./DataFiles/audios/goalmusic/"+audioSelection.replaceAll(' ', '')+".mp3");
+								audioElement.play();
+								this._oLastAudio = audioElement;
+							}
+							else{
+								this._oLastAudio.pause();
+								var audioElement = document.createElement('audio');
+								audioElement.setAttribute('src', "./DataFiles/audios/goalmusic/"+audioSelection.replaceAll(' ', '')+".mp3");
+								audioElement.play();
+								this._oLastAudio = audioElement;
+							}
 						}
-						else{
-							this._oLastAudio.pause();
-							var audioElement = document.createElement('audio');
-							audioElement.setAttribute('src', "./DataFiles/audios/goalmusic/"+audioSelection.replaceAll(' ', '')+".mp3");
-							audioElement.play();
-							this._oLastAudio = audioElement;
-						}
+						
 						
 					}
 						// } 
@@ -1273,7 +1288,7 @@ sap.ui.define([
 					heimPkt = 1;
 					gastPkt = 1;
 				}
-				
+				var currentComp = this.getView().byId("selectCompetition").getSelectedItem().getText();
 				//assign new values to existing group and values
 				var currentGroupName = oModel.getProperty("/currentGroupName");
 
@@ -1323,7 +1338,7 @@ sap.ui.define([
 				var matchList = oModel.getProperty("/matches");
 
 				var sep = "~"; //separator
-				var matchString =  currentGroupName + sep + heimteam + sep + gastteam + sep + heimtore + sep + gasttore + "\n";
+				var matchString =  currentComp + ":" + currentGroupName + sep + heimteam + sep + gastteam + sep + heimtore + sep + gasttore + "\n";
 				
 
 				matchList.push(matchString);
@@ -1369,15 +1384,26 @@ sap.ui.define([
 				var teamName = teamListItems[i].getText();
 				teamList.push(teamName);
 			}
-			
+			var currentComp = this.getView().byId("selectCompetition").getSelectedItem().getText();
 			var matchList = this.getView().byId("matches").getValue();
 			
 			matchList = matchList.split(",");
+			var oMatchList = matchList.filter((oItems)=>{
+				return oItems.startsWith(currentComp+":");
+			});
+			var oMatches = oMatchList;
+			for (var i = 0; i < oMatches.length; i++) {
+				var temp = oMatches[i].split(":");
+				temp.splice(0,1);
+				oMatches[i] = temp.join();
+			}
+			console.log(matchList);
+			console.log(oMatches);
 			
 			//loop through matches
-			for (var i = 0; i < matchList.length; ++i) {
+			for (var i = 0; i < oMatches.length; ++i) {
 
-				var tempMatchString = matchList[i];
+				var tempMatchString = oMatches[i];
 				//sap.m.MessageToast.show(tempMatchString);
 				var strElements = tempMatchString.split("~");
 				var tempGroup = strElements[0].replace(/\s+/g, ''); //remove space from string
@@ -1549,14 +1575,22 @@ sap.ui.define([
 			var allGroupsAndGoals = oModel.getProperty("/allGroupsAndGoals");
 
 			for (var i = 0; i < allGroupsAndTeams.length; ++i) {
-				var group = oModel.getProperty("/" + allGroupsAndTeams[i]);
+				var group = allGroupsAndTeams[i];
 				var zeroArray = new Int8Array(group.length);
 
-				oModel.setProperty("/" + allGroupsAndGames[i], zeroArray);
-				oModel.setProperty("/" + allGroupsAndPoints[i], zeroArray);
-				oModel.setProperty("/" + allGroupsAndGoalDiffs[i], zeroArray);
-				oModel.setProperty("/" + allGroupsAndGoals[i], zeroArray);
+				// oModel.setProperty("/" + allGroupsAndGames[i], zeroArray);
+				// oModel.setProperty("/" + allGroupsAndPoints[i], zeroArray);
+				// oModel.setProperty("/" + allGroupsAndGoalDiffs[i], zeroArray);
+				// oModel.setProperty("/" + allGroupsAndGoals[i], zeroArray);
+				allGroupsAndGames[i] = zeroArray;
+				allGroupsAndGoalDiffs[i] = zeroArray;
+				allGroupsAndGoals[i] = zeroArray;
+				allGroupsAndPoints[i] = zeroArray;
 			}
+			oModel.setProperty("/allGroupsAndGames",allGroupsAndGames);
+			oModel.setProperty("/allGroupsAndPoints",allGroupsAndPoints);
+			oModel.setProperty("/allGroupsAndGoalDiffs",allGroupsAndGoalDiffs);
+			oModel.setProperty("/allGroupsAndGoals",allGroupsAndGoals);
 			this.getView().getController().sortTable();
 
 		},
@@ -1985,21 +2019,10 @@ sap.ui.define([
 									var randomNr = Math.floor(Math.random() * matchedAudio.length);
 									var oUrl = "./DataFiles/audios/lastminute/"+matchedAudio[randomNr].AudioName+".mp3";
 									// oModel.setProperty("/gifSrcHeim",oHomeUrl);
-									if(me._oLastAudio === null){
 										var audioElement = document.createElement('audio');
 										audioElement.setAttribute('src', oUrl);
 										audioElement.play();
-										me._oLastAudio = audioElement;
-									}
-									else{
-										me._oLastAudio.pause();
-										var audioElement = document.createElement('audio');
-										audioElement.setAttribute('src', oUrl);
-										audioElement.play();
-										me._oLastAudio = audioElement;
-
-									}
-									
+										me._isLastMinPlaying = true;
 								}
 								// else{
 								// 	var randomNr = Math.floor(Math.random() * otheraudios.length);
@@ -2015,6 +2038,7 @@ sap.ui.define([
 								var audioElement = document.createElement('audio');
 									audioElement.setAttribute('src', "./DataFiles/audios/lastminute/"+audioSelection.replaceAll(' ', '')+".mp3");
 									audioElement.play();
+									me._isLastMinPlaying = true;
 							}
 						kOneMin = true;
 						}
