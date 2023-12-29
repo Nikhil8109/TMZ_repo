@@ -5,10 +5,12 @@ sap.ui.define([
 
 	return Controller.extend("com.vflmunderkingen.Anzeigetafel.controller.View1", {
 		onInit:function(){
+            
 			this._oHomeCount = 0;
 			this._oGuestCount = 0;
 			this._oLastAudio = null;
 			this._isLastMinPlaying = false;
+			jQuery.sap.require("com.vflmunderkingen.Anzeigetafel.model.xlsx");
 		},
 	
 		closeWindow: function(){
@@ -261,6 +263,32 @@ sap.ui.define([
 			var stepInputControl = this.getView().byId("heimtore");
 			var animationControl = this.getView().byId("animationControl1").getSelected();
 			var automusicControl = this.getView().byId("selectAutoMusic").getSelected();
+			var oClock = this.getView().byId("text0").getText();
+			var oLastMinAudio = this.getView().byId("selectAudLastMin").getSelectedItem().getText();
+            
+            // Function to play audio with fade-out
+            var playWithFadeOut = function(audioElement) {
+                audioElement.play();
+                audioElement.onloadedmetadata = () => {
+                    var fadeOutStartTime = audioElement.duration - 10; // Start fade-out 10 seconds before the end
+                    var fadeOutInterval = 200; // Interval in milliseconds to reduce volume
+                    var fadeAmount = audioElement.volume / (10 * 1000 / fadeOutInterval); // Amount to decrease volume each interval
+
+                    var checkTime = setInterval(() => {
+                        if (audioElement.currentTime >= fadeOutStartTime) {
+                            audioElement.volume = Math.max(0, audioElement.volume - fadeAmount);
+                            if (audioElement.volume === 0) {
+                                clearInterval(checkTime);
+                                audioElement.pause();
+                            }
+                        }
+                        if (audioElement.paused || audioElement.ended) {
+                            clearInterval(checkTime);
+                        }
+                    }, fadeOutInterval);
+                };
+            };
+            
 			if((this._oHomeCount === 0 || this._oHomeCount < oSourceParam) && (automusicControl) && (animationControl)){
 				var oModel = this.getView().getModel();
 				var penTimer3Aktive = oModel.getProperty("/isPenTimer3Aktive");
@@ -364,6 +392,46 @@ sap.ui.define([
 				// 	}	
 				// }
 				// 	else{
+					if( oClock > "01:00" && oClock <= "01:30"){
+						if (oLastMinAudio === "Automatisch") {
+							var oAudios = oModel.getProperty("/audio");
+							var matchingAudios = oAudios.filter((oItem) => oItem.AudioName.startsWith("lastminute"));
+							var audioElement = document.getElementById(this.getView().byId("audio_with_control3").getIdForLabel());
+							if (matchingAudios.length > 0) {
+								var randomNr = Math.floor(Math.random() * matchingAudios.length);
+								var oUrl = "./DataFiles/audios/lastminute/" + matchingAudios[randomNr].AudioName + ".mp3";
+								if (!this._isLastMinPlaying) {
+									if(this._oLastAudio !== null){
+										this._oLastAudio.pause();
+									}
+									if (!audioElement) {
+										audioElement = document.createElement('audio');
+									}
+									console.log(oUrl);
+									audioElement.setAttribute('src', oUrl);
+									audioElement.play();
+									this._isLastMinPlaying = true;
+									this._oLastAudio = audioElement;
+								}
+							}
+						} else {
+							if (!this._isLastMinPlaying) {
+								if(this._oLastAudio !== null){
+									this._oLastAudio.pause();
+								}
+								if (!audioElement) {
+									audioElement = document.createElement('audio');
+								}
+								console.log("./DataFiles/audios/lastminute/" + oLastMinAudio.replaceAll(' ', '') + ".mp3");
+								audioElement.setAttribute('src', "./DataFiles/audios/lastminute/" + oLastMinAudio.replaceAll(' ', '') + ".mp3");
+								audioElement.play();
+								this._isLastMinPlaying = true;
+								this._oLastAudio = audioElement;
+							}
+						
+						}
+					}
+					else{
 						if(audioSelection === "Automatisch"){
 							var oHomeTeam = this.getView().byId("selectHeimTeam").getSelectedItem().getText();
 							var oHomeAudios = oModel.getProperty("/audiosHome");
@@ -388,14 +456,16 @@ sap.ui.define([
 									if(this._oLastAudio === null){
 										var audioElement = document.createElement('audio');
 										audioElement.setAttribute('src', oHomeUrl);
-										audioElement.play();
+										//audioElement.play();
+                                        playWithFadeOut(audioElement);
 										this._oLastAudio = audioElement;
 									}
 									else{
 										this._oLastAudio.pause();
 										var audioElement = document.createElement('audio');
 										audioElement.setAttribute('src', oHomeUrl);
-										audioElement.play();
+										//audioElement.play();
+                                        playWithFadeOut(audioElement);
 										this._oLastAudio = audioElement;
 									}
 								}	
@@ -408,14 +478,16 @@ sap.ui.define([
 									if(this._oLastAudio === null){
 										var audioElement = document.createElement('audio');
 										audioElement.setAttribute('src', oOtherUrl);
-										audioElement.play();
+										//audioElement.play();
+                                        playWithFadeOut(audioElement);
 										this._oLastAudio = audioElement;
 									}
 									else{
 										this._oLastAudio.pause();
 										var audioElement = document.createElement('audio');
 										audioElement.setAttribute('src', oOtherUrl);
-										audioElement.play();
+										//audioElement.play();
+                                        playWithFadeOut(audioElement);
 										this._oLastAudio = audioElement;
 									}
 								}
@@ -427,18 +499,22 @@ sap.ui.define([
 								if(this._oLastAudio === null){
 									var audioElement = document.createElement('audio');
 									audioElement.setAttribute('src', "./DataFiles/audios/goalmusic/"+audioSelection.replaceAll(' ', '')+".mp3");
-									audioElement.play();
+									//audioElement.play();
+                                    playWithFadeOut(audioElement);
 									this._oLastAudio = audioElement;
 								}
 								else{
 									this._oLastAudio.pause();
 									var audioElement = document.createElement('audio');
 									audioElement.setAttribute('src', "./DataFiles/audios/goalmusic/"+audioSelection.replaceAll(' ', '')+".mp3");
-									audioElement.play();
+									//audioElement.play();
+                                    playWithFadeOut(audioElement);
 								}
 							}
 							
-						}				
+						}	
+					}
+									
 				// } 
 				//Update Live Score
 				controller.liveTableUpdate();
@@ -496,6 +572,31 @@ sap.ui.define([
 			var stepInputControl = this.getView().byId("gasttore");
 			var automusicControl = this.getView().byId("selectAutoMusic").getSelected();
 			var animationControl = this.getView().byId("animationControl1").getSelected();
+            var oClock = this.getView().byId("text0").getText();
+			var oLastMinAudio = this.getView().byId("selectAudLastMin").getSelectedItem().getText();
+            // Function to play audio with fade-out
+            var playWithFadeOut = function(audioElement) {
+                audioElement.play();
+                audioElement.onloadedmetadata = () => {
+                    var fadeOutStartTime = audioElement.duration - 10; // Start fade-out 10 seconds before the end
+                    var fadeOutInterval = 200; // Interval in milliseconds to reduce volume
+                    var fadeAmount = audioElement.volume / (10 * 1000 / fadeOutInterval); // Amount to decrease volume each interval
+
+                    var checkTime = setInterval(() => {
+                        if (audioElement.currentTime >= fadeOutStartTime) {
+                            audioElement.volume = Math.max(0, audioElement.volume - fadeAmount);
+                            if (audioElement.volume === 0) {
+                                clearInterval(checkTime);
+                                audioElement.pause();
+                            }
+                        }
+                        if (audioElement.paused || audioElement.ended) {
+                            clearInterval(checkTime);
+                        }
+                    }, fadeOutInterval);
+                };
+            };
+            
 		    if((this._oGuestCount === 0 || this._oGuestCount < oSourceParam)  && (automusicControl) && (animationControl)){
 			var oModel = this.getView().getModel();
 			// var isTeamAnthemSelected = this.getView().byId("selectTeamAnthem").getSelected();
@@ -599,6 +700,46 @@ sap.ui.define([
 			// 	}	
 			// }
 			// 	else{
+				if( oClock > "01:00" && oClock <= "01:30"){
+					if (oLastMinAudio === "Automatisch") {
+						var oAudios = oModel.getProperty("/audio");
+						var matchingAudios = oAudios.filter((oItem) => oItem.AudioName.startsWith("lastminute"));
+						var audioElement = document.getElementById(this.getView().byId("audio_with_control3").getIdForLabel());
+						if (matchingAudios.length > 0) {
+							var randomNr = Math.floor(Math.random() * matchingAudios.length);
+							var oUrl = "./DataFiles/audios/lastminute/" + matchingAudios[randomNr].AudioName + ".mp3";
+							if (!this._isLastMinPlaying) {
+								if(this._oLastAudio !== null){
+									this._oLastAudio.pause();
+								}
+								if (!audioElement) {
+									audioElement = document.createElement('audio');
+								}
+								console.log(oUrl);
+								audioElement.setAttribute('src', oUrl);
+								audioElement.play();
+								this._isLastMinPlaying = true;
+								this._oLastAudio = audioElement;
+							}
+						}
+					} else {
+						if (!this._isLastMinPlaying) {
+							if(this._oLastAudio !== null){
+								this._oLastAudio.pause();
+							}
+							if (!audioElement) {
+								audioElement = document.createElement('audio');
+							}
+							console.log("./DataFiles/audios/lastminute/" + oLastMinAudio.replaceAll(' ', '') + ".mp3");
+							audioElement.setAttribute('src', "./DataFiles/audios/lastminute/" + oLastMinAudio.replaceAll(' ', '') + ".mp3");
+							audioElement.play();
+							this._isLastMinPlaying = true;
+							this._oLastAudio = audioElement;
+						}
+					
+					}
+				}
+				else{
 					if(audioSelection === "Automatisch"){
 						var oGuestTeam = this.getView().byId("selectGastTeam").getSelectedItem().getText();
 						var oGuestAudios = oModel.getProperty("/audiosGuest");
@@ -623,14 +764,16 @@ sap.ui.define([
 								if(this._oLastAudio === null){
 									var audioElement = document.createElement('audio');
 									audioElement.setAttribute('src', oGuestUrl);
-									audioElement.play();
+									//audioElement.play();
+                                    playWithFadeOut(audioElement);
 									this._oLastAudio = audioElement;
 								}
 								else {
 									this._oLastAudio.pause();
 									var audioElement = document.createElement('audio');
 									audioElement.setAttribute('src', oGuestUrl);
-									audioElement.play();
+									//audioElement.play();
+                                    playWithFadeOut(audioElement);
 									this._oLastAudio = audioElement;
 								}
 							}
@@ -645,14 +788,16 @@ sap.ui.define([
 								if(this._oLastAudio === null){
 									var audioElement = document.createElement('audio');
 									audioElement.setAttribute('src', oOtherUrl);
-									audioElement.play();
+									//audioElement.play();
+                                    playWithFadeOut(audioElement);
 									this._oLastAudio = audioElement;
 								}
 								else {
 									this._oLastAudio.pause();
 									var audioElement = document.createElement('audio');
 									audioElement.setAttribute('src', oOtherUrl);
-									audioElement.play();
+									//audioElement.play();
+                                    playWithFadeOut(audioElement);
 									this._oLastAudio = audioElement;
 								}
 							}
@@ -666,20 +811,24 @@ sap.ui.define([
 							if(this._oLastAudio === null){
 								var audioElement = document.createElement('audio');
 								audioElement.setAttribute('src', "./DataFiles/audios/goalmusic/"+audioSelection.replaceAll(' ', '')+".mp3");
-								audioElement.play();
+								//audioElement.play();
+                                playWithFadeOut(audioElement);
 								this._oLastAudio = audioElement;
 							}
 							else{
 								this._oLastAudio.pause();
 								var audioElement = document.createElement('audio');
 								audioElement.setAttribute('src', "./DataFiles/audios/goalmusic/"+audioSelection.replaceAll(' ', '')+".mp3");
-								audioElement.play();
+								//audioElement.play();
+                                playWithFadeOut(audioElement);
 								this._oLastAudio = audioElement;
 							}
 						}
 						
 						
 					}
+				}
+					
 						// } 
 			//Update Live Score
 			controller.liveTableUpdate();
@@ -804,15 +953,15 @@ sap.ui.define([
 			 });
 			 if(oDataGrp.length > 0){
 				allgroupAndteams.push(oDataGrp);
-				allGroupsAndGames.push(oTempData);
-				allGroupsAndGoals.push(oTempData);
-				allGroupsAndPoints.push(oTempData);
-				allGroupsAndGoalDiffs.push(oTempData);
 				oModel.setProperty("/teamsGruppe"+oItem.name,oDataGrp);
 				oModel.setProperty("/spieleGruppe"+oItem.name,oTempData);
 				oModel.setProperty("/pktGruppe"+oItem.name,oTempData);
 				oModel.setProperty("/torDiffGruppe"+oItem.name,oTempData);
 				oModel.setProperty("/toreGruppe"+oItem.name,oTempData);
+				allGroupsAndGames.push(oModel.getProperty("/spieleGruppe"+oItem.name));
+				allGroupsAndGoals.push(oModel.getProperty("/pktGruppe"+oItem.name));
+				allGroupsAndPoints.push(oModel.getProperty("/torDiffGruppe"+oItem.name));
+				allGroupsAndGoalDiffs.push(oModel.getProperty("/toreGruppe"+oItem.name));
 			 }
 			});
 			oModel.setProperty("/allGroupsAndTeams",allgroupAndteams);
@@ -965,6 +1114,7 @@ sap.ui.define([
 		},
 		
 		setPaarung: function(){
+            console.log("In setPaarung");
 			var oModel = this.getView().getModel();
 			
 			var heimteam = this.getView().byId("selectHeimTeam").getSelectedItem().getText();
@@ -1026,26 +1176,35 @@ sap.ui.define([
 			var allGroupsGoals = oModel.getProperty("/allGroupsAndGoals");
 			var nrOfGroups = allGroups.length;
 			
-			
+            console.log(allGroupsGames);
+			console.log(allGroupsPt);
+            console.log(allGroupsGoals);
 			for (var i = 0; i < nrOfGroups; i++) {
 				// var tempGroupTeams = oModel.getProperty("/" + allGroups[i]);
 				var tempGroupTeams =  allGroups[i];
 				var tempGroupName = tableSelection.getItems()[i].getText();
 				
 				if(tempGroupTeams.includes(heimteam) && tempGroupTeams.includes(gastteam)) {
-					
+                    
 					var tempGroupGames =  allGroupsGames[i];
 					var tempGroupPoints = allGroupsPt[i];
 					var tempGroupGoalDiff = allGroupsGoalDiff[i];
 					var tempGroupGoals = allGroupsGoals[i];
-					
+					console.log("in loop");
+                    console.log(tempGroupGames);
+                    console.log(tempGroupPoints);
 					oModel.setProperty("/currentGroupName",tempGroupName);
 					oModel.setProperty("/currentGroupIndex",i);
-					oModel.setProperty("/teamsCurrGroup",tempGroupTeams);
-					oModel.setProperty("/gamesCurrGroup",tempGroupGames);
-					oModel.setProperty("/pointsCurrGroup",tempGroupPoints);
-					oModel.setProperty("/goalDiffCurrGroup",tempGroupGoalDiff);
-					oModel.setProperty("/goalsCurrGroup",tempGroupGoals);
+					oModel.setProperty("/teamsGruppe"+tempGroupName,tempGroupTeams);
+					oModel.setProperty("/spieleGruppe"+tempGroupName,tempGroupGames);
+					oModel.setProperty("/pktGruppe"+tempGroupName,tempGroupPoints);
+					oModel.setProperty("/torDiffGruppe"+tempGroupName,tempGroupGoalDiff);
+					oModel.setProperty("/toreGruppe"+tempGroupName,tempGroupGoals);
+					// oModel.setProperty("/teamsCurrGroup",tempGroupTeams);
+					// oModel.setProperty("/gamesCurrGroup",tempGroupGames);
+					// oModel.setProperty("/pointsCurrGroup",tempGroupPoints);
+					// oModel.setProperty("/goalDiffCurrGroup",tempGroupGoalDiff);
+					// oModel.setProperty("/goalsCurrGroup",tempGroupGoals);
 					
 					oModel.setProperty("/tableStatus","Gruppe " + tempGroupName);
 					
@@ -1198,15 +1357,15 @@ sap.ui.define([
 				}
 							
 				//assign new values to existing group and values
-				
-				var currentGroupTeams = oModel.getProperty("/teamsCurrGroup");
-				var currentGroupGames = oModel.getProperty("/gamesCurrGroup");
+				var currentGroupName = oModel.getProperty("/currentGroupName");
+				var currentGroupTeams = [...oModel.getProperty("/teamsGruppe"+currentGroupName)];
+				var currentGroupGames =  [...oModel.getProperty("/spieleGruppe"+currentGroupName)];
 				console.log(currentGroupTeams)
 				console.log(currentGroupGames)
-				var currentGroupPoints = oModel.getProperty("/pointsCurrGroup");
+				var currentGroupPoints = [...oModel.getProperty("/pktGruppe"+currentGroupName)];
 				console.log(currentGroupPoints)
-				var currentGroupGoalDiffs = oModel.getProperty("/goalDiffCurrGroup");
-				var currentGroupGoals = oModel.getProperty("/goalsCurrGroup");
+				var currentGroupGoalDiffs =  [...oModel.getProperty("/torDiffGruppe"+currentGroupName)];
+				var currentGroupGoals =[...oModel.getProperty("/toreGruppe"+currentGroupName)];
 
 				var currentTeamIndexHT = currentGroupTeams.indexOf(heimteam);
 				var currentTeamIndexGT = currentGroupTeams.indexOf(gastteam);
@@ -1220,7 +1379,7 @@ sap.ui.define([
 				var currentgoalsHT = currentGroupGoals[currentTeamIndexHT]; 
 				var currentgoalsGT = currentGroupGoals[currentTeamIndexGT]; 
 							
-				var liveTblTeams = oModel.getProperty("/teamsCurrGroup");
+				var liveTblTeams = currentGroupTeams;
 				var liveTblSpiele = currentGroupGames;
 				var liveTblPkt = currentGroupPoints;
 				var liveTblTorDiff = currentGroupGoalDiffs;
@@ -1250,6 +1409,7 @@ sap.ui.define([
 		},
 		
 		saveMatchData: function(oEvent){
+            console.log("saveMatchData");
 			var oModel = this.getView().getModel();
 			
 			var tableStatus = oModel.getProperty("/tableStatus");
@@ -1291,18 +1451,18 @@ sap.ui.define([
 				var currentComp = this.getView().byId("selectCompetition").getSelectedItem().getText();
 				//assign new values to existing group and values
 				var currentGroupName = oModel.getProperty("/currentGroupName");
-
-				var currentGroupTeams = oModel.getProperty("/teamsGruppe"+currentGroupName);
-				var currentGroupGames = oModel.getProperty("/spieleGruppe"+currentGroupName);
-				var currentGroupPoints = oModel.getProperty("/pktGruppe"+currentGroupName);
-				var currentGroupGoalDiffs = oModel.getProperty("/torDiffGruppe"+currentGroupName);
-				var currentGroupGoals = oModel.getProperty("/toreGruppe"+currentGroupName);
 				
-				var currentGroupTeams = oModel.getProperty("/teamsCurrGroup");
-				var currentGroupGames = oModel.getProperty("/gamesCurrGroup");
-				var currentGroupPoints = oModel.getProperty("/pointsCurrGroup");
-				var currentGroupGoalDiffs = oModel.getProperty("/goalDiffCurrGroup");
-				var currentGroupGoals = oModel.getProperty("/goalsCurrGroup");
+                var currentGroupTeams = [...oModel.getProperty("/teamsGruppe"+currentGroupName)];
+				var currentGroupGames = [...oModel.getProperty("/spieleGruppe"+currentGroupName)];
+				var currentGroupPoints = [...oModel.getProperty("/pktGruppe"+currentGroupName)];
+				var currentGroupGoalDiffs = [...oModel.getProperty("/torDiffGruppe"+currentGroupName)];
+				var currentGroupGoals = [...oModel.getProperty("/toreGruppe"+currentGroupName)];
+                
+				/*var currentGroupTeams = [...oModel.getProperty("/teamsCurrGroup")];
+				var currentGroupGames = [...oModel.getProperty("/gamesCurrGroup")];
+				var currentGroupPoints = [...oModel.getProperty("/pointsCurrGroup")];
+				var currentGroupGoalDiffs = [...oModel.getProperty("/goalDiffCurrGroup")];
+				var currentGroupGoals = [...oModel.getProperty("/goalsCurrGroup")];*/
 				
 				var currentTeamIndexHT = currentGroupTeams.indexOf(heimteam);
 				var currentTeamIndexGT = currentGroupTeams.indexOf(gastteam);
@@ -1316,24 +1476,69 @@ sap.ui.define([
 				var currentgoalsHT = currentGroupGoals[currentTeamIndexHT]; 
 				var currentgoalsGT = currentGroupGoals[currentTeamIndexGT]; 
 				
+                console.log("currentGroupPoints");
+                console.log(currentGroupPoints);
+                
 				currentGroupGames[currentTeamIndexHT] = Number(currentGamesHT) + 1;
 				currentGroupGames[currentTeamIndexGT] = Number(currentGamesGT) + 1;
 				
+                console.log("currentGroupPoints");
+                console.log(currentGroupPoints);
+                
 				currentGroupPoints[currentTeamIndexHT] = Number(currentPtsHT) + heimPkt;
 				currentGroupPoints[currentTeamIndexGT] = Number(currentPtsGT) + gastPkt;
 				
+                console.log("currentGroupPoints");
+                console.log(currentGroupPoints);
+                
 				currentGroupGoalDiffs[currentTeamIndexHT] = Number(currentgoalDiffsHT) + heimTorDiff;
 				currentGroupGoalDiffs[currentTeamIndexGT] = Number(currentgoalDiffsGT) + gastTorDiff;
 				
+                console.log("currentGroupPoints");
+                console.log(currentGroupPoints);
+                
 				currentGroupGoals[currentTeamIndexHT] = Number(currentgoalsHT) + heimtore;
 				currentGroupGoals[currentTeamIndexGT] = Number(currentgoalsGT) + gasttore;
 				
+                console.log("currentGroupPoints");
+                console.log(currentGroupPoints);
+                
 				//set new values
 				oModel.setProperty("/spieleGruppe"+currentGroupName,currentGroupGames);
 				oModel.setProperty("/pktGruppe"+currentGroupName,currentGroupPoints);
 				oModel.setProperty("/torDiffGruppe"+currentGroupName,currentGroupGoalDiffs);
 				oModel.setProperty("/toreGruppe"+currentGroupName,currentGroupGoals);
 				
+			var allGroups = oModel.getProperty("/allGroupsAndTeams");
+			var allGroupsGames = oModel.getProperty("/allGroupsAndGames");
+			var allGroupsPt = oModel.getProperty("/allGroupsAndPoints");
+			var allGroupsGoalDiff = oModel.getProperty("/allGroupsAndGoalDiffs");
+			var allGroupsGoals = oModel.getProperty("/allGroupsAndGoals");
+			var nrOfGroups = allGroups.length;
+		
+			for (var i = 0; i < nrOfGroups; i++) {
+				// var tempGroupTeams = oModel.getProperty("/" + allGroups[i]);
+				var tempGroupTeams =  allGroups[i];
+				// var tempGroupName = tableSelection.getItems()[i].getText();
+				
+				if(tempGroupTeams.includes(heimteam) && tempGroupTeams.includes(gastteam)) {
+                    
+					allGroupsGames[i] = currentGroupGames;
+					allGroupsPt[i] = currentGroupPoints;
+					allGroupsGoalDiff[i] = currentGroupGoalDiffs;
+				    allGroupsGoals[i] = currentGroupGoals;
+					break;
+				}
+			}
+			oModel.setProperty("/allGroupsAndGames",allGroupsGames);
+			oModel.setProperty("/allGroupsAndPoints",allGroupsPt);
+			oModel.setProperty("/allGroupsAndGoalDiffs",allGroupsGoalDiff);
+			oModel.setProperty("/allGroupsAndGoals",allGroupsGoals);
+                /*oModel.setProperty("/gamesCurrGroup",currentGroupGames);
+                oModel.setProperty("/pointsCurrGroup",currentGroupPoints);
+                oModel.setProperty("/goalDiffCurrGroup",currentGroupGoalDiffs);
+                oModel.setProperty("/goalsCurrGroup",currentGroupGoals);*/
+                
 				//save Match in MatchList
 				var matchList = oModel.getProperty("/matches");
 
@@ -1467,11 +1672,11 @@ sap.ui.define([
 			console.log("_____________________________")
 			console.log(currentGroupName)
 			console.log("_____________________________")
-			var currentGroupTeams = oModel.getProperty("/teamsGruppe"+currentGroupName);
-			var currentGroupGames = oModel.getProperty("/spieleGruppe"+currentGroupName);
-			var currentGroupPoints = oModel.getProperty("/pktGruppe"+currentGroupName);
-			var currentGroupGoalDiffs = oModel.getProperty("/torDiffGruppe"+currentGroupName);
-			var currentGroupGoals = oModel.getProperty("/toreGruppe"+currentGroupName);
+			var currentGroupTeams = [...oModel.getProperty("/teamsGruppe"+currentGroupName)];
+			var currentGroupGames = [...oModel.getProperty("/spieleGruppe"+currentGroupName)];
+			var currentGroupPoints = [...oModel.getProperty("/pktGruppe"+currentGroupName)];
+			var currentGroupGoalDiffs = [...oModel.getProperty("/torDiffGruppe"+currentGroupName)];
+			var currentGroupGoals = [...oModel.getProperty("/toreGruppe"+currentGroupName)];
 			console.log(currentGroupTeams)
 			console.log(currentGroupPoints)
 			var currentTeamIndexHT = currentGroupTeams.indexOf(tempHeimteam);
@@ -1508,10 +1713,10 @@ sap.ui.define([
 			oModel.setProperty("/torDiffGruppe"+currentGroupName,currentGroupGoalDiffs);
 			oModel.setProperty("/toreGruppe"+currentGroupName,currentGroupGoals);
 			
-			oModel.setProperty("/gamesCurrGroup",currentGroupGames);
-			oModel.setProperty("/pointsCurrGroup",currentGroupPoints);
-			oModel.setProperty("/goalDiffCurrGroup",currentGroupGoalDiffs);
-			oModel.setProperty("/goalsCurrGroup",currentGroupGoals);
+			// oModel.setProperty("/gamesCurrGroup",currentGroupGames);
+			// oModel.setProperty("/pointsCurrGroup",currentGroupPoints);
+			// oModel.setProperty("/goalDiffCurrGroup",currentGroupGoalDiffs);
+			// oModel.setProperty("/goalsCurrGroup",currentGroupGoals);
 			}
 			
 			oModel.setProperty("/matches",matchList);
@@ -1533,6 +1738,9 @@ sap.ui.define([
 			var oModel = this.getView().getModel();
 			oModel.setProperty("/anzahlToreHeim", 0);
 			oModel.setProperty("/anzahlToreGast", 0);
+			this._oHomeCount = 0;
+			this._oGuestCount = 0;
+			this._oLastAudio = null;
 		},
 		
 		resetTableContent: function(oEvent){
@@ -1568,11 +1776,11 @@ sap.ui.define([
 		resetTableData: function(oEvent){
 			var oModel = this.getView().getModel();
 			oModel.setProperty("/showTabelle",false);
-			var allGroupsAndTeams = oModel.getProperty("/allGroupsAndTeams");
-			var allGroupsAndGames = oModel.getProperty("/allGroupsAndGames");
-			var allGroupsAndPoints = oModel.getProperty("/allGroupsAndPoints");
-			var allGroupsAndGoalDiffs = oModel.getProperty("/allGroupsAndGoalDiffs");
-			var allGroupsAndGoals = oModel.getProperty("/allGroupsAndGoals");
+			var allGroupsAndTeams = [...oModel.getProperty("/allGroupsAndTeams")];
+			var allGroupsAndGames = [...oModel.getProperty("/allGroupsAndGames")];
+			var allGroupsAndPoints = [...oModel.getProperty("/allGroupsAndPoints")];
+			var allGroupsAndGoalDiffs = [...oModel.getProperty("/allGroupsAndGoalDiffs")];
+			var allGroupsAndGoals = [...oModel.getProperty("/allGroupsAndGoals")];
 
 			for (var i = 0; i < allGroupsAndTeams.length; ++i) {
 				var group = allGroupsAndTeams[i];
@@ -1608,13 +1816,13 @@ sap.ui.define([
 			
 			if(liveMode === true) {
 				var group = oModel.getProperty("/currentGroupName");
-				var teamsGrp = oModel.getProperty("/liveTblTeams");
+				var teamsGrp = [...oModel.getProperty("/liveTblTeams")];
 				var NrOfTeamsGrp = teamsGrp.length;
-				var spieleGrp = oModel.getProperty("/liveTblSpiele");
+				var spieleGrp = [...oModel.getProperty("/liveTblSpiele")];
 
-				var pktGrp = oModel.getProperty("/liveTblPkt");
-				var torDiffGrp = oModel.getProperty("/liveTblTorDiff");
-				var toreGrp = oModel.getProperty("/liveTblTore");
+				var pktGrp = [...oModel.getProperty("/liveTblPkt")];
+				var torDiffGrp = [...oModel.getProperty("/liveTblTorDiff")];
+				var toreGrp = [...oModel.getProperty("/liveTblTore")];
 
 			}else{
 				var selection = this.getView().byId("selectGroup");
@@ -1629,12 +1837,12 @@ sap.ui.define([
 				}
 						
 				var group = selection.getSelectedItem().getText();
-				var teamsGrp = oModel.getProperty("/teamsGruppe"+group);
+				var teamsGrp = [...oModel.getProperty("/teamsGruppe"+group)];
 				var NrOfTeamsGrp = teamsGrp.length;
-				var spieleGrp = oModel.getProperty("/spieleGruppe"+group);
-				var pktGrp = oModel.getProperty("/pktGruppe"+group);
-				var torDiffGrp = oModel.getProperty("/torDiffGruppe"+group);
-				var toreGrp = oModel.getProperty("/toreGruppe"+group);
+				var spieleGrp = [...oModel.getProperty("/spieleGruppe"+group)];
+				var pktGrp = [...oModel.getProperty("/pktGruppe"+group)];
+				var torDiffGrp = [...oModel.getProperty("/torDiffGruppe"+group)];
+				var toreGrp = [...oModel.getProperty("/toreGruppe"+group)];
 			}
 			
 			//1. Ordnen der Gruppe nach Punkten 
@@ -1843,8 +2051,17 @@ sap.ui.define([
 				oModel.setProperty("/tabelle/" + i + "/torDiff",orderedTorDiffGrp[i]);
 			}
 			if(liveMode === true) {
+                console.log(group);
+                var cutOffIndex = group.indexOf(":");
+                if (cutOffIndex !== -1) {
+                    group = group.substring(cutOffIndex + 1).trim(); // +1 to skip the colon itself and trim to remove any leading spaces
+                }
 				oModel.setProperty("/tableTitle","Live-Tabelle Gruppe " + group);
 			}else{
+                var cutOffIndex = group.indexOf(":");
+                if (cutOffIndex !== -1) {
+                    group = group.substring(cutOffIndex + 1).trim(); // +1 to skip the colon itself and trim to remove any leading spaces
+                }
 				oModel.setProperty("/tableTitle","Tabelle Gruppe " + group);
 			}
 			
@@ -1970,130 +2187,138 @@ sap.ui.define([
 			var oModel = this.getView().getModel();
 			var oLastMinAudio = this.getView().byId("selectAudLastMin").getSelectedItem().getText();
 			var timerAktive = oModel.getProperty("/isTimerAktive");
-			var mp3 = document.getElementById(this.getView().byId("audio_with_controls").getIdForLabel()); 
-			var mp3LM = new Audio('mp3/letzteMinuteUI.ogg'); 
+			var mp3 = document.getElementById(this.getView().byId("audio_with_controls").getIdForLabel());
+			var mp3LM = new Audio('mp3/letzteMinuteUI.ogg');
 			var controller = this.getView().getController();
 			var view = this.getView();
-			
-			//Hide Elements
-			oModel.setProperty("/showWerbung",false);
-			oModel.setProperty("/showTabelle",false);
-			
-			//start live mode for live table updates
-			oModel.setProperty("/liveMode", true); 
+		
+			// Hide Elements
+			oModel.setProperty("/showWerbung", false);
+			oModel.setProperty("/showTabelle", false);
+		
+			// Start live mode for live table updates
+			oModel.setProperty("/liveMode", true);
 			controller.liveTableUpdate();
-			
+		
 			var timeMin = oModel.getProperty("/timerDurationMinutes");
 			var timeSec = oModel.getProperty("/timerDurationSeconds");
-			var time = Number(timeSec) + (timeMin * 60); //duration in Seconds
-			oModel.setProperty("/timerDuration", time); 
+			var time = Number(timeSec) + (timeMin * 60); // Duration in seconds
+			oModel.setProperty("/timerDuration", time);
 			var me = this;
+		
 			if (timerAktive === false) {
 				oModel.setProperty("/isTimerAktive", true);
 				var kOneMin = false;
+		
+				// Clear existing interval if it exists
+				if (this.x) {
+					clearInterval(this.x);
+				}
+		
 				// Update the count down every 1 second
 				this.x = setInterval(function () {
 					if (oModel.getProperty("/stop") === false) {
 						time = time - 1;
 						var minutes = Math.floor(time / 60);
-						var seconds = time - Math.floor(time / 60) * 60;
-						var sMinutes = minutes;
-						var sSeconds = seconds;
-						if(minutes === 0 && !kOneMin){
-							if(oLastMinAudio === "Automatisch"){
+						var seconds = time - minutes * 60;
+						var sMinutes = minutes < 10 ? "0" + minutes : minutes;
+						var sSeconds = seconds < 10 ? "0" + seconds : seconds;
+						var audioElement;
+						oModel.setProperty("/clock", sMinutes + ":" + sSeconds);
+		
+						// Handle last minute audio
+						if (minutes === 0 && !kOneMin) {
+							if (oLastMinAudio === "Automatisch") {
 								var oAudios = oModel.getProperty("/audio");
-								var matchingaudios = oAudios.filter((oItem)=>{return oItem.AudioName.startsWith("lastminute")});
-								// var otheraudios = oAudios.filter((oItem)=>{return (oItem.AudioName.startsWith("general"))});
-								if(matchingaudios.length > 0){
-									var matchedAudio = [];
-								   matchingaudios.forEach((oItem)=>{
-										var obJ = {};
-										Object.defineProperty(obJ, "AudioName", {
-											value: oItem.AudioName,
-											writable: true,
-											enumerable: true,
-											configurable: true,
-										  });
-										matchedAudio.push(obJ);
-									});
-									var randomNr = Math.floor(Math.random() * matchedAudio.length);
-									var oUrl = "./DataFiles/audios/lastminute/"+matchedAudio[randomNr].AudioName+".mp3";
-									// oModel.setProperty("/gifSrcHeim",oHomeUrl);
-										var audioElement = document.createElement('audio');
+								var matchingAudios = oAudios.filter((oItem) => oItem.AudioName.startsWith("lastminute"));
+								var audioElement = document.getElementById(me.getView().byId("audio_with_control3").getIdForLabel());
+								if (matchingAudios.length > 0) {
+									var randomNr = Math.floor(Math.random() * matchingAudios.length);
+									var oUrl = "./DataFiles/audios/lastminute/" + matchingAudios[randomNr].AudioName + ".mp3";
+									if (!me._isLastMinPlaying) {
+										if(me._oLastAudio !== null){
+											me._oLastAudio.pause();
+										}
+										if (!audioElement) {
+											audioElement = document.createElement('audio');
+										}
+										console.log(oUrl);
 										audioElement.setAttribute('src', oUrl);
 										audioElement.play();
 										me._isLastMinPlaying = true;
 										me._oLastAudio = audioElement;
+									}
 								}
-								// else{
-								// 	var randomNr = Math.floor(Math.random() * otheraudios.length);
-								// 	var oOtherUrl = "./DataFiles/audios/"+otheraudios[randomNr].AudioName+".mp3";
-								// 	// oModel.setProperty("/gifSrcHeim",oOtherUrl);
-								// 	var audioElement = document.createElement('audio');
-								// 	audioElement.setAttribute('src', oOtherUrl);
-								// 	audioElement.play();
-								// }	
-							}
-							else{
-								// oModel.setProperty("/gifSrcHeim","./DataFiles/gifs/"+gifSelection+".gif");
-								var audioElement = document.createElement('audio');
-									audioElement.setAttribute('src', "./DataFiles/audios/lastminute/"+audioSelection.replaceAll(' ', '')+".mp3");
+							} else {
+								if (!me._isLastMinPlaying) {
+									if(me._oLastAudio !== null){
+										me._oLastAudio.pause();
+									}
+									if (!audioElement) {
+										audioElement = document.createElement('audio');
+									}
+									console.log("./DataFiles/audios/lastminute/" + oLastMinAudio.replaceAll(' ', '') + ".mp3");
+									audioElement.setAttribute('src', "./DataFiles/audios/lastminute/" + oLastMinAudio.replaceAll(' ', '') + ".mp3");
 									audioElement.play();
 									me._isLastMinPlaying = true;
 									me._oLastAudio = audioElement;
+								}
+							
 							}
-						kOneMin = true;
+							kOneMin = true;
 						}
-						if (minutes < 10) {
-							sMinutes = "0" + minutes;
-						}
-						if (seconds < 10) {
-							sSeconds = "0" + seconds;
-						}
-						oModel.setProperty("/clock", sMinutes + ":" + sSeconds);
-						
-						//Anzeige Live Tabelle (bei 8 min)
-						var liveTableControl = view.byId("liveTableControl1").getSelected();						
-						if (minutes === 8 && seconds === 40 && liveTableControl == true && typeof this.timer2Table!=="number" && typeof this.timer3Table!=="number"){
-						
+		
+						// Anzeige Live Tabelle (bei 8 min)
+						if (minutes === 8 && seconds === 40 && view.byId("liveTableControl1").getSelected()) {
 							controller.showTabelle();
-							this.timer1Table = setTimeout(function(){ 
+							setTimeout(function () {
 								oModel.setProperty("/showTabelle", false);
-								this.timer1Table = null;
-							}, 15000);		
+							}, 15000);
 						}
-						
-						//Ansage letzte Minute 
-						var soundActive = view.byId("soundControl1").getSelected();						
-						if (minutes === 1 && seconds === 0 && soundActive == true){
+		
+						// Ansage letzte Minute 
+						if (minutes === 1 && seconds === 0 && view.byId("soundControl1").getSelected()) {
 							mp3LM.play();
 						}
-						// If the count down is finished, write some text 
+		
+						// If the count down is finished
 						if (minutes === 0 && seconds === 0) {
 							mp3.play(); 
 							oModel.setProperty("/liveMode", false);
 							me._oLastAudio.pause();
-							setTimeout(function(){ 
-								controller.saveMatchData(); //save match in matchlist
+							me._isLastMinPlaying = false;
+							this._oHomeCount = 0;
+							this._oGuestCount = 0;
+							this._oLastAudio = null;
+							setTimeout(function () {
+								controller.saveMatchData();
 							}, 500);
-							
-							//that.resetTimer();
+		
 							oModel.setProperty("/stop", true);
-							oModel.setProperty("/clock", "00" + ":" + "00");
+							oModel.setProperty("/clock", "00:00");
 							oModel.setProperty("/isResetet", false);
-														
-							if(oModel.getProperty("/adName") !== "null") {
+		
+							if (oModel.getProperty("/adName") !== "null") {
 								controller.selectAd();
-								setTimeout(function(){ 
-									oModel.setProperty("/showWerbung",true);
+								setTimeout(function () {
+									oModel.setProperty("/showWerbung", true);
 								}, 3000);
 							}
-
+		
+							// Stop playing last minute audio
+							console.log("!!!!!!!!!!!!!");
+							console.log(me._isLastMinPlaying && audioElement);
+							if (me._isLastMinPlaying && audioElement) {
+								console.log(audioElement);
+								audioElement.pause(); // Only pause if audioElement is defined
+								me._isLastMinPlaying = false;
+							}
 						}
 					}
 				}, 1000);
 			}
-		},
+		}
+,
 		
 		startPenaltyTimer1: function () {
 			var oModel = this.getView().getModel();

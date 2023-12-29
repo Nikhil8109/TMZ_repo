@@ -47,6 +47,7 @@
 									</VBox>
 									<HBox alignItems="Center" >
 										<html:audio id="audio_with_controls" controls="" src="mp3/Horn.mp3" type="audio/mp3"></html:audio>
+										<html:audio id="audio_with_control3" controls="" src="" type="audio/mp3"></html:audio>
 										<CheckBox id="soundControl1" selected="true" editable="true"/>
 										<Label text="Auto Ansage 'letzte Minute'" id="autosound1" class="colorWhite"/>
 										<CheckBox id="liveTableControl1" selected="false" editable="true"/>
