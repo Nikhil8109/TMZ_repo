@@ -289,7 +289,7 @@ sap.ui.define([
                 };
             };
             
-			if((this._oHomeCount === 0 || this._oHomeCount < oSourceParam) && (automusicControl) && (animationControl)){
+			if((this._oHomeCount === 0 || this._oHomeCount < oSourceParam)){
 				var oModel = this.getView().getModel();
 				var penTimer3Aktive = oModel.getProperty("/isPenTimer3Aktive");
 				var penTimer4Aktive = oModel.getProperty("/isPenTimer4Aktive");
@@ -392,14 +392,30 @@ sap.ui.define([
 				// 	}	
 				// }
 				// 	else{
-					if( oClock > "01:00" && oClock <= "01:30"){
-						if (oLastMinAudio === "Automatisch") {
-							var oAudios = oModel.getProperty("/audio");
-							var matchingAudios = oAudios.filter((oItem) => oItem.AudioName.startsWith("lastminute"));
-							var audioElement = document.getElementById(this.getView().byId("audio_with_control3").getIdForLabel());
-							if (matchingAudios.length > 0) {
-								var randomNr = Math.floor(Math.random() * matchingAudios.length);
-								var oUrl = "./DataFiles/audios/lastminute/" + matchingAudios[randomNr].AudioName + ".mp3";
+					if(automusicControl){
+						if( oClock > "01:00" && oClock <= "01:30"){
+							if (oLastMinAudio === "Automatisch") {
+								var oAudios = oModel.getProperty("/audio");
+								var matchingAudios = oAudios.filter((oItem) => oItem.AudioName.startsWith("lastminute"));
+								var audioElement = document.getElementById(this.getView().byId("audio_with_control3").getIdForLabel());
+								if (matchingAudios.length > 0) {
+									var randomNr = Math.floor(Math.random() * matchingAudios.length);
+									var oUrl = "./DataFiles/audios/lastminute/" + matchingAudios[randomNr].AudioName + ".mp3";
+									if (!this._isLastMinPlaying) {
+										if(this._oLastAudio !== null){
+											this._oLastAudio.pause();
+										}
+										if (!audioElement) {
+											audioElement = document.createElement('audio');
+										}
+										console.log(oUrl);
+										audioElement.setAttribute('src', oUrl);
+										audioElement.play();
+										this._isLastMinPlaying = true;
+										this._oLastAudio = audioElement;
+									}
+								}
+							} else {
 								if (!this._isLastMinPlaying) {
 									if(this._oLastAudio !== null){
 										this._oLastAudio.pause();
@@ -407,114 +423,100 @@ sap.ui.define([
 									if (!audioElement) {
 										audioElement = document.createElement('audio');
 									}
-									console.log(oUrl);
-									audioElement.setAttribute('src', oUrl);
+									console.log("./DataFiles/audios/lastminute/" + oLastMinAudio.replaceAll(' ', '') + ".mp3");
+									audioElement.setAttribute('src', "./DataFiles/audios/lastminute/" + oLastMinAudio.replaceAll(' ', '') + ".mp3");
 									audioElement.play();
 									this._isLastMinPlaying = true;
 									this._oLastAudio = audioElement;
 								}
+							
 							}
-						} else {
-							if (!this._isLastMinPlaying) {
-								if(this._oLastAudio !== null){
-									this._oLastAudio.pause();
-								}
-								if (!audioElement) {
-									audioElement = document.createElement('audio');
-								}
-								console.log("./DataFiles/audios/lastminute/" + oLastMinAudio.replaceAll(' ', '') + ".mp3");
-								audioElement.setAttribute('src', "./DataFiles/audios/lastminute/" + oLastMinAudio.replaceAll(' ', '') + ".mp3");
-								audioElement.play();
-								this._isLastMinPlaying = true;
-								this._oLastAudio = audioElement;
-							}
-						
 						}
-					}
-					else{
-						if(audioSelection === "Automatisch"){
-							var oHomeTeam = this.getView().byId("selectHeimTeam").getSelectedItem().getText();
-							var oHomeAudios = oModel.getProperty("/audiosHome");
-							var matchingaudios = oHomeAudios.filter((oItem)=>{return oItem.AudioName.startsWith(oHomeTeam)});
-							var otheraudios = oHomeAudios.filter((oItem)=>{return (oItem.AudioName.startsWith("general"))});
-							if(matchingaudios.length > 0){
-								var matchedAudio = [];
-							   matchingaudios.forEach((oItem)=>{
-									var obJ = {};
-									Object.defineProperty(obJ, "AudioName", {
-										value: oItem.AudioName.replaceAll(' ', ''),
-										writable: true,
-										enumerable: true,
-										configurable: true,
-									  });
-									matchedAudio.push(obJ);
-								});
-								var randomNr = Math.floor(Math.random() * matchedAudio.length);
-								var oHomeUrl = "./DataFiles/audios/goalmusic/"+matchedAudio[randomNr].AudioName+".mp3";
-								// oModel.setProperty("/gifSrcHeim",oHomeUrl);
-								if(!this._isLastMinPlaying){
-									if(this._oLastAudio === null){
-										var audioElement = document.createElement('audio');
-										audioElement.setAttribute('src', oHomeUrl);
-										//audioElement.play();
-                                        playWithFadeOut(audioElement);
-										this._oLastAudio = audioElement;
-									}
-									else{
-										this._oLastAudio.pause();
-										var audioElement = document.createElement('audio');
-										audioElement.setAttribute('src', oHomeUrl);
-										//audioElement.play();
-                                        playWithFadeOut(audioElement);
-										this._oLastAudio = audioElement;
+						else{
+							if(audioSelection === "Automatisch"){
+								var oHomeTeam = this.getView().byId("selectHeimTeam").getSelectedItem().getText();
+								var oHomeAudios = oModel.getProperty("/audiosHome");
+								var matchingaudios = oHomeAudios.filter((oItem)=>{return oItem.AudioName.startsWith(oHomeTeam)});
+								var otheraudios = oHomeAudios.filter((oItem)=>{return (oItem.AudioName.startsWith("general"))});
+								if(matchingaudios.length > 0){
+									var matchedAudio = [];
+								   matchingaudios.forEach((oItem)=>{
+										var obJ = {};
+										Object.defineProperty(obJ, "AudioName", {
+											value: oItem.AudioName.replaceAll(' ', ''),
+											writable: true,
+											enumerable: true,
+											configurable: true,
+										  });
+										matchedAudio.push(obJ);
+									});
+									var randomNr = Math.floor(Math.random() * matchedAudio.length);
+									var oHomeUrl = "./DataFiles/audios/goalmusic/"+matchedAudio[randomNr].AudioName+".mp3";
+									// oModel.setProperty("/gifSrcHeim",oHomeUrl);
+									if(!this._isLastMinPlaying){
+										if(this._oLastAudio === null){
+											var audioElement = document.createElement('audio');
+											audioElement.setAttribute('src', oHomeUrl);
+											//audioElement.play();
+											playWithFadeOut(audioElement);
+											this._oLastAudio = audioElement;
+										}
+										else{
+											this._oLastAudio.pause();
+											var audioElement = document.createElement('audio');
+											audioElement.setAttribute('src', oHomeUrl);
+											//audioElement.play();
+											playWithFadeOut(audioElement);
+											this._oLastAudio = audioElement;
+										}
+									}	
+								}
+								else{
+									var randomNr = Math.floor(Math.random() * otheraudios.length);
+									var oOtherUrl = "./DataFiles/audios/goalmusic/"+otheraudios[randomNr].AudioName+".mp3";
+									// oModel.setProperty("/gifSrcHeim",oOtherUrl);
+									if(!this._isLastMinPlaying){
+										if(this._oLastAudio === null){
+											var audioElement = document.createElement('audio');
+											audioElement.setAttribute('src', oOtherUrl);
+											//audioElement.play();
+											playWithFadeOut(audioElement);
+											this._oLastAudio = audioElement;
+										}
+										else{
+											this._oLastAudio.pause();
+											var audioElement = document.createElement('audio');
+											audioElement.setAttribute('src', oOtherUrl);
+											//audioElement.play();
+											playWithFadeOut(audioElement);
+											this._oLastAudio = audioElement;
+										}
 									}
 								}	
 							}
 							else{
-								var randomNr = Math.floor(Math.random() * otheraudios.length);
-								var oOtherUrl = "./DataFiles/audios/goalmusic/"+otheraudios[randomNr].AudioName+".mp3";
-								// oModel.setProperty("/gifSrcHeim",oOtherUrl);
+								// oModel.setProperty("/gifSrcHeim","./DataFiles/gifs/"+gifSelection+".gif");
 								if(!this._isLastMinPlaying){
 									if(this._oLastAudio === null){
 										var audioElement = document.createElement('audio');
-										audioElement.setAttribute('src', oOtherUrl);
+										audioElement.setAttribute('src', "./DataFiles/audios/goalmusic/"+audioSelection.replaceAll(' ', '')+".mp3");
 										//audioElement.play();
-                                        playWithFadeOut(audioElement);
+										playWithFadeOut(audioElement);
 										this._oLastAudio = audioElement;
 									}
 									else{
 										this._oLastAudio.pause();
 										var audioElement = document.createElement('audio');
-										audioElement.setAttribute('src', oOtherUrl);
+										audioElement.setAttribute('src', "./DataFiles/audios/goalmusic/"+audioSelection.replaceAll(' ', '')+".mp3");
 										//audioElement.play();
-                                        playWithFadeOut(audioElement);
-										this._oLastAudio = audioElement;
+										playWithFadeOut(audioElement);
 									}
 								}
+								
 							}	
 						}
-						else{
-							// oModel.setProperty("/gifSrcHeim","./DataFiles/gifs/"+gifSelection+".gif");
-							if(!this._isLastMinPlaying){
-								if(this._oLastAudio === null){
-									var audioElement = document.createElement('audio');
-									audioElement.setAttribute('src', "./DataFiles/audios/goalmusic/"+audioSelection.replaceAll(' ', '')+".mp3");
-									//audioElement.play();
-                                    playWithFadeOut(audioElement);
-									this._oLastAudio = audioElement;
-								}
-								else{
-									this._oLastAudio.pause();
-									var audioElement = document.createElement('audio');
-									audioElement.setAttribute('src', "./DataFiles/audios/goalmusic/"+audioSelection.replaceAll(' ', '')+".mp3");
-									//audioElement.play();
-                                    playWithFadeOut(audioElement);
-								}
-							}
-							
-						}	
-					}
-									
+					}	
+			}					
 				// } 
 				//Update Live Score
 				controller.liveTableUpdate();
@@ -533,7 +535,7 @@ sap.ui.define([
 						}, 14000);
 					}
 				}, 8000);
-			}
+			
 				stepInputControl.setEnabled(false);
 				setTimeout(function() {
 					stepInputControl.setEnabled(true);
@@ -597,7 +599,7 @@ sap.ui.define([
                 };
             };
             
-		    if((this._oGuestCount === 0 || this._oGuestCount < oSourceParam)  && (automusicControl) && (animationControl)){
+		    if((this._oGuestCount === 0 || this._oGuestCount < oSourceParam)){
 			var oModel = this.getView().getModel();
 			// var isTeamAnthemSelected = this.getView().byId("selectTeamAnthem").getSelected();
 			var penTimer1Aktive = oModel.getProperty("/isPenTimer1Aktive");
@@ -700,6 +702,7 @@ sap.ui.define([
 			// 	}	
 			// }
 			// 	else{
+			if(automusicControl){
 				if( oClock > "01:00" && oClock <= "01:30"){
 					if (oLastMinAudio === "Automatisch") {
 						var oAudios = oModel.getProperty("/audio");
@@ -828,8 +831,8 @@ sap.ui.define([
 						
 					}
 				}
-					
-						// } 
+			}				
+			} 
 			//Update Live Score
 			controller.liveTableUpdate();
 			//Highlight current teams in table
@@ -847,7 +850,7 @@ sap.ui.define([
 					}, 14000);
 				}
 			}, 8000);
-			}
+			
 			stepInputControl.setEnabled(false);
 				setTimeout(function() {
 					stepInputControl.setEnabled(true);
@@ -943,7 +946,7 @@ sap.ui.define([
 			});
 			var oFinalTeamsData = oTeamsData.filter((oItem)=>{ return oItem.Competition === oCompetition});
 			oModel.setProperty("/teamsComp",oFinalTeamsData);
-			var oTempData = [0,0,0,0,0,0];
+			var oTempData = [];
 			oGroupsData.forEach((oItem)=>{
 				var oDataGrp = [];
 			oFinalTeamsData.forEach((odata)=>{
@@ -952,6 +955,7 @@ sap.ui.define([
 				};
 			 });
 			 if(oDataGrp.length > 0){
+				oTempData = Array(oDataGrp.length).fill(0);
 				allgroupAndteams.push(oDataGrp);
 				oModel.setProperty("/teamsGruppe"+oItem.name,oDataGrp);
 				oModel.setProperty("/spieleGruppe"+oItem.name,oTempData);
@@ -1784,7 +1788,7 @@ sap.ui.define([
 
 			for (var i = 0; i < allGroupsAndTeams.length; ++i) {
 				var group = allGroupsAndTeams[i];
-				var zeroArray = new Int8Array(group.length);
+				var zeroArray = Array(group.length).fill(0);
 
 				// oModel.setProperty("/" + allGroupsAndGames[i], zeroArray);
 				// oModel.setProperty("/" + allGroupsAndPoints[i], zeroArray);
