@@ -67,7 +67,7 @@
 										<sap.ui.layout.form:content>
 										<HBox >
 										<CheckBox id="selectAutoMusic" text="Auto Music" selected="true" />
-										<CheckBox id="selectTeamAnthem" text="Team Anthems"  class="spacingMarg" select="onSelectTeamAnthem"/>
+										<CheckBox id="selectTeamAnthem" text="Team Anthems"  class="spacingMarg" />
 										</HBox>
 										<HBox alignItems="Center" >
 										<Label text="Song Last Minute:" class="colorWhite" />
