@@ -338,7 +338,7 @@ sap.ui.define([
 						   matchingGifs.forEach((oItem)=>{
 								var obJ = {};
 								Object.defineProperty(obJ, "GifName", {
-									value: oItem.GifName.replaceAll(' ', ''),
+									value: oItem.GifName,
 									writable: true,
 									enumerable: true,
 									configurable: true,
@@ -356,7 +356,7 @@ sap.ui.define([
 						}	
 					}
 					else{
-						oModel.setProperty("/gifSrcHeim","./DataFiles/gifs/"+gifSelection.replaceAll(' ', '')+".gif");
+						oModel.setProperty("/gifSrcHeim","./DataFiles/gifs/"+gifSelection+".gif");
 					}
 				// 	if(isTeamAnthemSelected){
 				// 		var oHomeTeam = this.getView().byId("selectHeimTeam").getSelectedItem().getText();
@@ -423,8 +423,8 @@ sap.ui.define([
 									if (!audioElement) {
 										audioElement = document.createElement('audio');
 									}
-									console.log("./DataFiles/audios/lastminute/" + oLastMinAudio.replaceAll(' ', '') + ".mp3");
-									audioElement.setAttribute('src', "./DataFiles/audios/lastminute/" + oLastMinAudio.replaceAll(' ', '') + ".mp3");
+									console.log("./DataFiles/audios/lastminute/" + oLastMinAudio + ".mp3");
+									audioElement.setAttribute('src', "./DataFiles/audios/lastminute/" + oLastMinAudio + ".mp3");
 									audioElement.play();
 									this._isLastMinPlaying = true;
 									this._oLastAudio = audioElement;
@@ -443,7 +443,7 @@ sap.ui.define([
 								   matchingaudios.forEach((oItem)=>{
 										var obJ = {};
 										Object.defineProperty(obJ, "AudioName", {
-											value: oItem.AudioName.replaceAll(' ', ''),
+											value: oItem.AudioName,
 											writable: true,
 											enumerable: true,
 											configurable: true,
@@ -499,7 +499,7 @@ sap.ui.define([
 								if(!this._isLastMinPlaying){
 									if(this._oLastAudio === null){
 										var audioElement = document.createElement('audio');
-										audioElement.setAttribute('src', "./DataFiles/audios/goalmusic/"+audioSelection.replaceAll(' ', '')+".mp3");
+										audioElement.setAttribute('src', "./DataFiles/audios/goalmusic/"+audioSelection+".mp3");
 										//audioElement.play();
 										playWithFadeOut(audioElement);
 										this._oLastAudio = audioElement;
@@ -507,7 +507,7 @@ sap.ui.define([
 									else{
 										this._oLastAudio.pause();
 										var audioElement = document.createElement('audio');
-										audioElement.setAttribute('src', "./DataFiles/audios/goalmusic/"+audioSelection.replaceAll(' ', '')+".mp3");
+										audioElement.setAttribute('src', "./DataFiles/audios/goalmusic/"+audioSelection+".mp3");
 										//audioElement.play();
 										playWithFadeOut(audioElement);
 									}
@@ -554,8 +554,8 @@ sap.ui.define([
 			var oGuestTeam = oGuest.getSelectedItem().getText();
 			if(oTeamAnthemchck){
 				if(oHome !== undefined && oGuest !== undefined){
-					var oHomeAnthems = oAudiosAll.filter((oData)=>{ return oData.AudioName.startsWith(oHomeTeam + " Anthem")});
-					var oGuestAnthems = oAudiosAll.filter((oData)=>{ return oData.AudioName.startsWith(oGuestTeam + " Anthem")});
+					var oHomeAnthems = oAudiosAll.filter((oData)=>{ return oData.AudioName.startsWith(oHomeTeam.replaceAll(' ', '') + "Anthem")});
+					var oGuestAnthems = oAudiosAll.filter((oData)=>{ return oData.AudioName.startsWith(oGuestTeam.replaceAll(' ', '') + "Anthem")});
 					oHomeAudios =  oHomeAudios.concat(oHomeAnthems);
 					oGuestAudios =  oGuestAudios.concat(oGuestAnthems);
 					oModel.setProperty("/audiosHome",oHomeAudios);
@@ -563,8 +563,8 @@ sap.ui.define([
 				}
 				}
 				else{
-					oHomeAudios = oHomeAudios.filter((oItem)=>{return !oItem.AudioName.startsWith(oHomeTeam + " Anthem")});
-					oGuestAudios = oGuestAudios.filter((oItem)=>{return !oItem.AudioName.startsWith(oGuestTeam + " Anthem")});
+					oHomeAudios = oHomeAudios.filter((oItem)=>{return !oItem.AudioName.startsWith(oHomeTeam.replaceAll(' ', '') + "Anthem")});
+					oGuestAudios = oGuestAudios.filter((oItem)=>{return !oItem.AudioName.startsWith(oGuestTeam.replaceAll(' ', '') + "Anthem")});
 					oModel.setProperty("/audiosHome",oHomeAudios);
 					oModel.setProperty("/audiosGuest",oGuestAudios);
 				}
@@ -650,7 +650,7 @@ sap.ui.define([
 					   matchingGifs.forEach((oItem)=>{
 							var obJ = {};
 							Object.defineProperty(obJ, "GifName", {
-								value: oItem.GifName.replaceAll(' ', ''),
+								value: oItem.GifName,
 								writable: true,
 								enumerable: true,
 								configurable: true,
@@ -666,7 +666,7 @@ sap.ui.define([
 					}	
 				}
 				else{
-					oModel.setProperty("/gifSrcGast","./DataFiles/gifs/"+gifSelection.replaceAll(' ', '')+".gif");
+					oModel.setProperty("/gifSrcGast","./DataFiles/gifs/"+gifSelection+".gif");
 				}
 			// 	if(isTeamAnthemSelected){
 			// 		var oGuestTeam = this.getView().byId("selectGastTeam").getSelectedItem().getText();
@@ -733,8 +733,8 @@ sap.ui.define([
 							if (!audioElement) {
 								audioElement = document.createElement('audio');
 							}
-							console.log("./DataFiles/audios/lastminute/" + oLastMinAudio.replaceAll(' ', '') + ".mp3");
-							audioElement.setAttribute('src', "./DataFiles/audios/lastminute/" + oLastMinAudio.replaceAll(' ', '') + ".mp3");
+							console.log("./DataFiles/audios/lastminute/" + oLastMinAudio + ".mp3");
+							audioElement.setAttribute('src', "./DataFiles/audios/lastminute/" + oLastMinAudio + ".mp3");
 							audioElement.play();
 							this._isLastMinPlaying = true;
 							this._oLastAudio = audioElement;
@@ -753,7 +753,7 @@ sap.ui.define([
 						   matchingaudios.forEach((oItem)=>{
 								var obJ = {};
 								Object.defineProperty(obJ, "AudioName", {
-									value: oItem.AudioName.replaceAll(' ', ''),
+									value: oItem.AudioName,
 									writable: true,
 									enumerable: true,
 									configurable: true,
@@ -813,7 +813,7 @@ sap.ui.define([
 						if(!this._isLastMinPlaying){
 							if(this._oLastAudio === null){
 								var audioElement = document.createElement('audio');
-								audioElement.setAttribute('src', "./DataFiles/audios/goalmusic/"+audioSelection.replaceAll(' ', '')+".mp3");
+								audioElement.setAttribute('src', "./DataFiles/audios/goalmusic/"+audioSelection+".mp3");
 								//audioElement.play();
                                 playWithFadeOut(audioElement);
 								this._oLastAudio = audioElement;
@@ -821,7 +821,7 @@ sap.ui.define([
 							else{
 								this._oLastAudio.pause();
 								var audioElement = document.createElement('audio');
-								audioElement.setAttribute('src', "./DataFiles/audios/goalmusic/"+audioSelection.replaceAll(' ', '')+".mp3");
+								audioElement.setAttribute('src', "./DataFiles/audios/goalmusic/"+audioSelection+".mp3");
 								//audioElement.play();
                                 playWithFadeOut(audioElement);
 								this._oLastAudio = audioElement;
@@ -1002,7 +1002,7 @@ sap.ui.define([
 					   matchingGifs.forEach((oItem)=>{
 							var obJ = {};
 							Object.defineProperty(obJ, "GifName", {
-								value: oItem.GifName.replaceAll(' ', ''),
+								value: oItem.GifName,
 								writable: true,
 								enumerable: true,
 								configurable: true,
@@ -1019,7 +1019,7 @@ sap.ui.define([
 						oModel.setProperty("/gifSrcHeim",oOtherUrl);
 					}	
 			}else{
-				oModel.setProperty("/gifSrcHeim","./DataFiles/gifs/"+gifNameHeim.replaceAll(' ', '')+".gif");
+				oModel.setProperty("/gifSrcHeim","./DataFiles/gifs/"+gifNameHeim+".gif");
 			}
 		},
 		
@@ -1079,7 +1079,7 @@ sap.ui.define([
 					   matchingGifs.forEach((oItem)=>{
 							var obJ = {};
 							Object.defineProperty(obJ, "GifName", {
-								value: oItem.GifName.replaceAll(' ', ''),
+								value: oItem.GifName,
 								writable: true,
 								enumerable: true,
 								configurable: true,
@@ -1097,7 +1097,7 @@ sap.ui.define([
 			}
 		}	
 			else{
-				oModel.setProperty("/gifSrcGast","./DataFiles/gifs/"+gifNameGast.replaceAll(' ', '')+".gif");
+				oModel.setProperty("/gifSrcGast","./DataFiles/gifs/"+gifNameGast+".gif");
 			}
 		},
 		
@@ -1237,10 +1237,10 @@ sap.ui.define([
 			var oGifsData = oModel.getProperty("/gifs");
 			var oaudioData = oModel.getProperty("/audio");
 			var oT1Audios = oaudioData.filter((oItem)=>{
-				return ((oItem.AudioName.startsWith(oteamName)  && !oItem.AudioName.startsWith(oteamName + " Anthem")) || oItem.AudioName.startsWith("general") || oItem.AudioName.startsWith("Automatisch"));
+				return ((oItem.AudioName.startsWith(oteamName.replaceAll(' ', ''))  && !oItem.AudioName.startsWith(oteamName.replaceAll(' ', '') + "Anthem")) || oItem.AudioName.startsWith("general") || oItem.AudioName.startsWith("Automatisch"));
 			});
 			var oHomeGifs = oGifsData.filter((oItem)=>{
-				return ((oItem.GifName.startsWith(oteamName) || oItem.GifName.startsWith("goal") || oItem.GifName.startsWith("Automatisch")));
+				return ((oItem.GifName.startsWith(oteamName.replaceAll(' ', '')) || oItem.GifName.startsWith("goal") || oItem.GifName.startsWith("Automatisch")));
 			});
 			oHomeGifCtrl.setEnabled(true);
 			oHomeAudCtrl.setEnabled(true);
@@ -1257,10 +1257,10 @@ sap.ui.define([
 			var oGifsData = oModel.getProperty("/gifs");
 			var oaudioData = oModel.getProperty("/audio");
 			var oT2Audios = oaudioData.filter((oItem)=>{
-				return ((oItem.AudioName.startsWith(oteamName)  && !oItem.AudioName.startsWith(oteamName + " Anthem")) || oItem.AudioName.startsWith("general") || oItem.AudioName.startsWith("Automatisch"));
+				return ((oItem.AudioName.startsWith(oteamName.replaceAll(' ', ''))  && !oItem.AudioName.startsWith(oteamName.replaceAll(' ', '') + "Anthem")) || oItem.AudioName.startsWith("general") || oItem.AudioName.startsWith("Automatisch"));
 			});
 			var oGuestGifs = oGifsData.filter((oItem)=>{
-				return (oItem.GifName.startsWith(oteamName) || oItem.GifName.startsWith("goal") || oItem.GifName.startsWith("Automatisch"));
+				return (oItem.GifName.startsWith(oteamName.replaceAll(' ', '')) || oItem.GifName.startsWith("goal") || oItem.GifName.startsWith("Automatisch"));
 			});
 			oGuestGifCtrl.setEnabled(true);
 			oGuestAudCtrl.setEnabled(true);
@@ -2272,8 +2272,8 @@ sap.ui.define([
 									if (!audioElement) {
 										audioElement = document.createElement('audio');
 									}
-									console.log("./DataFiles/audios/lastminute/" + oLastMinAudio.replaceAll(' ', '') + ".mp3");
-									audioElement.setAttribute('src', "./DataFiles/audios/lastminute/" + oLastMinAudio.replaceAll(' ', '') + ".mp3");
+									console.log("./DataFiles/audios/lastminute/" + oLastMinAudio + ".mp3");
+									audioElement.setAttribute('src', "./DataFiles/audios/lastminute/" + oLastMinAudio + ".mp3");
 									audioElement.play();
 									me._isLastMinPlaying = true;
 									me._oLastAudio = audioElement;
