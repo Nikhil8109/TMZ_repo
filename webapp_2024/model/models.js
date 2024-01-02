@@ -160,45 +160,7 @@ sap.ui.define([
 						"liveTblTore":[],
 						"gruppen": [],
 						"matches": [],
-						"tabelle": [
-							{
-								"platz":"",
-								"team":"",
-								"spiele":"",
-								"torDiff":"",
-								"pkt":""
-							},{
-								"platz":"",
-								"team":"",
-								"spiele":"",
-								"torDiff":"",
-								"pkt":""
-							},{
-								"platz":"",
-								"team":"",
-								"spiele":"",
-								"torDiff":"",
-								"pkt":""
-							},{
-								"platz":"",
-								"team":"",
-								"spiele":"",
-								"torDiff":"",
-								"pkt":""
-							},{
-								"platz":"",
-								"team":"",
-								"spiele":"",
-								"torDiff":"",
-								"pkt":""
-							},{
-								"platz":"",
-								"team":"",
-								"spiele":"",
-								"torDiff":"",
-								"pkt":""
-							}
-						],
+						"tabelle": [],
 						"teams": oTeamsData[0].Teams,
 						"teamsComp": oTeamsData[0].Teams,
 						"ads": [

@@ -1811,7 +1811,7 @@ sap.ui.define([
 		sortTable: function(oEvent){
 			
 			var oModel = this.getView().getModel();
-			
+			var oTableItems = [];
 			var liveMode = oModel.getProperty("/liveMode");
 			var korrekturMode = oModel.getProperty("/korrekturMode");
 
@@ -2040,19 +2040,32 @@ sap.ui.define([
 			
 			//5. Anzeigen der Gruppe (Teams, Punkte, Tordiff)
 			for (var i = 0; i < orderedTeamsGrp.length; i++) {
-				
+				var obj={
+					"platz":"",
+					"team":"",
+					"spiele":"",
+					"torDiff":"",
+					"pkt":""
+				};
 				//add + to positive goal diff
 				//Wenn Position nicht eindeutig klar ist, dann entferne Platzierung (bedeutet Team liegt auf selber Platzierung wie Team zuvor)
 				if(orderedTorDiffGrp[i] > 0) orderedTorDiffGrp[i] = "+" + orderedTorDiffGrp[i];
 				if(unknownPositions.includes(i)) {
-					oModel.setProperty("/tabelle/" + i + "/platz","");
+					// oModel.setProperty("/tabelle/" + i + "/platz","");
+					obj.platz = "";
 				}else{
-					oModel.setProperty("/tabelle/" + i + "/platz",i+1);
+					// oModel.setProperty("/tabelle/" + i + "/platz",i+1);
+					obj.platz = i+1;
 				}
-				oModel.setProperty("/tabelle/" + i + "/team",orderedTeamsGrp[i]);
-				oModel.setProperty("/tabelle/" + i + "/spiele",orderedSpieleGrp[i]);
-				oModel.setProperty("/tabelle/" + i + "/pkt",orderedPktGrp[i]);
-				oModel.setProperty("/tabelle/" + i + "/torDiff",orderedTorDiffGrp[i]);
+				// oModel.setProperty("/tabelle/" + i + "/team",orderedTeamsGrp[i]);
+				// oModel.setProperty("/tabelle/" + i + "/spiele",orderedSpieleGrp[i]);
+				// oModel.setProperty("/tabelle/" + i + "/pkt",orderedPktGrp[i]);
+				// oModel.setProperty("/tabelle/" + i + "/torDiff",orderedTorDiffGrp[i]);
+				obj.team = orderedTeamsGrp[i];
+				obj.spiele = orderedSpieleGrp[i];
+				obj.pkt = orderedPktGrp[i];
+				obj.torDiff = orderedTorDiffGrp[i];
+				oTableItems.push(obj);
 			}
 			if(liveMode === true) {
                 console.log(group);
@@ -2082,9 +2095,7 @@ sap.ui.define([
 				//this.getView().getController().setPaarung();
 				this.getView().getController().liveTableUpdate();
 			} */
-			
-
-
+			oModel.setProperty("/tabelle",oTableItems);
 		},
 		
 		setSpielzeit: function (oEvent) {
