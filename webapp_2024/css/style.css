@@ -283,5 +283,5 @@
     margin-left: 10px;
 }
 .ResultTable{
-    font-size: 1vw !important;
+    scale: 0.65;
 }

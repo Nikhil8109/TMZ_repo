@@ -1218,12 +1218,50 @@ sap.ui.define([
 			// console.log(heimteam)
 			var gastteam = this.getView().byId("selectGastTeam").getSelectedItem().getText();
 			oModel.setProperty("/gastteam",gastteam);
+			var oHomeGifCtrl = this.getView().byId("selectGifHeim");
+			var oHomeStepCtrl = this.getView().byId("heimtore");
+			var oHomeAudCtrl = this.getView().byId("selectAudTeam1");
+			// var oModel = this.getView().getModel();
+			// var oteamName = oEvent.getSource().getSelectedItem().getText();
+			var oGifsData = oModel.getProperty("/gifs");
+			var oaudioData = oModel.getProperty("/audio");
+			var oT1Audios = oaudioData.filter((oItem)=>{
+				return (oItem.AudioName.startsWith(heimteam.replaceAll(' ', '')) || oItem.AudioName.startsWith("general") || oItem.AudioName.startsWith("Automatisch"));
+			});
+			var oHomeGifs = oGifsData.filter((oItem)=>{
+				return ((oItem.GifName.startsWith(heimteam.replaceAll(' ', '')) || oItem.GifName.startsWith("goal") || oItem.GifName.startsWith("Automatisch")));
+			});
+			oHomeGifCtrl.setEnabled(true);
+			oHomeAudCtrl.setEnabled(true);
+			oHomeStepCtrl.setEnabled(true);
+			oModel.setProperty("/gifsHome",oHomeGifs);
+			oModel.setProperty("/audiosHome",oT1Audios);
+			var oGuestGifCtrl = this.getView().byId("selectGifGast");
+			var oGuestAudCtrl = this.getView().byId("selectAudTeam2");
+			var oGuestStepCtrl = this.getView().byId("gasttore");
+			// var oModel = this.getView().getModel();
+			// var oteamName = oEvent.getSource().getSelectedItem().getText();
+			// var oGifsData = oModel.getProperty("/gifs");
+			// var oaudioData = oModel.getProperty("/audio");
+			var oT2Audios = oaudioData.filter((oItem)=>{
+				return (oItem.AudioName.startsWith(gastteam.replaceAll(' ', '')) || oItem.AudioName.startsWith("general") || oItem.AudioName.startsWith("Automatisch"));
+			});
+			var oGuestGifs = oGifsData.filter((oItem)=>{
+				return (oItem.GifName.startsWith(gastteam.replaceAll(' ', '')) || oItem.GifName.startsWith("goal") || oItem.GifName.startsWith("Automatisch"));
+			});
+			oGuestGifCtrl.setEnabled(true);
+			oGuestAudCtrl.setEnabled(true);
+			oGuestStepCtrl.setEnabled(true);
+			oModel.setProperty("/gifsGuest",oGuestGifs);
+			oModel.setProperty("/audiosGuest",oT2Audios);
 			var heimURL =  "./DataFiles/Logos/" + this.getView().byId("selectHeimTeam").getSelectedKey().replaceAll(' ', '');
 			var gastURL = "./DataFiles/Logos/" + this.getView().byId("selectGastTeam").getSelectedKey().replaceAll(' ', '');
 			// console.log(heimURL);
 			//trigger functions to select goal animations
-			this.getView().getController().selectGifHeim();
-			this.getView().getController().selectGifGast();
+
+			//commenting it as we are already doing this in "showtorheim" and "showtorguest"
+			// this.getView().getController().selectGifHeim();
+			// this.getView().getController().selectGifGast();
 			
 			oModel.setProperty("/heimLogo",heimURL);
 			oModel.setProperty("/gastLogo",gastURL);
@@ -1460,51 +1498,51 @@ checkAudioFilesExist: function(audioPaths) {
             
 		},
         
-		onSelectHome:function(oEvent){
-			// var oPicurl = "pics/"+oEvent.getSource().getSelectedKey();
-			// var oHomeImg = this.getView().byId("imiiii5ge0");
-			// var oHomeTxt = this.getView().byId("homeTxt");
-			// oHomeTxt.setVisible(false);
-			// oHomeImg.setSrc(oPicurl);
-			var oHomeGifCtrl = this.getView().byId("selectGifHeim");
-			var oHomeStepCtrl = this.getView().byId("heimtore");
-			var oHomeAudCtrl = this.getView().byId("selectAudTeam1");
-			var oModel = this.getView().getModel();
-			var oteamName = oEvent.getSource().getSelectedItem().getText();
-			var oGifsData = oModel.getProperty("/gifs");
-			var oaudioData = oModel.getProperty("/audio");
-			var oT1Audios = oaudioData.filter((oItem)=>{
-				return (oItem.AudioName.startsWith(oteamName.replaceAll(' ', '')) || oItem.AudioName.startsWith("general") || oItem.AudioName.startsWith("Automatisch"));
-			});
-			var oHomeGifs = oGifsData.filter((oItem)=>{
-				return ((oItem.GifName.startsWith(oteamName.replaceAll(' ', '')) || oItem.GifName.startsWith("goal") || oItem.GifName.startsWith("Automatisch")));
-			});
-			oHomeGifCtrl.setEnabled(true);
-			oHomeAudCtrl.setEnabled(true);
-			oHomeStepCtrl.setEnabled(true);
-			oModel.setProperty("/gifsHome",oHomeGifs);
-			oModel.setProperty("/audiosHome",oT1Audios);
-		},
-		onSelectGuest:function(oEvent){
-			var oGuestGifCtrl = this.getView().byId("selectGifGast");
-			var oGuestAudCtrl = this.getView().byId("selectAudTeam2");
-			var oGuestStepCtrl = this.getView().byId("gasttore");
-			var oModel = this.getView().getModel();
-			var oteamName = oEvent.getSource().getSelectedItem().getText();
-			var oGifsData = oModel.getProperty("/gifs");
-			var oaudioData = oModel.getProperty("/audio");
-			var oT2Audios = oaudioData.filter((oItem)=>{
-				return (oItem.AudioName.startsWith(oteamName.replaceAll(' ', '')) || oItem.AudioName.startsWith("general") || oItem.AudioName.startsWith("Automatisch"));
-			});
-			var oGuestGifs = oGifsData.filter((oItem)=>{
-				return (oItem.GifName.startsWith(oteamName.replaceAll(' ', '')) || oItem.GifName.startsWith("goal") || oItem.GifName.startsWith("Automatisch"));
-			});
-			oGuestGifCtrl.setEnabled(true);
-			oGuestAudCtrl.setEnabled(true);
-			oGuestStepCtrl.setEnabled(true);
-			oModel.setProperty("/gifsGuest",oGuestGifs);
-			oModel.setProperty("/audiosGuest",oT2Audios);
-		},
+		// onSelectHome:function(oEvent){
+		// 	// var oPicurl = "pics/"+oEvent.getSource().getSelectedKey();
+		// 	// var oHomeImg = this.getView().byId("imiiii5ge0");
+		// 	// var oHomeTxt = this.getView().byId("homeTxt");
+		// 	// oHomeTxt.setVisible(false);
+		// 	// oHomeImg.setSrc(oPicurl);
+		// 	var oHomeGifCtrl = this.getView().byId("selectGifHeim");
+		// 	var oHomeStepCtrl = this.getView().byId("heimtore");
+		// 	var oHomeAudCtrl = this.getView().byId("selectAudTeam1");
+		// 	var oModel = this.getView().getModel();
+		// 	var oteamName = oEvent.getSource().getSelectedItem().getText();
+		// 	var oGifsData = oModel.getProperty("/gifs");
+		// 	var oaudioData = oModel.getProperty("/audio");
+		// 	var oT1Audios = oaudioData.filter((oItem)=>{
+		// 		return (oItem.AudioName.startsWith(oteamName.replaceAll(' ', '')) || oItem.AudioName.startsWith("general") || oItem.AudioName.startsWith("Automatisch"));
+		// 	});
+		// 	var oHomeGifs = oGifsData.filter((oItem)=>{
+		// 		return ((oItem.GifName.startsWith(oteamName.replaceAll(' ', '')) || oItem.GifName.startsWith("goal") || oItem.GifName.startsWith("Automatisch")));
+		// 	});
+		// 	oHomeGifCtrl.setEnabled(true);
+		// 	oHomeAudCtrl.setEnabled(true);
+		// 	oHomeStepCtrl.setEnabled(true);
+		// 	oModel.setProperty("/gifsHome",oHomeGifs);
+		// 	oModel.setProperty("/audiosHome",oT1Audios);
+		// },
+		// onSelectGuest:function(oEvent){
+		// 	var oGuestGifCtrl = this.getView().byId("selectGifGast");
+		// 	var oGuestAudCtrl = this.getView().byId("selectAudTeam2");
+		// 	var oGuestStepCtrl = this.getView().byId("gasttore");
+		// 	var oModel = this.getView().getModel();
+		// 	var oteamName = oEvent.getSource().getSelectedItem().getText();
+		// 	var oGifsData = oModel.getProperty("/gifs");
+		// 	var oaudioData = oModel.getProperty("/audio");
+		// 	var oT2Audios = oaudioData.filter((oItem)=>{
+		// 		return (oItem.AudioName.startsWith(oteamName.replaceAll(' ', '')) || oItem.AudioName.startsWith("general") || oItem.AudioName.startsWith("Automatisch"));
+		// 	});
+		// 	var oGuestGifs = oGifsData.filter((oItem)=>{
+		// 		return (oItem.GifName.startsWith(oteamName.replaceAll(' ', '')) || oItem.GifName.startsWith("goal") || oItem.GifName.startsWith("Automatisch"));
+		// 	});
+		// 	oGuestGifCtrl.setEnabled(true);
+		// 	oGuestAudCtrl.setEnabled(true);
+		// 	oGuestStepCtrl.setEnabled(true);
+		// 	oModel.setProperty("/gifsGuest",oGuestGifs);
+		// 	oModel.setProperty("/audiosGuest",oT2Audios);
+		// },
 		setKOPaarung: function(){
 			var oModel = this.getView().getModel();
 			
@@ -2443,6 +2481,8 @@ checkAudioFilesExist: function(audioPaths) {
 		startTimer: function () {
 			var oModel = this.getView().getModel();
 			var oLastMinAudio = this.getView().byId("selectAudLastMin").getSelectedItem().getText();
+		    var oLastMin = this.getView().byId("selectAudLastMin");
+			oLastMin.setEnabled(true);
 			var timerAktive = oModel.getProperty("/isTimerAktive");
 			var mp3 = document.getElementById(this.getView().byId("audio_with_controls").getIdForLabel());
 			var mp3LM = new Audio('mp3/letzteMinuteUI.ogg');
@@ -2485,6 +2525,7 @@ checkAudioFilesExist: function(audioPaths) {
 		
 						// Handle last minute audio
 						if (minutes === 0 && !kOneMin) {
+							oLastMin.setEnabled(false);
 							if (oLastMinAudio === "Automatisch") {
 								var oAudios = oModel.getProperty("/audio");
 								var matchingAudios = oAudios.filter((oItem) => oItem.AudioName.startsWith("lastminute"));

@@ -71,7 +71,7 @@
 										</HBox>
 										<HBox alignItems="Center" >
 										<Label text="Song Last Minute:" class="colorWhite" />
-											<ComboBox id ="selectAudLastMin" selectedKey="Automatisch"  items="{ path: '/audiosLastMin', length : '500' }"  class="spacingMarg">
+											<ComboBox id ="selectAudLastMin" selectedKey="Automatisch" enabled="false"  items="{ path: '/audiosLastMin', length : '500' }"  class="spacingMarg">
 												<core:Item key="{AudioName}" text="{AudioName}"/>
 											</ComboBox>
 										</HBox>
@@ -113,11 +113,11 @@
 										id="form0_154625971269444">
 										<sap.ui.layout.form:content>
 											<Label text="Heim" id="slheim" class="colorWhite"/>
-											<ComboBox id ="selectHeimTeam" selectedKey="{/selectedHeimTeamKey}" items="{ path: '/teamsComp', sorter: { path: 'Team' } }" change="onSelectHome">
+											<ComboBox id ="selectHeimTeam" selectedKey="{/selectedHeimTeamKey}" items="{ path: '/teamsComp', sorter: { path: 'Team' } }" >
 												<core:Item key="{Logo}" text="{Team}"/>
 											</ComboBox>
 											<Label text="Gast" id="slgast" class="colorWhite"/>
-											<ComboBox id ="selectGastTeam" selectedKey="{/selectedGastTeamKey}" items="{ path: '/teamsComp', sorter: { path: 'Team' } }" change="onSelectGuest">
+											<ComboBox id ="selectGastTeam" selectedKey="{/selectedGastTeamKey}" items="{ path: '/teamsComp', sorter: { path: 'Team' } }" >
 												<core:Item key="{Logo}" text="{Team}"/>
 											</ComboBox>
 											<Label text="Toranimation Heim" id="slgifheim" class="colorWhite"/>
@@ -474,9 +474,9 @@
 
 								</l:content>
 							</l:Grid>
-							<l:Grid id="grid11" defaultSpan="XL12 L12 M12 S12" position="Center" visible="{/showTabelle}">
-								<l:content>
-								<HBox alignItems="Center" alignContent="Center" justifyContent="Center">
+							<!-- <l:Grid id="grid11" defaultSpan="XL12 L12 M12 S12" position="Center" visible="{/showTabelle}"> -->
+								<!-- <l:content> -->
+								<HBox id="hBox_tab" alignItems="Center" alignContent="Center" justifyContent="Center" visible="{/showTabelle}">
 								  <Table id="table" items="{/tabelle}" width="auto" backgroundDesign = "Transparent" class="sapUiResponsiveMargin ResultTable">
 								      <headerToolbar>
 											<Toolbar>
@@ -513,8 +513,8 @@
 									</items>
 								  </Table>
 								</HBox>
-								</l:content>
-							</l:Grid>
+								<!-- </l:content> -->
+							<!-- </l:Grid> -->
 							<l:Grid id="grid13" defaultSpan="XL12 L12 M12 S12" position="Center" visible="{/heimtor}">
 								<l:content>
 									<HBox width="100%" alignItems="Center" alignContent="Center" justifyContent="Center">
