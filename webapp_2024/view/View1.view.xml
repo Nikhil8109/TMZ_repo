@@ -71,7 +71,7 @@
 										</HBox>
 										<HBox alignItems="Center" >
 										<Label text="Song Last Minute:" class="colorWhite" />
-											<ComboBox id ="selectAudLastMin" selectedKey="Automatisch"  items="{ path: '/audiosLastMin' }"  class="spacingMarg">
+											<ComboBox id ="selectAudLastMin" selectedKey="Automatisch"  items="{ path: '/audiosLastMin', length : '500' }"  class="spacingMarg">
 												<core:Item key="{AudioName}" text="{AudioName}"/>
 											</ComboBox>
 										</HBox>
@@ -113,11 +113,11 @@
 										id="form0_154625971269444">
 										<sap.ui.layout.form:content>
 											<Label text="Heim" id="slheim" class="colorWhite"/>
-											<ComboBox id ="selectHeimTeam"  items="{ path: '/teamsComp', sorter: { path: 'Team' } }" change="onSelectHome">
+											<ComboBox id ="selectHeimTeam" selectedKey="{/selectedHeimTeamKey}" items="{ path: '/teamsComp', sorter: { path: 'Team' } }" change="onSelectHome">
 												<core:Item key="{Logo}" text="{Team}"/>
 											</ComboBox>
 											<Label text="Gast" id="slgast" class="colorWhite"/>
-											<ComboBox id ="selectGastTeam" items="{ path: '/teamsComp', sorter: { path: 'Team' } }" change="onSelectGuest">
+											<ComboBox id ="selectGastTeam" selectedKey="{/selectedGastTeamKey}" items="{ path: '/teamsComp', sorter: { path: 'Team' } }" change="onSelectGuest">
 												<core:Item key="{Logo}" text="{Team}"/>
 											</ComboBox>
 											<Label text="Toranimation Heim" id="slgifheim" class="colorWhite"/>
@@ -132,6 +132,17 @@
 										</sap.ui.layout.form:content>
 										<Input width="100%" id="tablestatus" editable="false" value="{/tableStatus}"/>
 										<Button text="Spielpaarung anzeigen" press="setPaarung"/>
+                                        <!-- Neuer Abschnitt für das kommende Spiel -->
+                <Label text="Nächstes Spiel Heim" class="upcomingLabel"/>
+                <ComboBox id="upcomingSelectHeimTeam" items="{ path: '/teamsComp', sorter: { path: 'Team' } }" class="upcomingComboBox">
+                    <core:Item key="{Logo}" text="{Team}"/>
+                </ComboBox>
+                <Label text="Nächstes Spiel Gast" class="upcomingLabel"/>
+                <ComboBox id="upcomingSelectGastTeam" items="{ path: '/teamsComp', sorter: { path: 'Team' } }" class="upcomingComboBox">
+                    <core:Item key="{Logo}" text="{Team}"/>
+                </ComboBox>
+                <CheckBox id="autoCallNextMatchCheckbox" text="Auto Ansage Next Match" selected="{/autoAnsageEnabled}" class="upcomingCheckbox"/>
+                <Button text="Als Spielpaarung setzen" id="upcomingCustomButtonId" press="onSetUpcomingAsCurrent" class="upcomingButton"/>
 									</sap.ui.layout.form:SimpleForm>
 								</content>
 							</Panel>
@@ -172,6 +183,24 @@
 									</HBox>
 									</HBox>
 									
+								</content>
+							</Panel>
+                            <Panel width="auto" class="sapUiResponsiveMargin" expandable="true">
+								<headerToolbar>
+									<Toolbar height="3rem">
+										<Title text="Wettbewerb" class="colorWhite"/>
+									</Toolbar>
+								</headerToolbar>
+								<content>
+									<sap.ui.layout.form:SimpleForm editable="true" layout="ResponsiveGridLayout" xmlns:sap.ui.layout.form="sap.ui.layout.form"
+										id="competitionPanel">
+										<sap.ui.layout.form:content>
+											<Label text="Wähle den Wettbewerb. VORSICHT! Wechseln des Wettbewerbs setzt aktuelle Tabelle zurück!" id="comptId" class="colorWhite"/>
+												<ComboBox id="selectCompetition" items="{ path: '/competitions' }" change="onCompetitionSelect" >
+													<core:Item key="{Competition}" text="{Competition}"/>
+												</ComboBox>
+										</sap.ui.layout.form:content>
+									</sap.ui.layout.form:SimpleForm>
 								</content>
 							</Panel>
 							<Panel width="auto" class="sapUiResponsiveMargin" expandable="true">
@@ -265,24 +294,7 @@
 									</sap.ui.layout.form:SimpleForm>
 								</content>
 							</Panel>
-							<Panel width="auto" class="sapUiResponsiveMargin" expandable="true">
-								<headerToolbar>
-									<Toolbar height="3rem">
-										<Title text="Wettbewerb" class="colorWhite"/>
-									</Toolbar>
-								</headerToolbar>
-								<content>
-									<sap.ui.layout.form:SimpleForm editable="true" layout="ResponsiveGridLayout" xmlns:sap.ui.layout.form="sap.ui.layout.form"
-										id="competitionPanel">
-										<sap.ui.layout.form:content>
-											<Label text="Select Wettbewerb" id="comptId" class="colorWhite"/>
-												<ComboBox id="selectCompetition" items="{ path: '/competitions' }" change="onCompetitionSelect" >
-													<core:Item key="{Competition}" text="{Competition}"/>
-												</ComboBox>
-										</sap.ui.layout.form:content>
-									</sap.ui.layout.form:SimpleForm>
-								</content>
-							</Panel>
+							
 							<Panel width="auto" class="sapUiResponsiveMargin" expandable="true">
 								<headerToolbar>
 									<Toolbar height="3rem">
@@ -314,7 +326,7 @@
 											<Label text="Text" id="slbtext" class="colorWhite"/>
 											<Input value="{/textnachricht2}"></Input>
 											<Label text="Bild" id="picx" class="colorWhite"/>
-											<Select forceSelection="false" selectedKey="{/textPic}" items="{ path: 'teamsComp', sorter: { path: 'Team' } }">
+											<Select id = "TextAndPicSelect" forceSelection="false" selectedKey="{/textPic}" items="{ path: '/teamsComp', sorter: { path: 'Team' } }">
 												<core:Item key="{Logo}" text="{Team}"/>
 											</Select>
 										</sap.ui.layout.form:content>
@@ -336,17 +348,17 @@
 											<Label text="Text" id="slkotext" class="colorWhite"/>
 											<Input value="{/textnachricht}"></Input>
 											<Label text="Match1" id="slkoteam1" class="colorWhite"/>
-											<Select id ="selectKOTeam1" forceSelection="true" selectedKey="{/koteam1URL}" items="{ path: 'teamsComp', sorter: { path: 'Team' } }">
+											<Select id ="selectKOTeam1" forceSelection="true" selectedKey="{/koteam1URL}" items="{ path: '/teamsComp', sorter: { path: 'Team' } }">
 												<core:Item key="{Logo}" text="{Team}"/>
 											</Select>
-											<Select id ="selectKOTeam2" forceSelection="true" selectedKey="{/koteam2URL}" items="{ path: 'teamsComp', sorter: { path: 'Team' } }">
+											<Select id ="selectKOTeam2" forceSelection="true" selectedKey="{/koteam2URL}" items="{ path: '/teamsComp', sorter: { path: 'Team' } }">
 												<core:Item key="{Logo}" text="{Team}"/>
 											</Select>
 											<Label text="Match2" id="slkoteam2" class="colorWhite"/>
-											<Select id ="selectKOTeam3" forceSelection="true" selectedKey="{/koteam3URL}" items="{ path: 'teamsComp', sorter: { path: 'Team' } }">
+											<Select id ="selectKOTeam3" forceSelection="true" selectedKey="{/koteam3URL}" items="{ path: '/teamsComp', sorter: { path: 'Team' } }">
 												<core:Item key="{Logo}" text="{Team}"/>
 											</Select>
-											<Select id ="selectKOTeam4" forceSelection="true" selectedKey="{/koteam4URL}" items="{ path: 'teamsComp', sorter: { path: 'Team' } }">
+											<Select id ="selectKOTeam4" forceSelection="true" selectedKey="{/koteam4URL}" items="{ path: '/teamsComp', sorter: { path: 'Team' } }">
 												<core:Item key="{Logo}" text="{Team}"/>
 											</Select>
 										</sap.ui.layout.form:content>

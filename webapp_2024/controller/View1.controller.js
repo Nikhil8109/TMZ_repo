@@ -10,6 +10,10 @@ sap.ui.define([
 			this._oGuestCount = 0;
 			this._oLastAudio = null;
 			this._isLastMinPlaying = false;
+           
+
+            var oResetButton = this.getView().byId("button3");
+            oResetButton.addStyleClass("customMarginLeft");
 			jQuery.sap.require("com.vflmunderkingen.Anzeigetafel.model.xlsx");
 		},
 	
@@ -40,7 +44,27 @@ sap.ui.define([
 		},
 		
 		showTextPic: function(oEvent){
+            
+            var oModel = this.getView().getModel();
+			
+			
+			var logopath = "./DataFiles/Logos/"; 
+			var team1URL = oModel.getProperty("/koteam1URL");
+            
+            
 			var oModel = this.getView().getModel();
+            
+            var logopath = "./DataFiles/Logos/"; 
+            var logo = oModel.getProperty("/textPic");
+            console.log("asdassdsadasdas");
+            console.log(logo);
+            
+            logo = logo.startsWith(logopath) ? logo : logopath + logo;
+
+            
+            oModel.setProperty("/textPic",logo);
+
+            
 			oModel.setProperty("/showTextPic",true);
 			oModel.setProperty("/showKO",false);
 			oModel.setProperty("/showWerbung",false);
@@ -49,6 +73,8 @@ sap.ui.define([
 			oModel.setProperty("/gasttor", false);
 			oModel.setProperty("/showText",false);
 			oModel.setProperty("/showClock",false);
+            
+            
 		},
 		
 		playTormusik: function(oEvent){
@@ -270,7 +296,7 @@ sap.ui.define([
             var playWithFadeOut = function(audioElement) {
                 audioElement.play();
                 audioElement.onloadedmetadata = () => {
-                    var fadeOutStartTime = audioElement.duration - 10; // Start fade-out 10 seconds before the end
+                    var fadeOutStartTime = audioElement.duration - 7; // Start fade-out 10 seconds before the end
                     var fadeOutInterval = 200; // Interval in milliseconds to reduce volume
                     var fadeAmount = audioElement.volume / (10 * 1000 / fadeOutInterval); // Amount to decrease volume each interval
 
@@ -295,7 +321,6 @@ sap.ui.define([
 				var penTimer4Aktive = oModel.getProperty("/isPenTimer4Aktive");
 				var controller = this.getView().getController();
 				var oTeamAnthemchck = this.getView().byId("selectTeamAnthem").getSelected();
-							
 				//controller.playTormusik();
 				
 				oModel.setProperty("/showTabelle", false);
@@ -310,18 +335,18 @@ sap.ui.define([
 				}
 				
 				//Reset Zeitstrafen Gastteam
-				if(penTimer3Aktive == true) {
-					clearInterval(this.z3);
-					oModel.setProperty("/showPenTimer3",false);
-					oModel.setProperty("/isPenTimer3Aktive", false);
-					oModel.setProperty("/penaltyClock3", "02:00");
-				}
-				if(penTimer4Aktive == true) {
-					clearInterval(this.z4);
-					oModel.setProperty("/showPenTimer4",false);
-					oModel.setProperty("/isPenTimer4Aktive", false);
-					oModel.setProperty("/penaltyClock4", "02:00");
-				}
+				// if(penTimer3Aktive == true) {
+					// clearInterval(this.z3);
+					// oModel.setProperty("/showPenTimer3",false);
+					// oModel.setProperty("/isPenTimer3Aktive", false);
+					// oModel.setProperty("/penaltyClock3", "02:00");
+				// }
+				// if(penTimer4Aktive == true) {
+					// clearInterval(this.z4);
+					// oModel.setProperty("/showPenTimer4",false);
+					// oModel.setProperty("/isPenTimer4Aktive", false);
+					// oModel.setProperty("/penaltyClock4", "02:00");
+				// }
 				
 				//Call function for gif selection if auto-selection is active
 				var gifSelection = this.getView().byId("selectGifHeim").getSelectedItem().getText();
@@ -332,14 +357,15 @@ sap.ui.define([
 						var oHomeGifs = oModel.getProperty("/gifsHome");
 						// var matchingGifs = oModel.getProperty("/matchingGifsHeim");
 						// var randomNr = Math.floor(Math.random() * matchingGifs.length);
-						var matchingGifs = oHomeGifs.filter((oItem)=>{return oItem.GifName.startsWith(oHomeTeam.replaceAll(' ', ''))});
+						//var matchingGifs = oHomeGifs.filter((oItem)=>{return oItem.GifName.startsWith(oHomeTeam)});
+                        var matchingGifs = oHomeGifs.filter((oItem)=>{return oItem.GifName.startsWith(oHomeTeam.replaceAll(' ', ''))});
 						var otherGifs = oHomeGifs.filter((oItem)=>{return (oItem.GifName.startsWith("goal"))});
 						if(matchingGifs.length > 0){
 							var matchedGif = [];
 						   matchingGifs.forEach((oItem)=>{
 								var obJ = {};
 								Object.defineProperty(obJ, "GifName", {
-									value: oItem.GifName,
+									value: oItem.GifName.replaceAll(' ', ''),
 									writable: true,
 									enumerable: true,
 									configurable: true,
@@ -357,7 +383,7 @@ sap.ui.define([
 						}	
 					}
 					else{
-						oModel.setProperty("/gifSrcHeim","./DataFiles/gifs/"+gifSelection+".gif");
+						oModel.setProperty("/gifSrcHeim","./DataFiles/gifs/"+gifSelection.replaceAll(' ', '')+".gif");
 					}
 				// 	if(isTeamAnthemSelected){
 				// 		var oHomeTeam = this.getView().byId("selectHeimTeam").getSelectedItem().getText();
@@ -393,11 +419,13 @@ sap.ui.define([
 				// 	}	
 				// }
 				// 	else{
-					if(automusicControl){
+                    if(automusicControl){
 						if( oClock > "01:00" && oClock <= "01:30"){
 							if (oLastMinAudio === "Automatisch") {
 								var oAudios = oModel.getProperty("/audio");
 								var matchingAudios = oAudios.filter((oItem) => oItem.AudioName.startsWith("lastminute"));
+                                console.log("Teste hier pls.");
+                                console.log(matchingAudios);
 								var audioElement = document.getElementById(this.getView().byId("audio_with_control3").getIdForLabel());
 								if (matchingAudios.length > 0) {
 									var randomNr = Math.floor(Math.random() * matchingAudios.length);
@@ -567,33 +595,33 @@ sap.ui.define([
 					}, 2000);
 			this._oHomeCount = oSourceParam;
 		},
-		// onSelectTeamAnthem:function(oEvent){
-		// 	var oTeamAnthemchck = oEvent.getSource().getSelected();
-		// 	var oModel = this.getView().getModel();
-		// 	var oAudiosAll = oModel.getProperty("/audio");
-		// 	var oHomeAudios = oModel.getProperty("/audiosHome");
-		// 	var oGuestAudios = oModel.getProperty("/audiosGuest");
-		// 	var oHome = this.getView().byId("selectHeimTeam");
-		// 	var oGuest = this.getView().byId("selectGastTeam");
-		// 	var oHomeTeam = oHome.getSelectedItem().getText();
-		// 	var oGuestTeam = oGuest.getSelectedItem().getText();
-		// 	if(oTeamAnthemchck){
-		// 		if(oHome !== undefined && oGuest !== undefined){
-		// 			var oHomeAnthems = oAudiosAll.filter((oData)=>{ return oData.AudioName.startsWith(oHomeTeam.replaceAll(' ', '') + "Anthem")});
-		// 			var oGuestAnthems = oAudiosAll.filter((oData)=>{ return oData.AudioName.startsWith(oGuestTeam.replaceAll(' ', '') + "Anthem")});
-		// 			oHomeAudios =  oHomeAudios.concat(oHomeAnthems);
-		// 			oGuestAudios =  oGuestAudios.concat(oGuestAnthems);
-		// 			oModel.setProperty("/audiosHome",oHomeAudios);
-		// 			oModel.setProperty("/audiosGuest",oGuestAudios);
-		// 		}
-		// 		}
-		// 		else{
-		// 			oHomeAudios = oHomeAudios.filter((oItem)=>{return !oItem.AudioName.startsWith(oHomeTeam.replaceAll(' ', '') + "Anthem")});
-		// 			oGuestAudios = oGuestAudios.filter((oItem)=>{return !oItem.AudioName.startsWith(oGuestTeam.replaceAll(' ', '') + "Anthem")});
-		// 			oModel.setProperty("/audiosHome",oHomeAudios);
-		// 			oModel.setProperty("/audiosGuest",oGuestAudios);
-		// 		}
-		// 	},
+		/* onSelectTeamAnthem:function(oEvent){
+			var oTeamAnthemchck = oEvent.getSource().getSelected();
+			var oModel = this.getView().getModel();
+			var oAudiosAll = oModel.getProperty("/audio");
+			var oHomeAudios = oModel.getProperty("/audiosHome");
+			var oGuestAudios = oModel.getProperty("/audiosGuest");
+			var oHome = this.getView().byId("selectHeimTeam");
+			var oGuest = this.getView().byId("selectGastTeam");
+			var oHomeTeam = oHome.getSelectedItem().getText();
+			var oGuestTeam = oGuest.getSelectedItem().getText();
+			if(oTeamAnthemchck){
+				if(oHome !== undefined && oGuest !== undefined){
+					var oHomeAnthems = oAudiosAll.filter((oData)=>{ return oData.AudioName.startsWith(oHomeTeam + " Anthem")});
+					var oGuestAnthems = oAudiosAll.filter((oData)=>{ return oData.AudioName.startsWith(oGuestTeam + " Anthem")});
+					oHomeAudios =  oHomeAudios.concat(oHomeAnthems);
+					oGuestAudios =  oGuestAudios.concat(oGuestAnthems);
+					oModel.setProperty("/audiosHome",oHomeAudios);
+					oModel.setProperty("/audiosGuest",oGuestAudios);
+				}
+				}
+				else{
+					oHomeAudios = oHomeAudios.filter((oItem)=>{return !oItem.AudioName.startsWith(oHomeTeam + " Anthem")});
+					oGuestAudios = oGuestAudios.filter((oItem)=>{return !oItem.AudioName.startsWith(oGuestTeam + " Anthem")});
+					oModel.setProperty("/audiosHome",oHomeAudios);
+					oModel.setProperty("/audiosGuest",oGuestAudios);
+				}
+			}, */
 		showTorGast: function(oEvent){
 			var oSourceParam = oEvent.getParameters().value;
 			var stepInputControl = this.getView().byId("gasttore");
@@ -605,7 +633,7 @@ sap.ui.define([
             var playWithFadeOut = function(audioElement) {
                 audioElement.play();
                 audioElement.onloadedmetadata = () => {
-                    var fadeOutStartTime = audioElement.duration - 10; // Start fade-out 10 seconds before the end
+                    var fadeOutStartTime = audioElement.duration - 7; // Start fade-out 10 seconds before the end
                     var fadeOutInterval = 200; // Interval in milliseconds to reduce volume
                     var fadeAmount = audioElement.volume / (10 * 1000 / fadeOutInterval); // Amount to decrease volume each interval
 
@@ -631,7 +659,7 @@ sap.ui.define([
 			var penTimer2Aktive = oModel.getProperty("/isPenTimer2Aktive");
 			var controller = this.getView().getController();
 			var oTeamAnthemchck = this.getView().byId("selectTeamAnthem").getSelected();
-			
+            
 			oModel.setProperty("/showTabelle", false);
 						
 			if(animationControl === true) {
@@ -647,18 +675,18 @@ sap.ui.define([
 			//controller.playTormusik();
 			
 			//Reset Zeitstrafen Heimteam
-			if(penTimer1Aktive == true) {
-				clearInterval(this.z1);
-				oModel.setProperty("/showPenTimer1",false);
-				oModel.setProperty("/isPenTimer1Aktive", false);
-				oModel.setProperty("/penaltyClock1", "02:00");
-			}
-			if(penTimer2Aktive == true) {
-				clearInterval(this.z2);
-				oModel.setProperty("/showPenTimer2",false);
-				oModel.setProperty("/isPenTimer2Aktive", false);
-				oModel.setProperty("/penaltyClock2", "02:00");
-			}
+			// if(penTimer1Aktive == true) {
+				// clearInterval(this.z1);
+				// oModel.setProperty("/showPenTimer1",false);
+				// oModel.setProperty("/isPenTimer1Aktive", false);
+				// oModel.setProperty("/penaltyClock1", "02:00");
+			// }
+			// if(penTimer2Aktive == true) {
+				// clearInterval(this.z2);
+				// oModel.setProperty("/showPenTimer2",false);
+				// oModel.setProperty("/isPenTimer2Aktive", false);
+				// oModel.setProperty("/penaltyClock2", "02:00");
+			// }
 			
 			//Call function for gif selection if auto-selection is active
 			var gifSelection = this.getView().byId("selectGifGast").getSelectedItem().getText();
@@ -669,14 +697,15 @@ sap.ui.define([
 					var oGuestGifs = oModel.getProperty("/gifsGuest");
 					// var matchingGifs = oModel.getProperty("/matchingGifsHeim");
 					// var randomNr = Math.floor(Math.random() * matchingGifs.length);
-					var matchingGifs = oGuestGifs.filter((oItem)=>{return oItem.GifName.startsWith(oGuestTeam.replaceAll(' ', ''))});
+					// var matchingGifs = oGuestGifs.filter((oItem)=>{return oItem.GifName.startsWith(oGuestTeam)});
+                    var matchingGifs = oGuestGifs.filter((oItem)=>{return oItem.GifName.startsWith(oGuestTeam.replaceAll(' ', ''))});
 					var otherGifs = oGuestGifs.filter((oItem)=>{return (oItem.GifName.startsWith("goal"))});
 					if(matchingGifs.length > 0){
 						var matchedGif = [];
 					   matchingGifs.forEach((oItem)=>{
 							var obJ = {};
 							Object.defineProperty(obJ, "GifName", {
-								value: oItem.GifName,
+								value: oItem.GifName.replaceAll(' ', ''),
 								writable: true,
 								enumerable: true,
 								configurable: true,
@@ -692,7 +721,7 @@ sap.ui.define([
 					}	
 				}
 				else{
-					oModel.setProperty("/gifSrcGast","./DataFiles/gifs/"+gifSelection+".gif");
+					oModel.setProperty("/gifSrcGast","./DataFiles/gifs/"+gifSelection.replaceAll(' ', '')+".gif");
 				}
 			// 	if(isTeamAnthemSelected){
 			// 		var oGuestTeam = this.getView().byId("selectGastTeam").getSelectedItem().getText();
@@ -881,7 +910,7 @@ sap.ui.define([
 						
 					}
 				}
-			}				
+			}			
 			} 
 			//Update Live Score
 			controller.liveTableUpdate();
@@ -914,6 +943,7 @@ sap.ui.define([
 			var heimteam = oModel.getProperty("/heimteam");
 			var gifNameHeim = this.getView().byId("selectGifHeim").getSelectedItem().getText();
 			var gifSrcHeim = this.getView().byId("selectGifHeim").getSelectedKey();
+            
 			//var noOfGifs = this.getView().byId("selectGifHeim").getItems().length;
 			var gifArray = oModel.getProperty("/gifs");
 			var noOfGifs = gifArray.length;
@@ -955,7 +985,9 @@ sap.ui.define([
 			oModel.setProperty("/matchingGifsHeim",matchingGifs);
 			
 		},
-
+        
+        
+        
 		onCompetitionSelect:function(oEvent){
 			var oCompetition = oEvent.getSource().getSelectedItem().getText();
 			var oModel = this.getView().getModel();
@@ -1029,6 +1061,10 @@ sap.ui.define([
 			else{
 				oModel.setProperty("/clock","0" + oSelectedCompetitionData[0].TimerDuration.toString() + ":"+"00");
 			}
+            
+            console.log(".,.,.,.,..,");
+            console.log(allgroupAndteams);
+            
 			oModel.setProperty("/timerDuration",oSelectedCompetitionData[0].TimerDuration * 60);
 			oModel.setProperty("/timerDurationMinutes",oSelectedCompetitionData[0].TimerDuration);
 			oModel.setProperty("/noOfTeamsQualified",oNoOfQualifiedTeams);
@@ -1045,14 +1081,15 @@ sap.ui.define([
 				var oHomeGifs = oModel.getProperty("/gifsHome");
 					// var matchingGifs = oModel.getProperty("/matchingGifsHeim");
 					// var randomNr = Math.floor(Math.random() * matchingGifs.length);
-					var matchingGifs = oHomeGifs.filter((oItem)=>{return oItem.GifName.startsWith(oHomeTeam.replaceAll(' ', ''))});
+					// var matchingGifs = oHomeGifs.filter((oItem)=>{return oItem.GifName.startsWith(oHomeTeam)});
+                    var matchingGifs = oHomeGifs.filter((oItem)=>{return oItem.GifName.startsWith(oHomeTeam.replaceAll(' ', ''))});
 					var otherGifs = oHomeGifs.filter((oItem)=>{return (oItem.GifName.startsWith("goal"))});
 					if(matchingGifs.length > 0){
 						var matchedGif = [];
 					   matchingGifs.forEach((oItem)=>{
 							var obJ = {};
 							Object.defineProperty(obJ, "GifName", {
-								value: oItem.GifName,
+								value: oItem.GifName.replaceAll(' ', ''),
 								writable: true,
 								enumerable: true,
 								configurable: true,
@@ -1062,14 +1099,18 @@ sap.ui.define([
 						var randomNr = Math.floor(Math.random() * matchedGif.length);
 						var oHomeUrl = "./DataFiles/gifs/"+matchedGif[randomNr].GifName+".gif";
 						oModel.setProperty("/gifSrcHeim",oHomeUrl);
+                        console.log("GIF");
+                        console.log(oHomeUrl);
 					}
 					else{
 						var randomNr = Math.floor(Math.random() * otherGifs.length);
 						var oOtherUrl = "./DataFiles/gifs/"+otherGifs[randomNr].GifName+".gif";
 						oModel.setProperty("/gifSrcHeim",oOtherUrl);
+                        console.log("GIF");
+                        console.log(oOtherUrl);
 					}	
 			}else{
-				oModel.setProperty("/gifSrcHeim","./DataFiles/gifs/"+gifNameHeim+".gif");
+				oModel.setProperty("/gifSrcHeim","./DataFiles/gifs/"+gifNameHeim.replaceAll(' ', '')+".gif");
 			}
 		},
 		
@@ -1122,14 +1163,15 @@ sap.ui.define([
 				var oGuestGifs = oModel.getProperty("/gifsGuest");
 					// var matchingGifs = oModel.getProperty("/matchingGifsHeim");
 					// var randomNr = Math.floor(Math.random() * matchingGifs.length);
-					var matchingGifs = oGuestGifs.filter((oItem)=>{return oItem.GifName.startsWith(oGuestTeam.replaceAll(' ', ''))});
+					// var matchingGifs = oGuestGifs.filter((oItem)=>{return oItem.GifName.startsWith(oGuestTeam)});
+                    var matchingGifs = oGuestGifs.filter((oItem)=>{return oItem.GifName.startsWith(oGuestTeam.replaceAll(' ', ''))});
 					var otherGifs = oGuestGifs.filter((oItem)=>{return (oItem.GifName.startsWith("goal"))});
 					if(matchingGifs.length > 0){
 						var matchedGif = [];
 					   matchingGifs.forEach((oItem)=>{
 							var obJ = {};
 							Object.defineProperty(obJ, "GifName", {
-								value: oItem.GifName,
+								value: oItem.GifName.replaceAll(' ', ''),
 								writable: true,
 								enumerable: true,
 								configurable: true,
@@ -1147,7 +1189,7 @@ sap.ui.define([
 			}
 		}	
 			else{
-				oModel.setProperty("/gifSrcGast","./DataFiles/gifs/"+gifNameGast+".gif");
+				oModel.setProperty("/gifSrcGast","./DataFiles/gifs/"+gifNameGast.replaceAll(' ', '')+".gif");
 			}
 		},
 		
@@ -1273,6 +1315,151 @@ sap.ui.define([
 			//Reset Live Table
 			this.getView().getController().liveTableUpdate();
 		},
+        
+        _showConfirmationDialog: function() {
+            var that = this;
+            var oModel = this.getView().getModel();
+
+            // Get the current values from the existing StepInputs
+            var oCurrentHeimScore = this.getView().byId("heimtore").getValue();
+            var oCurrentGastScore = this.getView().byId("gasttore").getValue();
+            var heimteam = oModel.getProperty("/heimteam");
+            var gastteam = oModel.getProperty("/gastteam");
+            console.log(heimteam);
+            // Create StepInput controls for score adjustment
+            var oHeimStepInput = new sap.m.StepInput({
+                value: oCurrentHeimScore, // Set the initial value
+                min: 0
+            });
+            var oGastStepInput = new sap.m.StepInput({
+                value: oCurrentGastScore, // Set the initial value
+                min: 0
+            });
+
+            var dialog = new sap.m.Dialog({
+                title: "Ergebnis bestätigen",
+                type: "Message",
+                content: [
+                    new sap.m.Text({ text: "Ergebnis bestätigen oder korrigieren: " }),
+                    new sap.m.Label({ text: heimteam }),
+                    oHeimStepInput,
+                    new sap.m.Label({ text: gastteam }),
+                    oGastStepInput
+                ],
+                beginButton: new sap.m.Button({
+                    text: "Confirm",
+                    type: sap.m.ButtonType.Emphasized,
+                    press: function () {
+                        // Update the model with the values from the StepInputs
+                        oModel.setProperty("/anzahlToreHeim", oHeimStepInput.getValue());
+                        oModel.setProperty("/anzahlToreGast", oGastStepInput.getValue());
+
+                        that._saveMatchDataWithConfirmation();
+                        dialog.close();
+                    }
+                }),
+                afterClose: function() {
+                    dialog.destroy();
+                }
+            });
+
+            dialog.addStyleClass("customDialogStyle");
+            dialog.open();
+            
+        },
+        
+        _saveMatchDataWithConfirmation: function() {
+            // Implement the logic to save match data
+            // You can call the existing saveMatchData() here
+            this.saveMatchData();
+            this.resetSpielstand();
+        },
+        
+        
+        playAudioInSequence: function(audioPaths) {
+            if (!audioPaths || audioPaths.length === 0) {
+                return; // No audio files to play
+            }
+
+            var currentIndex = 0;
+            var playNextAudio = () => {
+                if (currentIndex < audioPaths.length) {
+                    var audio = new Audio(audioPaths[currentIndex]);
+                    audio.play();
+                    currentIndex++;
+
+                    audio.onended = () => {
+                        playNextAudio();
+                    };
+                }
+            };
+
+            playNextAudio();
+        },
+
+playTeamAnnouncements: function() {
+    
+    var oCheckbox = this.getView().byId("autoCallNextMatchCheckbox");
+    if (!oCheckbox.getSelected()) {
+        console.log("Auto Call Next Match is not enabled. Skipping announcements.");
+        return;
+    }
+    
+    var oModel = this.getView().getModel();
+    var heimteam = this.getView().byId("upcomingSelectHeimTeam").getSelectedItem().getText().replace(/\s+/g, '');
+    var gastteam = this.getView().byId("upcomingSelectGastTeam").getSelectedItem().getText().replace(/\s+/g, '');
+
+    var nextgameintro = "./DataFiles/audios/teamcalls/NextGameIntro.mp3";
+    var teamconnector = "./DataFiles/audios/teamcalls/Und.mp3";
+    var heimteamAudioPath = "./DataFiles/audios/teamcalls/" + heimteam + ".mp3";
+    var gastteamAudioPath = "./DataFiles/audios/teamcalls/" + gastteam + ".mp3";
+
+    var audioPaths = [nextgameintro, heimteamAudioPath, teamconnector, gastteamAudioPath];
+    this.checkAudioFilesExist(audioPaths).then((allExist) => {
+        if (allExist) {
+            this.playAudioInSequence(audioPaths);
+        } else {
+            console.log("Not all audio files could be found. Skipping audio playback.");
+        }
+        // Deselect checkbox 'Auto Ansagen' regardless of the result
+        //var oCheckbox = this.getView().byId("autoCallNextMatchCheckbox");
+        oCheckbox.setSelected(false);
+    });
+},
+
+checkAudioFilesExist: function(audioPaths) {
+    var promises = audioPaths.map((path) => {
+        return new Promise((resolve) => {
+            var xhr = new XMLHttpRequest();
+            xhr.open('HEAD', path, true);
+            xhr.onload = () => {
+                if (xhr.status >= 200 && xhr.status < 400) {
+                    resolve(true); // File exists
+                } else {
+                    resolve(false); // File doesn't exist
+                }
+            };
+            xhr.onerror = () => resolve(false); // Network error
+            xhr.send();
+        });
+    });
+    return Promise.all(promises).then(results => results.every(exists => exists));
+},
+
+        
+ 		onSetUpcomingAsCurrent: function(){
+            var oModel = this.getView().getModel();
+            var newHeimId = this.getView().byId("upcomingSelectHeimTeam").getSelectedKey();
+            var newGastId = this.getView().byId("upcomingSelectGastTeam").getSelectedKey();
+            console.log(newHeimId);
+            console.log(newGastId);
+            oModel.setProperty("/selectedHeimTeamKey", newHeimId);
+            oModel.setProperty("/selectedGastTeamKey", newGastId);
+            
+
+            
+		},
+        
 		onSelectHome:function(oEvent){
 			// var oPicurl = "pics/"+oEvent.getSource().getSelectedKey();
 			// var oHomeImg = this.getView().byId("imiiii5ge0");
@@ -1346,11 +1533,15 @@ sap.ui.define([
 				oModel.setProperty("/showKOSecMatch", true);
 			}
 			
-			
+			var logopath = "./DataFiles/Logos/"; 
 			var team1URL = oModel.getProperty("/koteam1URL");
+            team1URL = logopath + team1URL
 			var team2URL = oModel.getProperty("/koteam2URL");
+            team2URL = logopath + team2URL
 			var team3URL = oModel.getProperty("/koteam3URL");
+            team3URL = logopath + team3URL
 			var team4URL = oModel.getProperty("/koteam4URL");
+            team4URL = logopath + team4URL
 			console.log(team1URL)
 			console.log(team2URL)
 			
@@ -1371,7 +1562,8 @@ sap.ui.define([
 			var oModel = this.getView().getModel();
 			
 			var tableStatus = oModel.getProperty("/tableStatus");
-			
+            console.log("Status");
+			console.log(tableStatus);
 			if(tableStatus !== "Teams nicht in gleicher (oder keiner) Gruppe") {
 			
 				var heimteam = oModel.getProperty("/heimteam");
@@ -1794,7 +1986,7 @@ sap.ui.define([
 			oModel.setProperty("/anzahlToreGast", 0);
 			this._oHomeCount = 0;
 			this._oGuestCount = 0;
-			this._oLastAudio = null;
+			//this._oLastAudio = null;
 		},
 		
 		resetTableContent: function(oEvent){
@@ -1838,7 +2030,7 @@ sap.ui.define([
 
 			for (var i = 0; i < allGroupsAndTeams.length; ++i) {
 				var group = allGroupsAndTeams[i];
-				var zeroArray = Array(group.length).fill(0);
+				var zeroArray = new Int8Array(group.length);
 
 				// oModel.setProperty("/" + allGroupsAndGames[i], zeroArray);
 				// oModel.setProperty("/" + allGroupsAndPoints[i], zeroArray);
@@ -1858,7 +2050,7 @@ sap.ui.define([
 		},
 		
 		
-		sortTable: function(oEvent){
+        sortTable: function(oEvent){
 			
 			var oModel = this.getView().getModel();
 			var oTableItems = [];
@@ -2307,7 +2499,7 @@ sap.ui.define([
 										if (!audioElement) {
 											audioElement = document.createElement('audio');
 										}
-										console.log(oUrl);
+										console.log("Selected Song:", oUrl);
 										audioElement.setAttribute('src', oUrl);
 										audioElement.play();
 										me._isLastMinPlaying = true;
@@ -2322,8 +2514,9 @@ sap.ui.define([
 									if (!audioElement) {
 										audioElement = document.createElement('audio');
 									}
-									console.log("./DataFiles/audios/lastminute/" + oLastMinAudio + ".mp3");
-									audioElement.setAttribute('src', "./DataFiles/audios/lastminute/" + oLastMinAudio + ".mp3");
+                                    console.log("Selected Song:", oLastMinAudio);
+									console.log("./DataFiles/audios/lastminute/" + oLastMinAudio.replaceAll(' ', '') + ".mp3");
+									audioElement.setAttribute('src', "./DataFiles/audios/lastminute/" + oLastMinAudio.replaceAll(' ', '') + ".mp3");
 									audioElement.play();
 									me._isLastMinPlaying = true;
 									me._oLastAudio = audioElement;
@@ -2334,30 +2527,107 @@ sap.ui.define([
 						}
 		
 						// Anzeige Live Tabelle (bei 8 min)
-						if (minutes === 8 && seconds === 40 && view.byId("liveTableControl1").getSelected()) {
+						if (minutes === 6 && seconds === 30 && view.byId("liveTableControl1").getSelected()) {
 							controller.showTabelle();
-							setTimeout(function () {
-								oModel.setProperty("/showTabelle", false);
-							}, 15000);
+							// Clear existing timeout if it exists
+                            if (this._tableTimeout) {
+                                clearTimeout(this._tableTimeout);
+                            }
+
+                            // Set new timeout
+                            this._tableTimeout = setTimeout(function () {
+                                oModel.setProperty("/showTabelle", false);
+                            }, 15000);
 						}
-		
+                            
+                        //Ansage nächstes Spiel 
+                        if (minutes === 3 && seconds === 2) {
+                            controller.playTeamAnnouncements();
+						}        
+                        
 						// Ansage letzte Minute 
 						if (minutes === 1 && seconds === 0 && view.byId("soundControl1").getSelected()) {
+                            if (this._oLastAudio) {
+                                this._oLastAudio.volume = 0.2; // Sets the volume to 40%
+                            }
 							mp3LM.play();
+                            if (this._oLastAudio) {
+                                this._oLastAudio.volume = 1; // Sets the volume to 100%
+                            }
+                            
 						}
 		
 						// If the count down is finished
 						if (minutes === 0 && seconds === 0) {
 							mp3.play(); 
-							oModel.setProperty("/liveMode", false);
-							me._oLastAudio.pause();
-							me._isLastMinPlaying = false;
+                            oModel.setProperty("/liveMode", false);
+                            console.log("lets go");
+
+                            // Setze die Lautstärke auf 20%
+                            me._oLastAudio.volume = 0.2;
+
+                            // Beginne den Fade-Out-Prozess
+                            var fadeOutInterval = setInterval(function() {
+                                if (me._oLastAudio.volume > 0) {
+                                    // Reduziere die Lautstärke um einen kleinen Betrag
+                                    var newVolume = me._oLastAudio.volume - 0.02; // 20% / 5 Sekunden = 0.04 pro Sekunde
+                                    me._oLastAudio.volume = Math.max(newVolume, 0); // Stelle sicher, dass das Volumen nicht negativ wird
+                                } else {
+                                    // Pausiere und setze das Audio zurück, lösche den Interval-Timer
+                                    clearInterval(fadeOutInterval);
+                                    console.log("Pause Audio");
+                                    me._oLastAudio.pause();
+                                    me._oLastAudio.currentTime = 0;
+                                    me._oLastAudio.volume = 1;
+                                    me._isLastMinPlaying = false;
+                                    me._oLastAudio = null;
+
+                                    // Lösche den Haupttimer, falls vorhanden
+                                    if (me.x) {
+                                        clearInterval(me.x);
+                                        me.x = null;
+                                    }
+                                }
+                            }, 1000); // Jede Sekunde ausführen
+
+                            
+        /*                 if (minutes === 0 && seconds === 0) {
+                            mp3.play(); 
+                            oModel.setProperty("/liveMode", false);
+                            console.log("lets go");
+
+                            // Setze die Lautstärke auf 20%
+                            me._oLastAudio.volume = 0.2;
+
+                            // Beginne den Fade-Out-Prozess
+                            var fadeOutInterval = setInterval(function() {
+                                // Reduziere die Lautstärke um einen kleinen Betrag
+                                if (me._oLastAudio.volume > 0) {
+                                    me._oLastAudio.volume -= 0.04; // 20% / 5 Sekunden = 0.04 pro Sekunde
+                                } else {
+                                    // Stoppe das Audio, setze es zurück und lösche den Interval-Timer
+                                    clearInterval(fadeOutInterval);
+                                    me._oLastAudio.pause();
+                                    me._oLastAudio.currentTime = 0;
+                                    me._oLastAudio.volume = 1;
+                                    me._isLastMinPlaying = false;
+
+                                    // Lösche den Haupttimer, falls vorhanden
+                                    if (me.x) {
+                                        clearInterval(me.x);
+                                        me.x = null;
+                                    }
+                                }
+                            }, 1000);  */// Jede Sekunde ausführen
+                            
+							//me._oLastAudio.pause();
 							this._oHomeCount = 0;
 							this._oGuestCount = 0;
-							this._oLastAudio = null;
-							setTimeout(function () {
-								controller.saveMatchData();
-							}, 500);
+							
+							controller._showConfirmationDialog();
+                            //setTimeout(function () {
+							//	controller.saveMatchData();
+							//}, 500);
 		
 							oModel.setProperty("/stop", true);
 							oModel.setProperty("/clock", "00:00");
@@ -2365,20 +2635,28 @@ sap.ui.define([
 		
 							if (oModel.getProperty("/adName") !== "null") {
 								controller.selectAd();
-								setTimeout(function () {
-									oModel.setProperty("/showWerbung", true);
-								}, 3000);
+								// Clear existing timeout if it exists
+                                if (this._adTimeout) {
+                                    clearTimeout(this._adTimeout);
+                                }
+
+                                // Set new timeout for showing ad
+                                this._adTimeout = setTimeout(function () {
+                                    oModel.setProperty("/showWerbung", true);
+                                }, 3000);
 							}
 		
 							// Stop playing last minute audio
-							console.log("!!!!!!!!!!!!!");
-							console.log(me._isLastMinPlaying && audioElement);
-							if (me._isLastMinPlaying && audioElement) {
-								console.log(audioElement);
-								audioElement.pause(); // Only pause if audioElement is defined
-								me._isLastMinPlaying = false;
-							}
-						}
+							//if (me._isLastMinPlaying && audioElement) {
+							//	console.log(audioElement);
+							//	audioElement.pause(); // Only pause if audioElement is defined
+							//	me._isLastMinPlaying = false;
+							//}
+                            
+                            // Stoppe das Abspielen der letzten Minuten-Audio und lösche den Timer
+                            console.log("Test212313213");
+
+                            }
 					}
 				}, 1000);
 			}

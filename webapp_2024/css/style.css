@@ -158,14 +158,81 @@
 	border: 0 !important;
 }
 
+
 .sapMListTblCell {
     border: 0!important;
     padding-top: 5px;
 }
 
+.customDialogStyle  {
+    position: fixed !important;
+    left: 0 !important; /* Setzt die Box am linken Bildschirmrand */
+    top: 50% !important; /* Zentriert vertikal */
+    transform: translateY(-50%) !important; /* Vertikale Zentrierung basierend auf der eigenen Höhe des Elements */
+    /* Optional: Weitere Stil-Einstellungen */
+    width: auto !important; /* Oder eine bestimmte Breite */
+    min-width: 100px !important; /* Minimale Breite */
+    max-width: 300px !important; /* Maximale Breite */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2) !important;
+    background-color: white !important; /* Hintergrundfarbe */
+    border-radius: 5px !important; /* Abgerundete Ecken */
+    /* Weitere individuelle Stil-Anpassungen */
+}
+
+/* Stil für Labels im Abschnitt "Upcoming" */
+.upcomingLabel {
+    opacity: 0.7 !important;
+    font-size: 0.8rem !important;
+    color: #d1d1d1 !important; /* Dezente Farbe */
+}
+
+.upcomingComboBox .sapMComboBoxArrow {
+    width: 20px !important; /* Breite des Pfeil-Containers anpassen */
+    height: 20px !important; /* Höhe des Pfeil-Containers anpassen */
+    background-size: 16px 16px !important; /* Größe des Pfeil-Bildes anpassen */
+}
+
+
+
+#__xmlview0--upcomingSelectHeimTeam-inner, #__xmlview0--upcomingSelectGastTeam-inner, #__xmlview0--upcomingSelectHeimTeam-arrow,
+#__xmlview0--upcomingSelectGastTeam-arrow {
+    background-color: rgba(200, 200, 200, 0.5); /* Dezente graue Farbe mit Transparenz */
+    color: #fff;
+}
+
+.customMarginLeft {
+    margin-left: 60px; /* Oder den gewünschten Abstand */
+}
+
+
+.upcomingCustomButton {
+    background-color: green !important; /* Oder eine spezifische Grünton */
+    color: white; /* Textfarbe, optional */
+    border-radius: 4px; /* Optional, für abgerundete Ecken */
+    /* Weitere Stile nach Bedarf */
+}
+
+
+/* Stil für die CheckBox im Abschnitt "Upcoming" */
+.upcomingCheckbox {
+    /* Optional: Weitere Stilangaben */
+}
+
+/* Stil für den Button im Abschnitt "Upcoming" */
+.upcomingButton,#__button1 {
+    background-color: #000000 !important; /* Dezente Hintergrundfarbe */
+    color: #333 !important; /* Dezente Schriftfarbe */
+}
+
+.customSeparatorLine {
+    width: 100%; /* Setzt die Breite auf 100% des umgebenden Elements */
+    border-top: 1px solid #ffffff; /* Farbe und Dicke der Linie */
+    margin: 10px 0; /* Abstand oben und unten */
+}
+
 .tabelleSchrift{
 	font-size: 1.8rem!important;
-	font-weight: 700!important;
+	font-weight: 400!important;
     color: white!important;
     text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black!important;
 	padding:0;
@@ -214,4 +281,7 @@
 #nav-bar {display:none !important}
 .spacingMarg{
     margin-left: 10px;
+}
+.ResultTable{
+    font-size: 1vw !important;
 }

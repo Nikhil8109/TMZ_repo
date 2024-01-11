@@ -19,7 +19,7 @@ sap.ui.define([
 			var excelData = [];
 		    var oFinalSheetsData = [];
 			var xhr = new XMLHttpRequest();
-            xhr.open("GET", "./DataFiles/DataModel.xlsx", true);
+            xhr.open("GET", "./DataFiles/DataModel_0.xlsx", true);
             xhr.responseType = "blob";
 			xhr.onload = function (e) {
                 var file = this.response;
@@ -183,10 +183,10 @@ sap.ui.define([
 								"name": "Strobl Elektro | ACT"
 							},{
 								"url": "pics/ads/4.png",
-								"name": "Durdu Stu. | MSR"
+								"name": "Rehm | MSR"
 							},{
 								"url": "pics/ads/5.png",
-								"name": "Senn Kramer | Repass"
+								"name": "Senn Kramer | Perlon"
 							},{
 								"url": "pics/ads/6.png",
 								"name": "Schalt.Strobl | Hanna Tiefbau"
@@ -201,19 +201,19 @@ sap.ui.define([
 								"name": "Mundal | CSW"
 							},{
 								"url": "pics/ads/10.png",
-								"name": "Nailfun | Sport Express"
+								"name": "Ehinger Energie | Sport Express"
 							},{
 								"url": "pics/ads/11.png",
-								"name": "11 Teamsports | Engst"
+								"name": "Donau Iller Bank | Engst"
 							},{
 								"url": "pics/ads/12.png",
-								"name": "vs-schelkle"
+								"name": "Bertsch | Braun Maurer"
 							},{
 								"url": "pics/ads/13.png",
-								"name": "Tafel 13"
+								"name": "PEK Bau | Bayer Reisen"
 							},{
 								"url": "pics/ads/14.png",
-								"name": "Tafel 14"
+								"name": "Cafe zum Spond | vs-schelkle"
 							}
 						],
 						"competitions": me.removeDuplicates(oCompetitionsData[0].Competitions,"Competition"),
