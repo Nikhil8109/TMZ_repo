@@ -353,7 +353,8 @@ sap.ui.define([
 				var audioSelection = this.getView().byId("selectAudTeam1").getSelectedItem().getText();
 				
 					if(gifSelection === "Automatisch"){
-						var oHomeTeam = this.getView().byId("selectHeimTeam").getSelectedItem().getText();
+						// var oHomeTeam = this.getView().byId("selectHeimTeam").getSelectedItem().getText();
+						var oHomeTeam = oModel.getProperty("/heimteam");
 						var oHomeGifs = oModel.getProperty("/gifsHome");
 						// var matchingGifs = oModel.getProperty("/matchingGifsHeim");
 						// var randomNr = Math.floor(Math.random() * matchingGifs.length);
@@ -422,6 +423,8 @@ sap.ui.define([
                     if(automusicControl){
 						if( oClock > "01:00" && oClock <= "01:30"){
 							var audioElement = document.getElementById(this.getView().byId("audio_with_control3").getIdForLabel());
+							var oLastMin = this.getView().byId("selectAudLastMin");
+							oLastMin.setEnabled(false);
 							if (oLastMinAudio === "Automatisch") {
 								var oAudios = oModel.getProperty("/audio");
 								var matchingAudios = oAudios.filter((oItem) => oItem.AudioName.startsWith("lastminute"));
@@ -464,7 +467,8 @@ sap.ui.define([
 						}
 						else{
 							if(audioSelection === "Automatisch" && oTeamAnthemchck){
-								var oHomeTeam = this.getView().byId("selectHeimTeam").getSelectedItem().getText();
+								// var oHomeTeam = this.getView().byId("selectHeimTeam").getSelectedItem().getText();
+								var oHomeTeam = oModel.getProperty("/heimteam");
 								var oHomeAudios = oModel.getProperty("/audiosHome");
 								var matchingaudios = oHomeAudios.filter((oItem)=>{return oItem.AudioName.startsWith(oHomeTeam.replaceAll(' ', ''))});
 								var otheraudios = oHomeAudios.filter((oItem)=>{return (oItem.AudioName.startsWith("general"))});
@@ -694,7 +698,8 @@ sap.ui.define([
 			var audioSelection = this.getView().byId("selectAudTeam2").getSelectedItem().getText();
 			
 				if(gifSelection === "Automatisch"){
-					var oGuestTeam = this.getView().byId("selectGastTeam").getSelectedItem().getText();
+					// var oGuestTeam = this.getView().byId("selectGastTeam").getSelectedItem().getText();
+					var oGuestTeam = oModel.getProperty("/gastteam");
 					var oGuestGifs = oModel.getProperty("/gifsGuest");
 					// var matchingGifs = oModel.getProperty("/matchingGifsHeim");
 					// var randomNr = Math.floor(Math.random() * matchingGifs.length);
@@ -761,6 +766,8 @@ sap.ui.define([
 			if(automusicControl){
 				if( oClock > "01:00" && oClock <= "01:30"){
 					var audioElement = document.getElementById(this.getView().byId("audio_with_control3").getIdForLabel());
+					var oLastMin = this.getView().byId("selectAudLastMin");
+					oLastMin.setEnabled(false);
 					if (oLastMinAudio === "Automatisch") {
 						var oAudios = oModel.getProperty("/audio");
 						var matchingAudios = oAudios.filter((oItem) => oItem.AudioName.startsWith("lastminute"));
@@ -800,7 +807,8 @@ sap.ui.define([
 				}
 				else{
 					if(audioSelection === "Automatisch" && oTeamAnthemchck){
-						var oGuestTeam = this.getView().byId("selectGastTeam").getSelectedItem().getText();
+						// var oGuestTeam = this.getView().byId("selectGastTeam").getSelectedItem().getText();
+						var oGuestTeam = oModel.getProperty("/gastteam");
 						var oGuestAudios = oModel.getProperty("/audiosGuest");
 						var matchingaudios = oGuestAudios.filter((oItem)=>{return oItem.AudioName.startsWith(oGuestTeam.replaceAll(' ', ''))});
 						var otheraudios = oGuestAudios.filter((oItem)=>{return (oItem.AudioName.startsWith("general"))});
@@ -1213,12 +1221,15 @@ sap.ui.define([
 		setPaarung: function(){
             console.log("In setPaarung");
 			var oModel = this.getView().getModel();
+			var oTeams = oModel.getProperty("/teamsComp");
 			
 			var heimteam = this.getView().byId("selectHeimTeam").getSelectedItem().getText();
+			var oHeimOhneWertung = oTeams.filter((oItem)=>{return oItem.Team === heimteam});
 			oModel.setProperty("/heimteam",heimteam);
 			// console.log(heimteam)
 			var gastteam = this.getView().byId("selectGastTeam").getSelectedItem().getText();
 			oModel.setProperty("/gastteam",gastteam);
+			var oGastOhneWertung = oTeams.filter((oItem)=>{return oItem.Team === gastteam});
 			var heimURL =  "./DataFiles/Logos/" + this.getView().byId("selectHeimTeam").getSelectedKey().replaceAll(' ', '');
 			var gastURL = "./DataFiles/Logos/" + this.getView().byId("selectGastTeam").getSelectedKey().replaceAll(' ', '');
 			// console.log(heimURL);
@@ -1227,7 +1238,8 @@ sap.ui.define([
 			//commenting it as we are already doing this in "showtorheim" and "showtorguest"
 			// this.getView().getController().selectGifHeim();
 			// this.getView().getController().selectGifGast();
-			
+			oModel.setProperty("/HeimOhneWertung", oHeimOhneWertung[0].OhneWertung);
+			oModel.setProperty("/GastOhneWertung", oGastOhneWertung[0].OhneWertung);
 			oModel.setProperty("/heimLogo",heimURL);
 			oModel.setProperty("/gastLogo",gastURL);
 			oModel.setProperty("/heimtor", false);
@@ -1606,19 +1618,29 @@ checkAudioFilesExist: function(audioPaths) {
 			
 				var heimteam = oModel.getProperty("/heimteam");
 				var gastteam = oModel.getProperty("/gastteam");
-				
+				var oHeimOhneWertung = oModel.getProperty("/HeimOhneWertung");
+				var oGastOhneWertung = oModel.getProperty("/GastOhneWertung");
 				console.log("CHECK NOW!")
 				console.log(heimteam)
 				console.log(gastteam)
 
-				if(heimteam == "SW Donau U14") {
-					console.log("HEIM TEAM SWD")
+				// if(heimteam == "SW Donau U14") {
+				// 	console.log("HEIM TEAM SWD")
+				// 	var heimtore = 0;
+				// 	var gasttore = 1;
+				// }else if(gastteam == "SW Donau U14") {
+				// 	var heimtore = 1;
+				// 	var gasttore = 0;
+				// }
+				if(oHeimOhneWertung === "Ja"){
 					var heimtore = 0;
 					var gasttore = 1;
-				}else if(gastteam == "SW Donau U14") {
+				}
+				else if( oGastOhneWertung === "Ja"){
 					var heimtore = 1;
 					var gasttore = 0;
-				}else {
+				}
+				else {
 					var heimtore = oModel.getProperty("/anzahlToreHeim");
 					var gasttore = oModel.getProperty("/anzahlToreGast");
 				}
@@ -1702,16 +1724,26 @@ checkAudioFilesExist: function(audioPaths) {
 			
 				var heimteam = oModel.getProperty("/heimteam");
 				var gastteam = oModel.getProperty("/gastteam");
-				
+				var oHeimOhneWertung = oModel.getProperty("/HeimOhneWertung");
+				var oGastOhneWertung = oModel.getProperty("/GastOhneWertung");
 				console.log("CHECK NOW!")
-				if(heimteam == "SW Donau U14") {
-					console.log("HEIM TEAM SWD")
+				// if(heimteam == "SW Donau U14") {
+				// 	console.log("HEIM TEAM SWD")
+					// var heimtore = 0;
+					// var gasttore = 1;
+				// }else if(gastteam == "SW Donau U14") {
+					// var heimtore = 1;
+					// var gasttore = 0;
+				// }
+				if(oHeimOhneWertung === "Ja"){
 					var heimtore = 0;
 					var gasttore = 1;
-				}else if(gastteam == "SW Donau U14") {
+				}
+				else if( oGastOhneWertung === "Ja"){
 					var heimtore = 1;
 					var gasttore = 0;
-				}else {
+				}
+				else {
 					var heimtore = oModel.getProperty("/anzahlToreHeim");
 					var gasttore = oModel.getProperty("/anzahlToreGast");
 				}
@@ -2094,7 +2126,7 @@ checkAudioFilesExist: function(audioPaths) {
 			var oTableItems = [];
 			var liveMode = oModel.getProperty("/liveMode");
 			var korrekturMode = oModel.getProperty("/korrekturMode");
-
+			var oTeams = oModel.getProperty("/teamsComp");
 
 			this.getView().getController().resetTableContent(); //clear current table
 			
@@ -2317,7 +2349,12 @@ checkAudioFilesExist: function(audioPaths) {
 				if(dirVgl === true) oModel.setProperty("/tableStatus",oModel.getProperty("/tableStatus") + ", dir. Vgl.");
 				if(positionsswitched === false) break;
 			}
-			
+		//find team logos 
+		var oTeamLogos = [];
+		for (var i = 0; i < orderedTeamsGrp.length; i++) {
+			var oTeamGrp = oTeams.filter((oItem)=>{ return orderedTeamsGrp[i] === oItem.Team});
+			oTeamLogos.push(oTeamGrp[0].Logo);
+		}
 			//5. Anzeigen der Gruppe (Teams, Punkte, Tordiff)
 			for (var i = 0; i < orderedTeamsGrp.length; i++) {
 				var obj={
@@ -2325,7 +2362,8 @@ checkAudioFilesExist: function(audioPaths) {
 					"team":"",
 					"spiele":"",
 					"torDiff":"",
-					"pkt":""
+					"pkt":"",
+					"logo":""
 				};
 				//add + to positive goal diff
 				//Wenn Position nicht eindeutig klar ist, dann entferne Platzierung (bedeutet Team liegt auf selber Platzierung wie Team zuvor)
@@ -2345,6 +2383,7 @@ checkAudioFilesExist: function(audioPaths) {
 				obj.spiele = orderedSpieleGrp[i];
 				obj.pkt = orderedPktGrp[i];
 				obj.torDiff = orderedTorDiffGrp[i];
+				obj.logo =  "./DataFiles/Logos/" + oTeamLogos[i] ;
 				oTableItems.push(obj);
 			}
 			if(liveMode === true) {
