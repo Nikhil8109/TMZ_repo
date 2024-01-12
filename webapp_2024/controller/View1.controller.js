@@ -421,12 +421,13 @@ sap.ui.define([
 				// 	else{
                     if(automusicControl){
 						if( oClock > "01:00" && oClock <= "01:30"){
+							var audioElement = document.getElementById(this.getView().byId("audio_with_control3").getIdForLabel());
 							if (oLastMinAudio === "Automatisch") {
 								var oAudios = oModel.getProperty("/audio");
 								var matchingAudios = oAudios.filter((oItem) => oItem.AudioName.startsWith("lastminute"));
                                 console.log("Teste hier pls.");
                                 console.log(matchingAudios);
-								var audioElement = document.getElementById(this.getView().byId("audio_with_control3").getIdForLabel());
+								
 								if (matchingAudios.length > 0) {
 									var randomNr = Math.floor(Math.random() * matchingAudios.length);
 									var oUrl = "./DataFiles/audios/lastminute/" + matchingAudios[randomNr].AudioName + ".mp3";
@@ -759,10 +760,10 @@ sap.ui.define([
 			// 	else{
 			if(automusicControl){
 				if( oClock > "01:00" && oClock <= "01:30"){
+					var audioElement = document.getElementById(this.getView().byId("audio_with_control3").getIdForLabel());
 					if (oLastMinAudio === "Automatisch") {
 						var oAudios = oModel.getProperty("/audio");
 						var matchingAudios = oAudios.filter((oItem) => oItem.AudioName.startsWith("lastminute"));
-						var audioElement = document.getElementById(this.getView().byId("audio_with_control3").getIdForLabel());
 						if (matchingAudios.length > 0) {
 							var randomNr = Math.floor(Math.random() * matchingAudios.length);
 							var oUrl = "./DataFiles/audios/lastminute/" + matchingAudios[randomNr].AudioName + ".mp3";
@@ -1218,42 +1219,6 @@ sap.ui.define([
 			// console.log(heimteam)
 			var gastteam = this.getView().byId("selectGastTeam").getSelectedItem().getText();
 			oModel.setProperty("/gastteam",gastteam);
-			var oHomeGifCtrl = this.getView().byId("selectGifHeim");
-			var oHomeStepCtrl = this.getView().byId("heimtore");
-			var oHomeAudCtrl = this.getView().byId("selectAudTeam1");
-			// var oModel = this.getView().getModel();
-			// var oteamName = oEvent.getSource().getSelectedItem().getText();
-			var oGifsData = oModel.getProperty("/gifs");
-			var oaudioData = oModel.getProperty("/audio");
-			var oT1Audios = oaudioData.filter((oItem)=>{
-				return (oItem.AudioName.startsWith(heimteam.replaceAll(' ', '')) || oItem.AudioName.startsWith("general") || oItem.AudioName.startsWith("Automatisch"));
-			});
-			var oHomeGifs = oGifsData.filter((oItem)=>{
-				return ((oItem.GifName.startsWith(heimteam.replaceAll(' ', '')) || oItem.GifName.startsWith("goal") || oItem.GifName.startsWith("Automatisch")));
-			});
-			oHomeGifCtrl.setEnabled(true);
-			oHomeAudCtrl.setEnabled(true);
-			oHomeStepCtrl.setEnabled(true);
-			oModel.setProperty("/gifsHome",oHomeGifs);
-			oModel.setProperty("/audiosHome",oT1Audios);
-			var oGuestGifCtrl = this.getView().byId("selectGifGast");
-			var oGuestAudCtrl = this.getView().byId("selectAudTeam2");
-			var oGuestStepCtrl = this.getView().byId("gasttore");
-			// var oModel = this.getView().getModel();
-			// var oteamName = oEvent.getSource().getSelectedItem().getText();
-			// var oGifsData = oModel.getProperty("/gifs");
-			// var oaudioData = oModel.getProperty("/audio");
-			var oT2Audios = oaudioData.filter((oItem)=>{
-				return (oItem.AudioName.startsWith(gastteam.replaceAll(' ', '')) || oItem.AudioName.startsWith("general") || oItem.AudioName.startsWith("Automatisch"));
-			});
-			var oGuestGifs = oGifsData.filter((oItem)=>{
-				return (oItem.GifName.startsWith(gastteam.replaceAll(' ', '')) || oItem.GifName.startsWith("goal") || oItem.GifName.startsWith("Automatisch"));
-			});
-			oGuestGifCtrl.setEnabled(true);
-			oGuestAudCtrl.setEnabled(true);
-			oGuestStepCtrl.setEnabled(true);
-			oModel.setProperty("/gifsGuest",oGuestGifs);
-			oModel.setProperty("/audiosGuest",oT2Audios);
 			var heimURL =  "./DataFiles/Logos/" + this.getView().byId("selectHeimTeam").getSelectedKey().replaceAll(' ', '');
 			var gastURL = "./DataFiles/Logos/" + this.getView().byId("selectGastTeam").getSelectedKey().replaceAll(' ', '');
 			// console.log(heimURL);
@@ -1319,7 +1284,42 @@ sap.ui.define([
 				var tempGroupName = tableSelection.getItems()[i].getText();
 				
 				if(tempGroupTeams.includes(heimteam) && tempGroupTeams.includes(gastteam)) {
-                    
+					var oHomeGifCtrl = this.getView().byId("selectGifHeim");
+					var oHomeStepCtrl = this.getView().byId("heimtore");
+					var oHomeAudCtrl = this.getView().byId("selectAudTeam1");
+					// var oModel = this.getView().getModel();
+					// var oteamName = oEvent.getSource().getSelectedItem().getText();
+					var oGifsData = oModel.getProperty("/gifs");
+					var oaudioData = oModel.getProperty("/audio");
+					var oT1Audios = oaudioData.filter((oItem)=>{
+						return (oItem.AudioName.startsWith(heimteam.replaceAll(' ', '')) || oItem.AudioName.startsWith("general") || oItem.AudioName.startsWith("Automatisch"));
+					});
+					var oHomeGifs = oGifsData.filter((oItem)=>{
+						return ((oItem.GifName.startsWith(heimteam.replaceAll(' ', '')) || oItem.GifName.startsWith("goal") || oItem.GifName.startsWith("Automatisch")));
+					});
+					oHomeGifCtrl.setEnabled(true);
+					oHomeAudCtrl.setEnabled(true);
+					oHomeStepCtrl.setEnabled(true);
+					oModel.setProperty("/gifsHome",oHomeGifs);
+					oModel.setProperty("/audiosHome",oT1Audios);
+					var oGuestGifCtrl = this.getView().byId("selectGifGast");
+					var oGuestAudCtrl = this.getView().byId("selectAudTeam2");
+					var oGuestStepCtrl = this.getView().byId("gasttore");
+					// var oModel = this.getView().getModel();
+					// var oteamName = oEvent.getSource().getSelectedItem().getText();
+					// var oGifsData = oModel.getProperty("/gifs");
+					// var oaudioData = oModel.getProperty("/audio");
+					var oT2Audios = oaudioData.filter((oItem)=>{
+						return (oItem.AudioName.startsWith(gastteam.replaceAll(' ', '')) || oItem.AudioName.startsWith("general") || oItem.AudioName.startsWith("Automatisch"));
+					});
+					var oGuestGifs = oGifsData.filter((oItem)=>{
+						return (oItem.GifName.startsWith(gastteam.replaceAll(' ', '')) || oItem.GifName.startsWith("goal") || oItem.GifName.startsWith("Automatisch"));
+					});
+					oGuestGifCtrl.setEnabled(true);
+					oGuestAudCtrl.setEnabled(true);
+					oGuestStepCtrl.setEnabled(true);
+					oModel.setProperty("/gifsGuest",oGuestGifs);
+					oModel.setProperty("/audiosGuest",oT2Audios);
 					var tempGroupGames =  allGroupsGames[i];
 					var tempGroupPoints = allGroupsPt[i];
 					var tempGroupGoalDiff = allGroupsGoalDiff[i];
@@ -2480,7 +2480,6 @@ checkAudioFilesExist: function(audioPaths) {
 		
 		startTimer: function () {
 			var oModel = this.getView().getModel();
-			var oLastMinAudio = this.getView().byId("selectAudLastMin").getSelectedItem().getText();
 		    var oLastMin = this.getView().byId("selectAudLastMin");
 			oLastMin.setEnabled(true);
 			var timerAktive = oModel.getProperty("/isTimerAktive");
@@ -2520,16 +2519,16 @@ checkAudioFilesExist: function(audioPaths) {
 						var seconds = time - minutes * 60;
 						var sMinutes = minutes < 10 ? "0" + minutes : minutes;
 						var sSeconds = seconds < 10 ? "0" + seconds : seconds;
-						var audioElement;
 						oModel.setProperty("/clock", sMinutes + ":" + sSeconds);
 		
 						// Handle last minute audio
 						if (minutes === 0 && !kOneMin) {
+							var oLastMinAudio = oLastMin.getSelectedItem().getText();
 							oLastMin.setEnabled(false);
+							var audioElement = document.getElementById(me.getView().byId("audio_with_control3").getIdForLabel());
 							if (oLastMinAudio === "Automatisch") {
 								var oAudios = oModel.getProperty("/audio");
 								var matchingAudios = oAudios.filter((oItem) => oItem.AudioName.startsWith("lastminute"));
-								var audioElement = document.getElementById(me.getView().byId("audio_with_control3").getIdForLabel());
 								if (matchingAudios.length > 0) {
 									var randomNr = Math.floor(Math.random() * matchingAudios.length);
 									var oUrl = "./DataFiles/audios/lastminute/" + matchingAudios[randomNr].AudioName + ".mp3";
