@@ -504,7 +504,7 @@
 									  <ColumnListItem class="transparent tabellehoehe">
 										<cells class="tabellehoehe">
 										  <Text text="{platz}" class="tabelleSchrift" />
-										 <HBox >
+										 <HBox alignItems="Center" alignContent="Center">
 										 <Image src="{logo}" class="oTableImg"></Image>
 										 <!-- <core:Icon src=""></core:Icon> -->
 										  <Text text="{team}" class="tabelleSchrift"/>
